@@ -1,0 +1,22 @@
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-box {
+    background: linear-gradient(0deg, #4774a8, #5e0d77);
+    width: 450px;
+}
+
+.main-content {
+    height: 100vh;
+    color: #eee;
+}
+
+.task-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: lightskyblue;
+}
