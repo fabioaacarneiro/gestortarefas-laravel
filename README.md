@@ -27,7 +27,7 @@ php artisan migrate
 aplicando os seeds para alimentar o banco de dados
 
 ```bash
-php artisan db:seed --class=UserSeeders
+php artisan db:seed --class=UsersSeeder
 ```
 
 rodando o projeto com artisan serve:
