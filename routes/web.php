@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Main;
+use App\Http\Controllers\Login;
 use App\Http\Controllers\Task;
 use Illuminate\Support\Facades\Route;
 
@@ -18,31 +18,31 @@ use Illuminate\Support\Facades\Route;
 // out app
 Route::middleware('CheckLogout')->group(function () {
     // login routes
-    Route::get('/login', [Main::class, 'login'])->name('main.login');
-    Route::post('/login_submit', [Main::class, 'login_submit'])->name('main.login_submit');
+    Route::get('/login', [Login::class, 'login'])->name('login');
+    Route::post('/login_submit', [Login::class, 'login_submit'])->name('login_submit');
 });
 
 // in app
 Route::middleware('CheckLogin')->group(function () {
-    // main routes
-    Route::get('/', [Main::class, 'index'])->name('main.index');
-    Route::get('/logout', [Main::class, 'logout'])->name('main.logout');
+    // login routes
+    Route::get('/', [Login::class, 'index'])->name('main.index');
+    Route::get('/logout', [Login::class, 'logout'])->name('main.logout');
 
     // tasks
-    // Route::get('/', [Task::class, 'index'])->name('task.index');
-    Route::get('/newTask', [Task::class, 'newTask'])->name('task.newTask');
-    Route::post('/newTask', [Task::class, 'newTaskSubmit'])->name('task.newTaskSubmit');
+    Route::get('/', [Task::class, 'index'])->name('task.index');
+    Route::get('/newTask', [Task::class, 'newTask'])->name('task.new');
+    Route::post('/newTask', [Task::class, 'newTaskSubmit'])->name('task.new.submit');
 
     // task - edit
-    Route::get('/editTask/{id}', [Task::class, 'editTask'])->name('task.editTask');
-    Route::post('/editTask', [Task::class, 'editTaskSubmit'])->name('task.editTaskSubmit');
+    Route::get('/editTask/{id}', [Task::class, 'editTask'])->name('task.edit');
+    Route::post('/editTaskSubmit', [Task::class, 'editTaskSubmit'])->name('task.edit.submit');
 
     // task - delete
-    Route::get('/deleteTask/{id}', [Task::class, 'deleteTask'])->name('task.deleteTask');
-    Route::post('/deleteTask/{id}', [Task::class, 'deleteTaskConfirm'])->name('task.deleteTaskConfirm');
+    Route::get('/deleteTask/{id}', [Task::class, 'deleteTask'])->name('task.delete');
+    Route::post('/deleteTask/{id}', [Task::class, 'deleteTaskConfirm'])->name('task.delete.submit');
 
     // search
-    Route::post('/searchSubmit', [Task::class, 'searchSubmit'])->name('task.searchSubmit');
+    Route::post('/searchSubmit', [Task::class, 'searchSubmit'])->name('task.search');
 
     // filter
     Route::get('/filter/{filter}', [Task::class, 'filter'])->name('task.filter');

@@ -5,24 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 
-class Main extends Controller
+class Login extends Controller
 {
-    /**
-     * main page
-     */
-    public function index()
-    {
-
-        $data = [
-            'title' => 'Gestor de Tarefas',
-            'tasks' => Task::getTasks(),
-            'datatables' => true,
-        ];
-        // 'tasks' => $this->_get_tasks(),
-
-        return view('pages.main.index', $data);
-    }
-
     /**
      * login page
      */

@@ -20,7 +20,7 @@ class Task extends Controller
             'tasks' => self::getTasks(),
         ];
 
-        return view('main', $data);
+        return view('pages.main.index', $data);
     }
 
     /**
@@ -64,7 +64,7 @@ class Task extends Controller
 
         if ($task) {
             return redirect()
-                ->route('task.new_task')
+                ->route('task.new')
                 ->withInput()
                 ->with('task_error', 'Já existe uma tarefa com este nome');
         }
@@ -78,7 +78,7 @@ class Task extends Controller
         $new_task->created_at = date('Y-m-d H:i:s');
         $new_task->save();
 
-        return redirect()->route('main.index');
+        return redirect()->route('task.index');
     }
 
     /**
@@ -134,7 +134,7 @@ class Task extends Controller
         try {
             $decrypted_id = Crypt::decrypt($request->input('task_id'));
         } catch (Exception $e) {
-            return redirect()->route('index');
+            return redirect()->route('task.index');
         }
 
         $task_name = $request->input('text_task_name');
@@ -150,7 +150,7 @@ class Task extends Controller
 
         if ($task) {
             return redirect()
-                ->route('edit_task', ['id' => Crypt::encrypt($decrypted_id)])
+                ->route('task.edit', ['id' => Crypt::encrypt($decrypted_id)])
                 ->with('task_error', 'Já existe outra tarefa com o mesmo nome.');
         }
 
@@ -163,7 +163,7 @@ class Task extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-        return redirect()->route('main.index');
+        return redirect()->route('task.index');
 
     }
 
@@ -206,7 +206,7 @@ class Task extends Controller
         TaskModel::where('id', $decrypted_id)
             ->update(['deleted_at' => date('Y-m-d H:i:s')]);
 
-        return redirect()->route('main.index');
+        return redirect()->route('task.index');
     }
 
     /**
@@ -265,7 +265,7 @@ class Task extends Controller
         return redirect()->route('main.index', $tasks);
     }
 
-    public static function getTasks($status = null)
+    private static function getTasks($status = null)
     {
         // check there is a search
         if ($status) {
@@ -282,8 +282,8 @@ class Task extends Controller
 
         foreach ($tasks as $task) {
 
-            $link_edit = '<a href="' . route('task.editTask', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-pencil-square"></i></a>';
-            $link_delete = '<a href="' . route('task.deleteTask', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-trash"></i></a>';
+            $link_edit = '<a href="' . route('task.edit', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-pencil-square"></i></a>';
+            $link_delete = '<a href="' . route('task.delete', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-trash"></i></a>';
 
             $collection[] = [
                 // 'task_name' => $task->task_name,
