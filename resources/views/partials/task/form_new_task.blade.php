@@ -26,7 +26,7 @@
 
                 {{-- cancel or submit --}}
                 <div class="mb-3 text-center">
-                    <a href="{{ route('task.index') }} " class="btn btn-dark px-5 m-1"><i
+                    <a href="{{ route('main.index') }} " class="btn btn-dark px-5 m-1"><i
                             class="bi bi-x-circle me-2"></i>Cancelar</a>
                     <button type="submit" class="btn btn-secondary px-5 m-1"><i
                             class="bi bi-floppy me-2"></i>Guardar</button>

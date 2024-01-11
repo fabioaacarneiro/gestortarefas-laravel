@@ -1,8 +1,8 @@
 @extends('templates.main_layout')
 @section('content')
-    @include('partials.nav')
+    @include('partials.main.nav')
 
     @include('partials.task.form_new_task')
 
-    @include('partials.footer')
+    @include('partials.main.footer')
 @endsection

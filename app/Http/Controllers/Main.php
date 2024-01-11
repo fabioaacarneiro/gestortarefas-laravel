@@ -12,13 +12,17 @@ class Main extends Controller
      */
     public function index()
     {
+
+        $tasks = new Task();
+
         $data = [
             'title' => 'Gestor de Tarefas',
+            'tasks' => $tasks->_get_tasks(),
             'datatables' => true,
         ];
         // 'tasks' => $this->_get_tasks(),
 
-        return view('main', $data);
+        return view('pages.main.index', $data);
     }
 
     /**
@@ -66,7 +70,7 @@ class Main extends Controller
                 ];
 
                 session()->put($session_data);
-                return redirect()->route('task.index');
+                return redirect()->route('main.index');
             }
         }
 

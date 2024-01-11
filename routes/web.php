@@ -25,11 +25,11 @@ Route::middleware('CheckLogout')->group(function () {
 // in app
 Route::middleware('CheckLogin')->group(function () {
     // main routes
-    // Route::get('/', [Main::class, 'index'])->name('main.index');
+    Route::get('/', [Main::class, 'index'])->name('main.index');
     Route::get('/logout', [Main::class, 'logout'])->name('main.logout');
 
     // tasks
-    Route::get('/', [Task::class, 'index'])->name('task.index');
+    // Route::get('/', [Task::class, 'index'])->name('task.index');
     Route::get('/new_task', [Task::class, 'new_task'])->name('task.new_task');
     Route::post('/new_task', [Task::class, 'new_task_submit'])->name('task.new_task_submit');
 

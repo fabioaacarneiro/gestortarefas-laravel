@@ -17,7 +17,7 @@ class Task extends Controller
         $data = [
             'title' => 'Minhas Tarefas',
             'datatables' => true,
-            'tasks' => $this->_get_tasks(),
+            'tasks' => self::_get_tasks(),
         ];
 
         return view('main', $data);
@@ -32,7 +32,7 @@ class Task extends Controller
             'title' => 'Nova tarefa',
         ];
 
-        return view('new_task', $data);
+        return view('pages.task.new_task', $data);
     }
 
     /**
@@ -78,7 +78,7 @@ class Task extends Controller
         $new_task->created_at = date('Y-m-d H:i:s');
         $new_task->save();
 
-        return redirect()->route('task.index');
+        return redirect()->route('main.index');
     }
 
     /**
@@ -107,7 +107,7 @@ class Task extends Controller
             'task' => $task,
         ];
 
-        return view('edit_task_frm', $data);
+        return view('pages.task.edit_task', $data);
 
     }
 
@@ -163,7 +163,7 @@ class Task extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-        return redirect()->route('task.index');
+        return redirect()->route('main.index');
 
     }
 
@@ -189,7 +189,7 @@ class Task extends Controller
             'task' => $task,
         ];
 
-        return view('delete_task', $data);
+        return view('pages.task.delete_task', $data);
     }
 
     /**
@@ -206,7 +206,7 @@ class Task extends Controller
         TaskModel::where('id', $decrypted_id)
             ->update(['deleted_at' => date('Y-m-d H:i:s')]);
 
-        return redirect()->route('task.index');
+        return redirect()->route('main.index');
     }
 
     /**
@@ -238,10 +238,10 @@ class Task extends Controller
         session()->put('tasks', $tasks);
         session()->put('search', $search);
 
-        return redirect()->route('index');
+        return redirect()->route('main.index');
     }
 
-    public function filter($status = null)
+    public function filter($status)
     {
         // decrypt status
         try {
@@ -251,7 +251,7 @@ class Task extends Controller
         }
 
         // get tasks
-        if ($decrypted_status == 'all' || !$decrypted_status) {
+        if ($decrypted_status == 'all') {
             $tasks = TaskModel::where('id_user', session('id'))
                 ->whereNull('deleted_at')
                 ->get();
@@ -262,14 +262,10 @@ class Task extends Controller
                 ->get();
         }
 
-        return redirect()->route('index', $tasks);
+        return redirect()->route('main.index', $tasks);
     }
 
-    /**
-     * private methods
-     */
-
-    private function _get_tasks($status = null)
+    public function _get_tasks($status = null)
     {
         // check there is a search
         if ($status) {
@@ -299,6 +295,10 @@ class Task extends Controller
 
         return $collection;
     }
+
+    /**
+     * private methods
+     */
 
     private function _status_name($status)
     {
