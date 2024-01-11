@@ -17,11 +17,9 @@
 
 <body>
     <div class="d-flex flex-column min-vh-100">
-        @include('nav')
 
         @yield('content')
 
-        @include('footer')
 
         <script src="{{ asset('assets/bootstrap/bootstrap.bundle.min.js') }}"></script>
         @if (!empty($datatables))

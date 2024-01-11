@@ -2,7 +2,7 @@
 @section('content')
     @include('partials.nav')
 
-    @include('partials.tasks', ['tasks' => $tasks])
+    @include('partials.form_new_task')
 
     @include('partials.footer')
 @endsection

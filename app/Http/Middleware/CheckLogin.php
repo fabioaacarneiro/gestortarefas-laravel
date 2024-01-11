@@ -17,7 +17,7 @@ class CheckLogin
     {
         // check if user is logged in
         if (!session()->has('username')) {
-            return redirect()->route('login');
+            return redirect()->route('task.login');
         }
         return $next($request);
     }
