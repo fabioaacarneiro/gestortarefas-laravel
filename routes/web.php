@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 // out app
 Route::middleware('CheckLogout')->group(function () {
     // login routes
-    Route::get('/login', [Main::class, 'login'])->name('login');
-    Route::post('/login_submit', [Main::class, 'login_submit'])->name('login_submit');
+    Route::get('/login', [Main::class, 'login'])->name('main.login');
+    Route::post('/login_submit', [Main::class, 'login_submit'])->name('main.login_submit');
 });
 
 // in app

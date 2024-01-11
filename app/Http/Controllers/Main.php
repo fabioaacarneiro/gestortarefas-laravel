@@ -71,7 +71,7 @@ class Main extends Controller
         }
 
         // invalid login
-        return redirect()->route('login')->with('login_error', 'Login inválido');
+        return redirect()->route('main.login')->with('login_error', 'Login inválido');
 
     }
 
@@ -81,7 +81,7 @@ class Main extends Controller
     public function logout()
     {
         session()->forget('username');
-        return redirect()->route('login');
+        return redirect()->route('main.login');
     }
 
 }
