@@ -29,7 +29,7 @@ class Main extends Controller
         $data = [
             'title' => 'Login',
         ];
-        return view('login_frm', $data);
+        return view('pages.login', $data);
     }
 
     /**

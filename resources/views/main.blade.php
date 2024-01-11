@@ -2,7 +2,7 @@
 @section('content')
     @include('partials.nav')
 
-    @include('partials.tasks', ['tasks' => $tasks])
+    @include('partials.task.tasks', ['tasks' => $tasks])
 
     @include('partials.footer')
 @endsection
