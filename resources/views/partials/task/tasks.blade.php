@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="col-8 text-center">
-                    <form action="{{ route('task.search_submit') }}" method="post">
+                    <form action="{{ route('task.searchSubmit') }}" method="post">
                         @csrf
                         <div class="d-flex">
                             <input type="text" name="text_search" id="text_search" class="form-control"
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="col text-end">
-                    <a href="{{ route('task.new_task') }}" class="btn btn-primary"><i
+                    <a href="{{ route('task.newTask') }}" class="btn btn-primary"><i
                             class="bi bi-plus-square me-2"></i>Nova
                         tarefa</a>
                 </div>

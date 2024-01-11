@@ -3,7 +3,7 @@
         <div class="col">
             <h4>Editar Tarefa</h4>
             <hr>
-            <form action="{{ route('task.edit_task_submit') }}" method="post">
+            <form action="{{ route('task.editTaskSubmit') }}" method="post">
                 @csrf
                 <input type="hidden" name="task_id" value="{{ Crypt::encrypt($task->id) }}">
                 {{-- task name --}}

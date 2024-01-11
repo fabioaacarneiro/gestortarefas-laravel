@@ -17,7 +17,7 @@ class Task extends Controller
         $data = [
             'title' => 'Minhas Tarefas',
             'datatables' => true,
-            'tasks' => self::_get_tasks(),
+            'tasks' => self::getTasks(),
         ];
 
         return view('main', $data);
@@ -26,7 +26,7 @@ class Task extends Controller
     /**
      * new task verb get
      */
-    public function new_task()
+    public function newTask()
     {
         $data = [
             'title' => 'Nova tarefa',
@@ -38,7 +38,7 @@ class Task extends Controller
     /**
      * submit a new task
      */
-    public function new_task_submit(Request $request)
+    public function newTaskSubmit(Request $request)
     {
         $request->validate([
             'text_task_name' => 'required|min:3|max:200',
@@ -85,7 +85,7 @@ class Task extends Controller
      * edit a task
      */
 
-    public function edit_task($id)
+    public function editTask($id)
     {
         try {
             $decrypted_id = Crypt::decrypt($id);
@@ -114,7 +114,7 @@ class Task extends Controller
     /**
      * submit for edit the task
      */
-    public function edit_task_submit(Request $request)
+    public function editTaskSubmit(Request $request)
     {
         $request->validate([
             'text_task_name' => 'required|min:3|max:200',
@@ -170,7 +170,7 @@ class Task extends Controller
     /**
      * delete a task
      */
-    public function delete_task($id)
+    public function deleteTask($id)
     {
         try {
             $decrypted_id = Crypt::decrypt($id);
@@ -195,10 +195,10 @@ class Task extends Controller
     /**
      * confirm delete a task
      */
-    public function delete_task_confirm($id)
+    public function deleteTaskConfirm(Request $request)
     {
         try {
-            $decrypted_id = Crypt::decrypt($id);
+            $decrypted_id = Crypt::decrypt($request->id);
         } catch (Exception $e) {
             return redirect()->route('index');
         }
@@ -212,7 +212,7 @@ class Task extends Controller
     /**
      * search and sort
      */
-    public function search_submit(Request $request)
+    public function searchSubmit(Request $request)
     {
         // get data from form
         $search = $request->input('text_search');
@@ -265,7 +265,7 @@ class Task extends Controller
         return redirect()->route('main.index', $tasks);
     }
 
-    public function _get_tasks($status = null)
+    public static function getTasks($status = null)
     {
         // check there is a search
         if ($status) {
@@ -282,13 +282,13 @@ class Task extends Controller
 
         foreach ($tasks as $task) {
 
-            $link_edit = '<a href="' . route('task.edit_task', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-pencil-square"></i></a>';
-            $link_delete = '<a href="' . route('task.delete_task', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-trash"></i></a>';
+            $link_edit = '<a href="' . route('task.editTask', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-pencil-square"></i></a>';
+            $link_delete = '<a href="' . route('task.deleteTask', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-trash"></i></a>';
 
             $collection[] = [
                 // 'task_name' => $task->task_name,
                 'task_name' => '<span class="task-title">' . $task->task_name . '</span><br><small class="opacity-50">' . $task->task_description . '</small>',
-                'task_status' => $this->_status_name($task->task_status),
+                'task_status' => Task::statusName($task->task_status),
                 'task_actions' => $link_edit . $link_delete,
             ];
         }
@@ -300,7 +300,7 @@ class Task extends Controller
      * private methods
      */
 
-    private function _status_name($status)
+    private static function statusName($status)
     {
         $status_collection = [
             'new' => 'Nova',
@@ -310,13 +310,13 @@ class Task extends Controller
         ];
 
         if (key_exists($status, $status_collection)) {
-            return '<span class="' . $this->_status_badge($status) . '">' . $status_collection[$status] . '</span>';
+            return '<span class="' . Task::statusBadge($status) . '">' . $status_collection[$status] . '</span>';
         } else {
-            return '<span class="' . $this->_status_badge('Desconhecido') . '">Desconhecido</span>';
+            return '<span class="' . Task::statusBadge('Desconhecido') . '">Desconhecido</span>';
         }
     }
 
-    private function _status_badge($status)
+    private static function statusBadge($status)
     {
         $status_collection = [
             'new' => 'badge bg-primary',

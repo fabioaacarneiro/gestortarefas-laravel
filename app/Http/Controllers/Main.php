@@ -13,11 +13,9 @@ class Main extends Controller
     public function index()
     {
 
-        $tasks = new Task();
-
         $data = [
             'title' => 'Gestor de Tarefas',
-            'tasks' => $tasks->_get_tasks(),
+            'tasks' => Task::getTasks(),
             'datatables' => true,
         ];
         // 'tasks' => $this->_get_tasks(),
@@ -39,7 +37,7 @@ class Main extends Controller
     /**
      * submit to login
      */
-    public function login_submit(Request $request)
+    public function loginSubmit(Request $request)
     {
         // form validation
         $request->validate([

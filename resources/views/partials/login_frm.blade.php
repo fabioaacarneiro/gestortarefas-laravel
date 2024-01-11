@@ -2,7 +2,7 @@
     <div class="login-box p-5 rounded-4">
         <h3 class="text-center card-title">Login</h3>
         <hr />
-        <form action="{{ route('main.login_submit') }}" method="post">
+        <form action="{{ route('main.loginSubmit') }}" method="post">
             @csrf
             {{-- usurname --}}
             <div class="mb-3">

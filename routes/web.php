@@ -30,19 +30,19 @@ Route::middleware('CheckLogin')->group(function () {
 
     // tasks
     // Route::get('/', [Task::class, 'index'])->name('task.index');
-    Route::get('/new_task', [Task::class, 'new_task'])->name('task.new_task');
-    Route::post('/new_task', [Task::class, 'new_task_submit'])->name('task.new_task_submit');
+    Route::get('/newTask', [Task::class, 'newTask'])->name('task.newTask');
+    Route::post('/newTask', [Task::class, 'newTaskSubmit'])->name('task.newTaskSubmit');
 
     // task - edit
-    Route::get('/edit_task/{id}', [Task::class, 'edit_task'])->name('task.edit_task');
-    Route::post('/edit_task', [Task::class, 'edit_task_submit'])->name('task.edit_task_submit');
+    Route::get('/editTask/{id}', [Task::class, 'editTask'])->name('task.editTask');
+    Route::post('/editTask', [Task::class, 'editTaskSubmit'])->name('task.editTaskSubmit');
 
     // task - delete
-    Route::get('/delete_task/{id}', [Task::class, 'delete_task'])->name('task.delete_task');
-    Route::get('/delete_task_confirm/{id}', [Task::class, 'delete_task_confirm'])->name('task.delete_task_confirm');
+    Route::get('/deleteTask/{id}', [Task::class, 'deleteTask'])->name('task.deleteTask');
+    Route::post('/deleteTask/{id}', [Task::class, 'deleteTaskConfirm'])->name('task.deleteTaskConfirm');
 
     // search
-    Route::post('/search_submit', [Task::class, 'search_submit'])->name('task.search_submit');
+    Route::post('/searchSubmit', [Task::class, 'searchSubmit'])->name('task.searchSubmit');
 
     // filter
     Route::get('/filter/{filter}', [Task::class, 'filter'])->name('task.filter');
