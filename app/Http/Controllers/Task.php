@@ -17,7 +17,7 @@ class Task extends Controller
         $data = [
             'title' => 'Minhas Tarefas',
             'datatables' => false,
-            'tasks' => self::getTasks(),
+            'tasks' => self::getTasks('all'),
         ];
 
         return view('pages.main.index', $data);
@@ -248,7 +248,7 @@ class Task extends Controller
         $data = [
             'title' => 'Minhas tarefas',
             'datatables' => false,
-            'tasks' => ($filter == 'all' || $filter == null) ? Task::getTasks() : Task::getTasks($filter),
+            'tasks' => Task::getTasks($filter),
         ];
 
         return view('pages.main.index', $data);
@@ -259,7 +259,7 @@ class Task extends Controller
         $tasks = [];
 
         // check there is a search
-        if ($status) {
+        if ($status != 'all') {
             $allTasks = TaskModel::where('id_user', session('id'))
                 ->where('task_status', $status)
                 ->whereNull('deleted_at')
@@ -278,7 +278,6 @@ class Task extends Controller
             // $link_delete = '<a href="' . route('task.delete', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-trash"></i></a>';
 
             $tasks[] = [
-                // 'task_name' => $task->task_name,
                 'task_id' => $task->id,
                 'task_name' => $task->task_name,
                 'task_description' => $task->task_description,
@@ -304,12 +303,6 @@ class Task extends Controller
             'cancelled' => 'Cancelada',
             'completed' => 'Concluída',
         ];
-
-        // if (key_exists($status, $status_collection)) {
-        //     return '<span class="' . Task::statusBadge($status) . '">' . $status_collection[$status] . '</span>';
-        // } else {
-        //     return '<span class="' . Task::statusBadge('Desconhecido') . '">Desconhecido</span>';
-        // }
 
         if (key_exists($status, $status_collection)) {
             return $status_collection[$status];

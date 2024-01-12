@@ -25,7 +25,7 @@ Route::middleware('CheckLogout')->group(function () {
 // in app
 Route::middleware('CheckLogin')->group(function () {
     // login routes
-    Route::get('/', [Login::class, 'index'])->name('main.index');
+    // Route::get('/', [Login::class, 'index'])->name('main.index');
     Route::get('/logout', [Login::class, 'logout'])->name('main.logout');
 
     // tasks
