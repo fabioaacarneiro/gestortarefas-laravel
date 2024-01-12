@@ -64,8 +64,12 @@
                                     <span class="{{ $task['task_status_style'] }}">{{ $task['task_status'] }}</span>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <a href="{{ route('task.edit', ['id' => Crypt::encrypt($task['task_id'])]) }} "
-                                        class="btn btn-secondary m-1"><i class="bi bi-pencil-square"></i></a>
+                                    {{-- <a href="{{ route('task.edit', ['id' => Crypt::encrypt($task['task_id'])]) }} "
+                                        class="btn btn-secondary m-1"><i class="bi bi-pencil-square"></i></a> --}}
+
+                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#modalEdit-{{ $task['task_id'] }}"><i
+                                            class="bi bi-pencil"></i></button>
 
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                         data-bs-target="#modalDeleteConfirm-{{ $task['task_id'] }}"><i
@@ -73,7 +77,7 @@
                                 </td>
                             </tr>
 
-                            <!-- Modal -->
+                            {{-- modal delete --}}
                             <div class="modal fade" id="modalDeleteConfirm-{{ $task['task_id'] }}" tabindex="-1"
                                 aria-labelledby="modalDeleteConfirm-{{ $task['task_id'] }}" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -86,20 +90,27 @@
                                             <p class="opacity-50">{{ $task['task_description'] }}</p>
                                             <p class="my-5 text-center">Deseja excluir esta tarefa?</p>
 
-                                            <div class="modal-footer">
-                                                <div class="my-4 text-center">
-                                                    <a href="{{ route('task.index') }}"
-                                                        class="btn btn-secondary px-5 m-1"><i class="bi bi-cancel me-2"
-                                                            data-bs-dismiss="modal"></i>Cancelar</a>
-                                                    <a href="{{ route('task.delete.submit', ['id' => Crypt::encrypt($task['task_id'])]) }}"
-                                                        class="btn btn-danger m-1"><i class="bi bi-thrash me-2"
-                                                            data-bs-dismiss="modal"></i>Confirmar</a>
-                                                </div>
+                                            <div class="mt-3 text-center">
+                                                <hr>
+                                                <a href="{{ route('task.index') }}"
+                                                    class="btn btn-secondary px-5 m-1"><i class="bi bi-cancel me-2"
+                                                        data-bs-dismiss="modal"></i>Cancelar</a>
+                                                <a href="{{ route('task.delete.submit', ['id' => Crypt::encrypt($task['task_id'])]) }}"
+                                                    class="btn btn-danger m-1"><i class="bi bi-thrash me-2"
+                                                        data-bs-dismiss="modal"></i>Confirmar</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            @include('partials.task.form_task', [
+                                'formTitle' => 'Editar Tarefa',
+                                'task_id' => $task['task_id'],
+                                'task_name' => $task['task_name'],
+                                'task_description' => $task['task_description'],
+                                'task_status' => $task['task_status'],
+                            ])
                         @endforeach
 
                     </tbody>

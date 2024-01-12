@@ -132,7 +132,7 @@ class Task extends Controller
 
         // get form data
         try {
-            $decrypted_id = Crypt::decrypt($request->input('task_id'));
+            $decrypted_id = Crypt::decrypt($request->task_id);
         } catch (Exception $e) {
             return redirect()->route('task.index');
         }
