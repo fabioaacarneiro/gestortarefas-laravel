@@ -1,6 +1,6 @@
 {{-- modal edit --}}
-<div class="modal fade" id="modalEdit-{{ $task_id }}" tabindex="-1"
-    aria-labelledby="modalEdit-{{ $task_id }} aria-hidden="true">
+<div class="modal fade" id="{{ $modal_id }}" tabindex="-1"
+    aria-labelledby="modalTask-{{ $modal_id }} aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
