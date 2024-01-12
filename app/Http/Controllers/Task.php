@@ -12,12 +12,13 @@ class Task extends Controller
     /**
      * task index
      */
-    public function index()
+    public function index($filter = 'all')
     {
         $data = [
             'title' => 'Minhas Tarefas',
             'datatables' => false,
-            'tasks' => self::getTasks('all'),
+            'tasks' => Task::getTasks($filter),
+            'filter' => $filter,
         ];
 
         return view('pages.main.index', $data);
@@ -243,17 +244,9 @@ class Task extends Controller
         return redirect()->route('main.index');
     }
 
-    public function filter($filter = null)
-    {
-        $data = [
-            'title' => 'Minhas tarefas',
-            'datatables' => false,
-            'tasks' => Task::getTasks($filter),
-        ];
-
-        return view('pages.main.index', $data);
-    }
-
+    /**
+     * get task from database
+     */
     private static function getTasks($status = null)
     {
         $tasks = [];

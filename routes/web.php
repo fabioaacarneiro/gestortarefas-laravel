@@ -29,7 +29,7 @@ Route::middleware('CheckLogin')->group(function () {
     Route::get('/logout', [Login::class, 'logout'])->name('main.logout');
 
     // tasks
-    Route::get('/', [Task::class, 'index'])->name('task.index');
+    Route::get('/{filter?}', [Task::class, 'index'])->name('task.index');
     Route::get('/newTask', [Task::class, 'newTask'])->name('task.new');
     Route::post('/newTask', [Task::class, 'newTaskSubmit'])->name('task.new.submit');
 
@@ -43,8 +43,5 @@ Route::middleware('CheckLogin')->group(function () {
 
     // search
     Route::post('/searchSubmit', [Task::class, 'searchSubmit'])->name('task.search');
-
-    // filter
-    Route::get('/filter/{filter}', [Task::class, 'filter'])->name('task.filter');
 
 });

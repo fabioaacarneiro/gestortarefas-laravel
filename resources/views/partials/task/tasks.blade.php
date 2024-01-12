@@ -150,6 +150,6 @@
     const filter = document.querySelector('#filter')
 
     filter.addEventListener('click', () => {
-        window.location.href = `{{ url('/filter') }}/${filter.value}`
+        window.location.href = `/${filter.value}`
     })
 </script>
