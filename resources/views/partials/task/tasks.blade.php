@@ -1,16 +1,16 @@
 {{-- @dd($tasks) --}}
 <div class="container mb-3">
-    <div class="container">
 
-        <div class="d-flex flex-row justify-content-between mb-3">
-            <h4>Tarefas</h4>
+    <div class="container container-fluid text-center">
 
-            {{-- <div class="d-flex flex-row justify-content-evenly text-center"> --}}
-            <div class="row">
-                <form action="{{ route('task.search') }}" method="post">
+        {{-- <div class="d-flex flex-row justify-content-evenly text-center"> --}}
+        <div class="row justify-content-between mb-3 mx-0">
+            <div class="col-1 me-3">
+                <h4>Tarefas</h4>
+            </div>
+            <div class="col-2">
+                <form action="{{ route('task.filter') }}" method="post">
                     @csrf
-
-                    <label class="me-2 align-self-center">Estado:</label>
                     <select name="filter" id="filter" class="form-select">
                         <option value="{{ Crypt::encrypt('all') }}"
                             @php echo (!empty($filter) && $filter == 'all') ? 'selected' : '' @endphp>Todos
@@ -30,15 +30,13 @@
                     </select>
                 </form>
             </div>
-            <div class="row">
-
-                <input type="text" name="text_search" id="text_search" class="form-control row"
-                    placeholder="Pesquisar">
-                <button class="btn btn-outline-primary ms-3"><i class="bi bi-search"></i></button>
+            <div class="col input-group">
+                <input type="text" name="text_search" id="text_search" class="form-control" placeholder="Pesquisar">
+                <button class="btn btn-outline-primary"><i class="bi bi-search"></i></button>
             </div>
-            <div>
+            <div class="col-2">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new_task"><i
-                        class="bi bi-plus-circle"></i>Nova tarefa</button>
+                        class="bi bi-plus-circle me-2"></i>Nova</button>
                 @include('partials.task.form_task', [
                     'route' => 'task.new.submit',
                     'modal_id' => 'new_task',
@@ -49,12 +47,12 @@
                     'task_status' => '',
                 ])
             </div>
+        </div>
 
-            {{-- <div class="col text-end">
+        {{-- <div class="col text-end">
                     <a href="{{ route('task.new') }}" class="btn btn-primary"><i class="bi bi-plus-square me-2"></i>Nova
                         tarefa</a> --}}
 
-        </div>
     </div>
 
     @if (count($tasks) != 0)
@@ -135,28 +133,29 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        $('#table_tasks').DataTable({
-            data: @json($tasks),
-            columns: [{
-                    data: 'task_name'
-                },
-                {
-                    data: 'task_status',
-                    className: 'text-center align-middle'
-                },
-                {
-                    data: 'task_actions',
-                    className: 'text-center align-middle'
-                },
-            ]
-        })
-    })
+    // $(document).ready(function() {
+    //     $('#table_tasks').DataTable({
+    //         data: @json($tasks),
+    //         columns: [{
+    //                 data: 'task_name'
+    //             },
+    //             {
+    //                 data: 'task_status',
+    //                 className: 'text-center align-middle'
+    //             },
+    //             {
+    //                 data: 'task_actions',
+    //                 className: 'text-center align-middle'
+    //             },
+    //         ]
+    //     })
+    // })
 
     let filter = document.querySelector('#filter')
     filter.addEventListener('change', () => {
         let value = filter.value
-        window.location.href = `{{ url('/filter') }}/${value}`
-        console.log(`{{ url('/filter') }}/${value}`)
+        console.log(value);
+        window.location.href = `{{ url('/filter/') }}${value}`
+        console.log(`{{ url('/filter/') }}${value}`)
     })
 </script>

@@ -65,8 +65,10 @@
                         {{-- cancel or submit --}}
                         <div class="mb-3 text-center">
                             <hr>
-                            <a href="{{ route('task.index') }} " class="btn btn-secondary px-5 m-1"><i
-                                    class="bi bi-x-circle me-2"></i>Cancelar</a>
+                            {{-- <a href="{{ route('task.index') }} " class="btn btn-secondary px-5 m-1"><i
+                                class="bi bi-x-circle me-2"></i>Cancelar</a> --}}
+                            <button type="button" class="btn btn-secondary px-5 m-1"><i class="bi bi-floppy me-2"
+                                    data-bs-toggle></i>Cancelar</button>
                             <button type="submit" class="btn btn-success px-5 m-1"><i
                                     class="bi bi-floppy me-2"></i>Guardar</button>
                         </div>
