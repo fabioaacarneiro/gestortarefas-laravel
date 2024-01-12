@@ -9,26 +9,23 @@
                 <h4>Tarefas</h4>
             </div>
             <div class="col-2">
-                <form action="{{ route('task.filter') }}" method="post">
-                    @csrf
-                    <select name="filter" id="filter" class="form-select">
-                        <option value="{{ Crypt::encrypt('all') }}"
-                            @php echo (!empty($filter) && $filter == 'all') ? 'selected' : '' @endphp>Todos
-                        </option>
-                        <option value="{{ Crypt::encrypt('new') }}"
-                            @php echo (!empty($filter) && $filter == 'new') ? 'selected' : '' @endphp>Novas
-                        </option>
-                        <option value="{{ Crypt::encrypt('in_progress') }}"
-                            @php echo (!empty($filter) && $filter == 'in_progress') ? 'selected' : '' @endphp>Em
-                            progresso</option>
-                        <option value="{{ Crypt::encrypt('cancelled') }}"
-                            @php echo (!empty($filter) && $filter == 'cancelled') ? 'selected' : '' @endphp>
-                            Canceladas</option>
-                        <option value="{{ Crypt::encrypt('completed') }}"
-                            @php echo (!empty($filter) && $filter == 'completed') ? 'selected' : '' @endphp>
-                            Concluídas</option>
-                    </select>
-                </form>
+                <select name="filter" id="filter" class="form-select">
+                    <option value="all" @php echo (!empty($filter) && $filter == 'all') ? 'selected' : '' @endphp>
+                        Todos
+                    </option>
+                    <option value="new" @php echo (!empty($filter) && $filter == 'new') ? 'selected' : '' @endphp>
+                        Novas
+                    </option>
+                    <option value="in_progress"
+                        @php echo (!empty($filter) && $filter == 'in_progress') ? 'selected' : '' @endphp>Em
+                        progresso</option>
+                    <option value="cancelled"
+                        @php echo (!empty($filter) && $filter == 'cancelled') ? 'selected' : '' @endphp>
+                        Canceladas</option>
+                    <option value="completed"
+                        @php echo (!empty($filter) && $filter == 'completed') ? 'selected' : '' @endphp>
+                        Concluídas</option>
+                </select>
             </div>
             <div class="col input-group">
                 <input type="text" name="text_search" id="text_search" class="form-control" placeholder="Pesquisar">
@@ -79,8 +76,7 @@
                                         class="btn btn-secondary m-1"><i class="bi bi-pencil-square"></i></a> --}}
 
                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                data-bs-target="#edit_task-{{ $task['task_id'] }}"><i
-                                    class="bi bi-pencil"></i></button>
+                                data-bs-target="#edit_task-{{ $task['task_id'] }}"><i class="bi bi-pencil"></i></button>
 
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#modalDeleteConfirm-{{ $task['task_id'] }}"><i
@@ -151,11 +147,9 @@
     //     })
     // })
 
-    let filter = document.querySelector('#filter')
-    filter.addEventListener('change', () => {
-        let value = filter.value
-        console.log(value);
-        window.location.href = `{{ url('/filter/') }}${value}`
-        console.log(`{{ url('/filter/') }}${value}`)
+    const filter = document.querySelector('#filter')
+
+    filter.addEventListener('click', () => {
+        window.location.href = `{{ url('/filter') }}/${filter.value}`
     })
 </script>

@@ -243,28 +243,15 @@ class Task extends Controller
         return redirect()->route('main.index');
     }
 
-    public function filter($status)
+    public function filter($filter = null)
     {
-        // decrypt status
-        try {
-            $decrypted_status = Crypt::decrypt($status);
-        } catch (Exception $e) {
-            return redirect()->route('index');
-        }
+        $data = [
+            'title' => 'Minhas tarefas',
+            'datatables' => false,
+            'tasks' => ($filter == 'all' || $filter == null) ? Task::getTasks() : Task::getTasks($filter),
+        ];
 
-        // get tasks
-        if ($decrypted_status == 'all') {
-            $tasks = TaskModel::where('id_user', session('id'))
-                ->whereNull('deleted_at')
-                ->get();
-        } else {
-            $tasks = TaskModel::where('id_user', session('id'))
-                ->where('task_status', $decrypted_status)
-                ->whereNull('deleted_at')
-                ->get();
-        }
-
-        return redirect()->route('main.index', $tasks);
+        return view('pages.main.index', $data);
     }
 
     private static function getTasks($status = null)
@@ -311,6 +298,7 @@ class Task extends Controller
     private static function statusName($status)
     {
         $status_collection = [
+            'all' => 'Minhas Tarefas',
             'new' => 'Nova',
             'in_progress' => 'Em progresso',
             'cancelled' => 'Cancelada',

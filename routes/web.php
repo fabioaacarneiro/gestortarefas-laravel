@@ -45,6 +45,6 @@ Route::middleware('CheckLogin')->group(function () {
     Route::post('/searchSubmit', [Task::class, 'searchSubmit'])->name('task.search');
 
     // filter
-    Route::get('/filter', [Task::class, 'filter'])->name('task.filter');
+    Route::get('/filter/{filter}', [Task::class, 'filter'])->name('task.filter');
 
 });
