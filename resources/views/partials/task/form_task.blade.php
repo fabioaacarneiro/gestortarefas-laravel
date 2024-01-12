@@ -4,11 +4,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="taskEditTitle">{{ $formTitle }}</h1>
+                <h1 class="modal-title fs-5" id="taskEditTitle">{{ $form_title }}</h1>
             </div>
             <div class="modal-body">
                 <div class="col">
-                    <form action="{{ route('task.edit.submit') }}" method="post">
+                    <form action="{{ route($route) }}" method="post">
                         @csrf
                         <input type="hidden" name="task_id" value="{{ Crypt::encrypt($task_id) }}">
                         {{-- task name --}}
@@ -41,18 +41,18 @@
                             <select name="text_task_status" id="text_task_status" class="form-select flex-fill"
                                 required>
                                 <option value="new"
-                                    {{ old('text_task_status', $task_status) == 'new' ? 'selected' : '' }}>
+                                    {{ old('text_task_status', $task_status) == 'Nova' ? 'selected' : '' }}>
                                     Nova</option>
                                 <option value="in_progress"
-                                    {{ old('text_task_status', $task_status) == 'in_progress' ? 'selected' : '' }}>
+                                    {{ old('text_task_status', $task_status) == 'Em progresso' ? 'selected' : '' }}>
                                     Em
                                     progresso</option>
                                 <option value="cancelled"
-                                    {{ old('text_task_status', $task_status) == 'cancelled' ? 'selected' : '' }}>
+                                    {{ old('text_task_status', $task_status) == 'Cancelada' ? 'selected' : '' }}>
                                     Cancelada
                                 </option>
                                 <option value="completed"
-                                    {{ old('text_task_status', $task_status) == 'completed' ? 'selected' : '' }}>
+                                    {{ old('text_task_status', $task_status) == 'Concluída' ? 'selected' : '' }}>
                                     Concluída
                                 </option>
                             </select>

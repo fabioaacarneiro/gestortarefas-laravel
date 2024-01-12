@@ -105,7 +105,8 @@
                             </div>
 
                             @include('partials.task.form_task', [
-                                'formTitle' => 'Editar Tarefa',
+                                'route' => 'task.edit.submit',
+                                'form_title' => 'Editar Tarefa',
                                 'task_id' => $task['task_id'],
                                 'task_name' => $task['task_name'],
                                 'task_description' => $task['task_description'],
