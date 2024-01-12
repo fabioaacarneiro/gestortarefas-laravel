@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('CheckLogout')->group(function () {
     // login routes
     Route::get('/login', [Login::class, 'login'])->name('login');
-    Route::post('/login_submit', [Login::class, 'login_submit'])->name('login_submit');
+    Route::post('/login_submit', [Login::class, 'loginSubmit'])->name('login.submit');
 });
 
 // in app
@@ -39,7 +39,7 @@ Route::middleware('CheckLogin')->group(function () {
 
     // task - delete
     Route::get('/deleteTask/{id}', [Task::class, 'deleteTask'])->name('task.delete');
-    Route::post('/deleteTask/{id}', [Task::class, 'deleteTaskConfirm'])->name('task.delete.submit');
+    Route::get('/deleteTask/{id}', [Task::class, 'deleteTaskConfirm'])->name('task.delete.submit');
 
     // search
     Route::post('/searchSubmit', [Task::class, 'searchSubmit'])->name('task.search');

@@ -1,7 +1,7 @@
 {{-- @dd($tasks) --}}
 <div class="container mb-3">
     <div class="row">
-        <div class="col">
+        <div class="col ">
 
             <div class="row align-items-center mb-3">
                 <div class="col">
@@ -48,23 +48,67 @@
                 <table class="table table-dark table-striped table-bordered w-100" id="table_tasks">
                     <thead class="table-primary">
                         <tr>
-                            <th class="w-75">Tarefas</th>
+                            <th class="w-75 ">Tarefas</th>
                             <th class="w-20 text-center">Status</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody class="text-light">
-                        {{-- @foreach ($tasks as $task)
+                        @foreach ($tasks as $task)
                             <tr>
-                                <td><span>{{ $task['task_name'] }}</span></td>
-                                <td>{{ $task['task_status'] }}</td>
+                                <td>
+                                    <span class="task-title">{{ $task['task_name'] }}</span>
+                                    <br><small class="opacity-50">{{ $task['task_description'] }}</small>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="{{ $task['task_status_style'] }}">{{ $task['task_status'] }}</span>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <a href="{{ route('task.edit', ['id' => Crypt::encrypt($task['task_id'])]) }} "
+                                        class="btn btn-secondary m-1"><i class="bi bi-pencil-square"></i></a>
+
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#modalDeleteConfirm-{{ $task['task_id'] }}"><i
+                                            class="bi bi-trash"></i></button>
+                                </td>
                             </tr>
-                        @endforeach --}}
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="modalDeleteConfirm-{{ $task['task_id'] }}" tabindex="-1"
+                                aria-labelledby="modalDeleteConfirm-{{ $task['task_id'] }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Excluir tarefa</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4 class="text-info">{{ $task['task_name'] }}</h4>
+                                            <p class="opacity-50">{{ $task['task_description'] }}</p>
+                                            <p class="my-5 text-center">Deseja excluir esta tarefa?</p>
+
+                                            <div class="modal-footer">
+                                                <div class="my-4 text-center">
+                                                    <a href="{{ route('task.index') }}"
+                                                        class="btn btn-secondary px-5 m-1"><i class="bi bi-cancel me-2"
+                                                            data-bs-dismiss="modal"></i>Cancelar</a>
+                                                    <a href="{{ route('task.delete.submit', ['id' => Crypt::encrypt($task['task_id'])]) }}"
+                                                        class="btn btn-danger m-1"><i class="bi bi-thrash me-2"
+                                                            data-bs-dismiss="modal"></i>Confirmar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
                     </tbody>
                 </table>
             @else
                 <p class="text-center opacity-50 my-5">Não existem tarefas registradas</p>
             @endif
+
+
         </div>
     </div>
 </div>

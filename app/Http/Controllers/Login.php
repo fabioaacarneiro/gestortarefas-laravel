@@ -52,12 +52,12 @@ class Login extends Controller
                 ];
 
                 session()->put($session_data);
-                return redirect()->route('main.index');
+                return redirect()->route('task.index');
             }
         }
 
         // invalid login
-        return redirect()->route('main.login')->with('login_error', 'Login inválido');
+        return redirect()->route('login')->with('login_error', 'Login inválido');
 
     }
 
@@ -67,7 +67,7 @@ class Login extends Controller
     public function logout()
     {
         session()->forget('username');
-        return redirect()->route('main.login');
+        return redirect()->route('login');
     }
 
 }

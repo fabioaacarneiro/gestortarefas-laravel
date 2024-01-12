@@ -16,7 +16,7 @@ class CheckLogout
     public function handle(Request $request, Closure $next): Response
     {
         if (session()->has('username')) {
-            return redirect()->route('main.index');
+            return redirect()->route('task.index');
         }
         return $next($request);
     }

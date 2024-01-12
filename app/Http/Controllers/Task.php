@@ -16,7 +16,7 @@ class Task extends Controller
     {
         $data = [
             'title' => 'Minhas Tarefas',
-            'datatables' => true,
+            'datatables' => false,
             'tasks' => self::getTasks(),
         ];
 
@@ -189,24 +189,26 @@ class Task extends Controller
             'task' => $task,
         ];
 
-        return view('pages.task.delete_task', $data);
+        return $data;
     }
 
     /**
      * confirm delete a task
      */
-    public function deleteTaskConfirm(Request $request)
+    public function deleteTaskConfirm($id)
     {
         try {
-            $decrypted_id = Crypt::decrypt($request->id);
+            $decrypted_id = Crypt::decrypt($id);
+
         } catch (Exception $e) {
-            return redirect()->route('index');
+            return redirect()->route('task.index');
         }
 
         TaskModel::where('id', $decrypted_id)
             ->update(['deleted_at' => date('Y-m-d H:i:s')]);
 
         return redirect()->route('task.index');
+
     }
 
     /**
@@ -267,33 +269,39 @@ class Task extends Controller
 
     private static function getTasks($status = null)
     {
+        $tasks = [];
+
         // check there is a search
         if ($status) {
-            $tasks = TaskModel::where('id_user', session('id'))
+            $allTasks = TaskModel::where('id_user', session('id'))
                 ->where('task_status', $status)
                 ->whereNull('deleted_at')
                 ->get();
 
         } else {
-            $tasks = TaskModel::where('id_user', session('id'))
+            $allTasks = TaskModel::where('id_user', session('id'))
                 ->whereNull('deleted_at')
                 ->get();
         }
 
-        foreach ($tasks as $task) {
+        foreach ($allTasks as $task) {
 
-            $link_edit = '<a href="' . route('task.edit', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-pencil-square"></i></a>';
-            $link_delete = '<a href="' . route('task.delete', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-trash"></i></a>';
+            // $link_edit = '<a href="' . route('task.edit', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"><i class="bi bi-pencil-square"></i></a>';
+            // $link_delete = '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-trash"></button>';
+            // $link_delete = '<a href="' . route('task.delete', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-trash"></i></a>';
 
-            $collection[] = [
+            $tasks[] = [
                 // 'task_name' => $task->task_name,
-                'task_name' => '<span class="task-title">' . $task->task_name . '</span><br><small class="opacity-50">' . $task->task_description . '</small>',
+                'task_id' => $task->id,
+                'task_name' => $task->task_name,
+                'task_description' => $task->task_description,
                 'task_status' => Task::statusName($task->task_status),
-                'task_actions' => $link_edit . $link_delete,
+                'task_status_style' => Task::statusBadge($task->task_status),
+                // 'task_actions' => $link_edit . $link_delete,
             ];
         }
 
-        return $collection;
+        return $tasks;
     }
 
     /**
@@ -309,10 +317,16 @@ class Task extends Controller
             'completed' => 'Concluída',
         ];
 
+        // if (key_exists($status, $status_collection)) {
+        //     return '<span class="' . Task::statusBadge($status) . '">' . $status_collection[$status] . '</span>';
+        // } else {
+        //     return '<span class="' . Task::statusBadge('Desconhecido') . '">Desconhecido</span>';
+        // }
+
         if (key_exists($status, $status_collection)) {
-            return '<span class="' . Task::statusBadge($status) . '">' . $status_collection[$status] . '</span>';
+            return $status_collection[$status];
         } else {
-            return '<span class="' . Task::statusBadge('Desconhecido') . '">Desconhecido</span>';
+            return 'Desconhecido';
         }
     }
 
