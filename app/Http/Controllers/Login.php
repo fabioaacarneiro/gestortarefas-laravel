@@ -45,6 +45,7 @@ class Login extends Controller
 
         if ($user) {
             // check password is correct
+
             if (password_verify($password, $user->password)) {
                 $session_data = [
                     'id' => $user->id,

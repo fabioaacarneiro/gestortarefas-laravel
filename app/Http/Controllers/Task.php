@@ -14,32 +14,20 @@ class Task extends Controller
      */
     public function index($filter = 'all')
     {
+
         $data = [
             'title' => 'Minhas Tarefas',
             'datatables' => false,
             'tasks' => Task::getTasks($filter),
-            'filter' => $filter,
         ];
 
         return view('pages.main.index', $data);
     }
 
     /**
-     * new task verb get
-     */
-    public function newTask()
-    {
-        $data = [
-            'title' => 'Nova tarefa',
-        ];
-
-        return view('pages.task.new_task', $data);
-    }
-
-    /**
      * submit a new task
      */
-    public function newTaskSubmit(Request $request)
+    public function newTask(Request $request)
     {
         $request->validate([
             'text_task_name' => 'required|min:3|max:200',
@@ -56,6 +44,7 @@ class Task extends Controller
         // get form data
         $task_name = $request->input('text_task_name');
         $task_description = $request->input('text_task_description');
+        $task_status = $request->input('text_task_status');
 
         // check if there is already another task with same name for the same user
         $task = TaskModel::where('id_user', session('id'))
@@ -70,12 +59,15 @@ class Task extends Controller
                 ->with('task_error', 'Já existe uma tarefa com este nome');
         }
 
+        /**
+         * TODO - turn this create task solution better
+         */
         $new_task = new TaskModel;
 
         $new_task->id_user = session('id');
         $new_task->task_name = $task_name;
         $new_task->task_description = $task_description;
-        $new_task->task_status = 'new';
+        $new_task->task_status = $task_status;
         $new_task->created_at = date('Y-m-d H:i:s');
         $new_task->save();
 
@@ -86,36 +78,7 @@ class Task extends Controller
      * edit a task
      */
 
-    public function editTask($id)
-    {
-        try {
-            $decrypted_id = Crypt::decrypt($id);
-        } catch (Exception $e) {
-            return redirect()->route('index');
-        }
-
-        // get tast data
-        $task = TaskModel::where('id', $decrypted_id)->first();
-
-        // check if task exists
-        if (empty($task)) {
-            return redirect()->route('index');
-            echo 'não existe esta task';
-        }
-
-        $data = [
-            'title' => 'Editar tarefa',
-            'task' => $task,
-        ];
-
-        return view('pages.task.edit_task', $data);
-
-    }
-
-    /**
-     * submit for edit the task
-     */
-    public function editTaskSubmit(Request $request)
+    public function editTask(Request $request)
     {
         $request->validate([
             'text_task_name' => 'required|min:3|max:200',
@@ -131,13 +94,7 @@ class Task extends Controller
             'text_task_status.required' => 'O campo é obrigatório',
         ]);
 
-        // get form data
-        try {
-            $decrypted_id = Crypt::decrypt($request->task_id);
-        } catch (Exception $e) {
-            return redirect()->route('task.index');
-        }
-
+        $task_id = $request->task_id;
         $task_name = $request->input('text_task_name');
         $task_description = $request->input('text_task_description');
         $task_status = $request->input('text_task_status');
@@ -145,18 +102,18 @@ class Task extends Controller
         // check if there is another task with the same name and from the same user
         $task = TaskModel::where('id_user', session('id'))
             ->where('task_name', $task_name)
-            ->where('id', '!=', $decrypted_id)
+            ->where('id', '!=', $task_id)
             ->whereNull('deleted_at')
             ->first();
 
         if ($task) {
             return redirect()
-                ->route('task.edit', ['id' => Crypt::encrypt($decrypted_id)])
+                ->route('task.edit', $task_id)
                 ->with('task_error', 'Já existe outra tarefa com o mesmo nome.');
         }
 
         // update the task
-        TaskModel::where('id', $decrypted_id)
+        TaskModel::where('id', $task_id)
             ->update([
                 'task_name' => $task_name,
                 'task_description' => $task_description,
@@ -164,7 +121,7 @@ class Task extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-        return redirect()->route('task.index');
+        return back();
 
     }
 
@@ -172,31 +129,6 @@ class Task extends Controller
      * delete a task
      */
     public function deleteTask($id)
-    {
-        try {
-            $decrypted_id = Crypt::decrypt($id);
-        } catch (Exception $e) {
-            return redirect()->route('task.index');
-        }
-
-        $task = TaskModel::where('id', $decrypted_id)->first();
-
-        if (!$task) {
-            return redirect()->route('task.index');
-        }
-
-        $data = [
-            'title' => 'Excluir Tarefa',
-            'task' => $task,
-        ];
-
-        return $data;
-    }
-
-    /**
-     * confirm delete a task
-     */
-    public function deleteTaskConfirm($id)
     {
         try {
             $decrypted_id = Crypt::decrypt($id);
@@ -208,53 +140,63 @@ class Task extends Controller
         TaskModel::where('id', $decrypted_id)
             ->update(['deleted_at' => date('Y-m-d H:i:s')]);
 
-        return redirect()->route('task.index');
+        return back();
 
     }
 
     /**
      * search and sort
      */
-    public function searchSubmit(Request $request)
+    public function searchTask($search = null)
     {
-        // get data from form
-        $search = $request->input('text_search');
+        $tasks = [];
 
         // get tasks
-        // $model = new TaskModel();
-
-        if ($search == '') {
-            $tasks = TaskModel::where('id_user', session('id'))
-                ->whereNull('deleted_at')
-                ->get();
-        } else {
-
-            $tasks = TaskModel::where('id_user', session('id'))
+        if ($search) {
+            $allTasks = TaskModel::where('id_user', session('id'))
                 ->where(function ($query) use ($search) {
                     $query->where('task_name', 'like', '%' . $search . '%')
                         ->orWhere('task_description', 'like', '%' . $search . '%');
                 })->whereNull('deleted_at')
                 ->get();
 
+            foreach ($allTasks as $task) {
+
+                // dd($task);
+
+                $tasks[] = [
+                    'task_id' => $task['id'],
+                    'task_name' => $task['task_name'],
+                    'task_description' => $task['task_description'],
+                    'task_status' => Task::statusName($task['task_status']),
+                    'task_status_style' => Task::statusBadge($task['task_status']),
+                ];
+            }
+
+        } else {
+            $tasks = Task::getTasks('all');
         }
 
-        session()->put('tasks', $tasks);
-        session()->put('search', $search);
+        $data = [
+            'title' => 'Minhas Tarefas',
+            'datatables' => false,
+            'tasks' => $tasks,
+        ];
 
-        return redirect()->route('main.index');
+        return view('pages.main.index', $data);
+
     }
 
     /**
      * get task from database
      */
-    private static function getTasks($status = null)
+    private static function getTasks($filter = 'all')
     {
         $tasks = [];
 
-        // check there is a search
-        if ($status != 'all') {
+        if ($filter != 'all') {
             $allTasks = TaskModel::where('id_user', session('id'))
-                ->where('task_status', $status)
+                ->where('task_status', $filter)
                 ->whereNull('deleted_at')
                 ->get();
 
@@ -300,6 +242,7 @@ class Task extends Controller
         if (key_exists($status, $status_collection)) {
             return $status_collection[$status];
         } else {
+            return $status_collection[$status];
             return 'Desconhecido';
         }
     }
