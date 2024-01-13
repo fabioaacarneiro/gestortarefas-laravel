@@ -6,17 +6,17 @@
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="taskEditTitle">{{ $form_title }}</h1>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-3">
                 <div class="col">
                     <form action="{{ route($route) }}" method="post">
                         @csrf
                         <input type="hidden" name="task_id" value="{{ Crypt::encrypt($task_id) }}">
                         {{-- task name --}}
-                        <div class="mb3">
+                        <div class="mb-3 form-floating">
+                            <input type="text" name="text_task_name" id="text_task_name" class="form-control mb-2"
+                                placeholder="Nome da tarefa" required value="{{ old('text_task_name', $task_name) }}">
                             <label for="text_task_name" class="form-label">Nome da
                                 Tarefa</label>
-                            <input type="text" name="text_task_name" id="text_task_name" class="form-control"
-                                placeholder="Nome da tarefa" required value="{{ old('text_task_name', $task_name) }}">
                             @error('text_task_name')
                                 <div class="text-warning">
                                     {{ $errors->get('text_task_name')[0] }}
@@ -25,9 +25,10 @@
                         </div>
 
                         {{-- task description --}}
-                        <div class="mb3">
-                            <label for="text_task_description" class="form-label mt-2">Descrição da Tarefa</label>
-                            <textarea name="text_task_description" id="text_task_description" rows="10" class="form-control mb-4" required>{{ old('text_task_description', $task_description) }}</textarea>
+                        <div class="mb-3 form-floating">
+                            <textarea name="text_task_description" id="text_task_description" style="height: 250px" class="form-control pt-4"
+                                placeholder="Conteúdo da tarefa" required>{{ old('text_task_description', $task_description) }}</textarea>
+                            <label for="text_task_description" class="form-label">Descrição da Tarefa</label>
                             @error('text_task_description')
                                 <div class="text-warning">
                                     {{ $errors->get('text_task_description')[0] }}</div>
@@ -35,18 +36,14 @@
                         </div>
 
                         {{-- task status --}}
-                        <div class="mb-3 d-flex flex-column">
-                            <label for="text_task_status" class="form-label">Status
-                                da tarefa</label>
-                            <select name="text_task_status" id="text_task_status" class="form-select flex-fill"
-                                required>
+                        <div>
+                            <select name="text_task_status" id="text_task_status" class="form-select" required>
                                 <option value="new"
                                     {{ old('text_task_status', $task_status) == 'Nova' ? 'selected' : '' }}>
                                     Nova</option>
                                 <option value="in_progress"
                                     {{ old('text_task_status', $task_status) == 'Em progresso' ? 'selected' : '' }}>
-                                    Em
-                                    progresso</option>
+                                    Em progresso</option>
                                 <option value="cancelled"
                                     {{ old('text_task_status', $task_status) == 'Cancelada' ? 'selected' : '' }}>
                                     Cancelada
@@ -63,13 +60,13 @@
                         </div>
 
                         {{-- cancel or submit --}}
-                        <div class="mb-3 text-center">
+                        <div class="mb-3text-center">
                             <hr>
                             {{-- <a href="{{ route('task.index') }} " class="btn btn-secondary px-5 m-1"><i
                                 class="bi bi-x-circle me-2"></i>Cancelar</a> --}}
-                            <button type="button" class="btn btn-secondary px-5 m-1"><i class="bi bi-floppy me-2"
-                                    data-bs-toggle></i>Cancelar</button>
-                            <button type="submit" class="btn btn-success px-5 m-1"><i
+                            <button type="button" class="btn btn-secondary px-2 me-2" data-bs-dismiss="modal"><i
+                                    class="bi bi-x-circle me-2"></i>Cancelar</button>
+                            <button type="submit" class="btn btn-success m-1 px-2 ms-2"><i
                                     class="bi bi-floppy me-2"></i>Guardar</button>
                         </div>
                     </form>

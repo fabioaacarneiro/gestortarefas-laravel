@@ -8,19 +8,19 @@
             <form action="{{ route('login.submit') }}" method="post">
                 @csrf
                 {{-- usurname --}}
-                <div class="mb-3">
-                    <label for="text_username" class="form-label">Usuário</label>
+                <div class="mb-3 form-floating">
                     <input type="text" name="text_username" id="text_username" class="form-control" required
                         placeholder="Usuário" value="{{ old('text_username') }}" />
+                    <label for="text_username" class="form-label">Usuário</label>
                     @error('text_username')
                         <div class="text-warning">{{ $errors->get('text_username')[0] }}</div>
                     @enderror
                 </div>
                 {{-- password --}}
-                <div class="mb-3">
-                    <label for="text_password" class="form-label">Senha</label>
+                <div class="mb-3 form-floating">
                     <input type="password" name="text_password" id="text_password" class="form-control" required
                         placeholder="Senha" value="{{ old('text_username') }}" />
+                    <label for="text_password" class="form-label">Senha</label>
                     @error('text_password')
                         <div class="text-warning">{{ $errors->get('text_password')[0] }}</div>
                     @enderror
