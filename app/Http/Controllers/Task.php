@@ -60,17 +60,12 @@ class Task extends Controller
                 ->with('task_error', 'Já existe uma tarefa com este nome');
         }
 
-        /**
-         * TODO - turn this create task solution better
-         */
-        $new_task = new TaskModel;
-
-        $new_task->id_user = session('id');
-        $new_task->task_name = $task_name;
-        $new_task->task_description = $task_description;
-        $new_task->task_status = $task_status;
-        $new_task->created_at = date('Y-m-d H:i:s');
-        $new_task->save();
+        TaskModel::create([
+            'id_user' => session('id'),
+            'task_name' => $task_name,
+            'task_status' => $task_status,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
 
         return redirect()->route('task.index');
     }
@@ -163,8 +158,6 @@ class Task extends Controller
 
             foreach ($allTasks as $task) {
 
-                // dd($task);
-
                 $tasks[] = [
                     'task_id' => $task['id'],
                     'task_name' => $task['task_name'],
@@ -175,7 +168,7 @@ class Task extends Controller
             }
 
         } else {
-            $tasks = Task::getTasks('all');
+            $tasks = Task::getTasks();
         }
 
         $data = [
@@ -202,9 +195,7 @@ class Task extends Controller
                 ->get();
 
         } else {
-            $allTasks = TaskModel::where('id_user', session('id'))
-                ->whereNull('deleted_at')
-                ->get();
+            $allTasks = TaskModel::all();
         }
 
         foreach ($allTasks as $task) {

@@ -3,7 +3,7 @@
     <div class="container-sm">
 
         <div class="row pb-3 justify-content-center bg-dark shadow">
-            <div class="col-auto mt-3">
+            <div class="col-auto col-sm mt-3">
                 <select name="filter" id="filter" class="form-select">
                     <option value="all" @php echo (!empty($filter) && $filter == 'all') ? 'selected' : '' @endphp>
                         Todos
@@ -24,8 +24,7 @@
             </div>
             <div class="col-4 me-2 mt-3">
                 <div class="row input-group">
-                    {{-- <div class=""> --}}
-                    <input type="text" name="text_search" id="text_search" class="col form-control"
+                    <input type="text" name="text_search" id="text_search" class="col-md form-control "
                         placeholder="Pesquisar">
                     <button type="submit" class="col-auto btn btn-outline-primary" onclick="searchTasks()"><i
                             class="bi bi-search"></i></button>
@@ -34,7 +33,7 @@
             <div class="col-auto mt-3">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new_task">
                     <i class="bi bi-plus-circle me-2"></i>
-                    Nova
+                    <span class="hidden-md">Nova</span>
                 </button>
 
                 @include('partials.task.form_task', [
