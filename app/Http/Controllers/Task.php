@@ -19,6 +19,7 @@ class Task extends Controller
             'title' => 'Minhas Tarefas',
             'datatables' => false,
             'tasks' => Task::getTasks($filter),
+            'filter' => $filter,
         ];
 
         return view('pages.main.index', $data);
@@ -242,7 +243,6 @@ class Task extends Controller
         if (key_exists($status, $status_collection)) {
             return $status_collection[$status];
         } else {
-            return $status_collection[$status];
             return 'Desconhecido';
         }
     }

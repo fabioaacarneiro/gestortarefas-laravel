@@ -155,7 +155,7 @@
 
     const filter = document.querySelector('#filter')
 
-    filter.addEventListener('click', () => {
+    filter.addEventListener('change', () => {
         window.location.href = `/${filter.value}`
     })
 
