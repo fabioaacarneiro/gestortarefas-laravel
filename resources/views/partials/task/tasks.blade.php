@@ -76,11 +76,11 @@
                                 </td>
                                 <td class="text-center align-middle">
 
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-secondary m-2" data-bs-toggle="modal"
                                         data-bs-target="#edit_task-{{ $task['task_id'] }}"><i
                                             class="bi bi-pencil"></i></button>
 
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-danger m-2" data-bs-toggle="modal"
                                         data-bs-target="#modalDeleteConfirm-{{ $task['task_id'] }}"><i
                                             class="bi bi-trash"></i></button>
                                 </td>

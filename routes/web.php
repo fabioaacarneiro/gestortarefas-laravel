@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Login;
+use App\Http\Controllers\SignUp;
 use App\Http\Controllers\Task;
 use Illuminate\Support\Facades\Route;
 
@@ -15,35 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-// out app
-Route::middleware('CheckLogout')->group(function () {
-
-    // login index
-    Route::get('/login', [Login::class, 'login'])->name('login');
-
-    // login submit
-    Route::post('/login_submit', [Login::class, 'loginSubmit'])->name('login.submit');
+Route::controller(SignUp::class)->group(function () {
+    Route::get('/signup', 'signUp')->name('signup');
+    Route::post('/signup', 'signUpSubmit')->name('signup.submit');
 });
 
-// in app
-Route::middleware('CheckLogin')->group(function () {
+Route::controller(Login::class)->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login_submit', 'loginSubmit')->name('login.submit');
+    Route::get('/logout', 'logout')->name('logout.submit');
+})->middleware('auth');
 
-    // logout user (this route needs to be the first route declaration)
-    Route::get('/logout', [Login::class, 'logout'])->name('logout.submit');
-
-    // task - new
-    Route::post('/newTask', [Task::class, 'newTask'])->name('task.new');
-
-    // task - edit
-    Route::post('/editTask', [Task::class, 'editTask'])->name('task.edit');
-
-    // task - delete
-    Route::get('/deleteTask/{id}', [Task::class, 'deleteTask'])->name('task.delete');
-
-    // task - search
-    Route::get('/search/{serach?}', [Task::class, 'searchTask'])->name('task.search');
-
-    // task - index
-    Route::get('/{filter?}', [Task::class, 'index'])->name('task.index');
-
-});
+Route::controller(Task::class)->group(function () {
+    Route::post('/newTask', 'newTask')->name('task.new');
+    Route::post('/editTask', 'editTask')->name('task.edit');
+    Route::get('/deleteTask/{id}', 'deleteTask')->name('task.delete');
+    Route::get('/search/{serach?}', 'searchTask')->name('task.search');
+    Route::get('/{filter?}', 'index')->name('task.index');
+})->middleware('auth');

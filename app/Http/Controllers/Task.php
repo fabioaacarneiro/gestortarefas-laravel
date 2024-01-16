@@ -63,6 +63,7 @@ class Task extends Controller
         TaskModel::create([
             'id_user' => session('id'),
             'task_name' => $task_name,
+            'task_description' => $task_description,
             'task_status' => $task_status,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
@@ -134,7 +135,7 @@ class Task extends Controller
         }
 
         TaskModel::where('id', $decrypted_id)
-            ->update(['deleted_at' => date('Y-m-d H:i:s')]);
+            ->delete();
 
         return back();
 
