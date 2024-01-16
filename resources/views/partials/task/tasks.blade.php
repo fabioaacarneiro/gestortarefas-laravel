@@ -3,7 +3,7 @@
     <div class="container-sm">
 
         <div class="row pb-3 justify-content-center bg-dark shadow">
-            <div class="col-auto col-sm mt-3">
+            <div class="col-auto col-md mt-3">
                 <select name="filter" id="filter" class="form-select">
                     <option value="all" @php echo (!empty($filter) && $filter == 'all') ? 'selected' : '' @endphp>
                         Todos
@@ -22,7 +22,7 @@
                     </option>
                 </select>
             </div>
-            <div class="col-4 me-2 mt-3">
+            <div class="col-4 col-sm me-2 mt-3">
                 <div class="row input-group">
                     <input type="text" name="text_search" id="text_search" class="col-md form-control "
                         placeholder="Pesquisar">
@@ -61,7 +61,7 @@
                         <tr>
                             <th class="w-75 ">Tarefas</th>
                             <th class="w-20 text-center">Status</th>
-                            <th></th>
+                            <th class="text-center">Opções</th>
                         </tr>
                     </thead>
                     <tbody class="text-light">
@@ -97,16 +97,20 @@
                                         <div class="modal-body">
                                             <h4 class="text-info">{{ $task['task_name'] }}</h4>
                                             <p class="opacity-50">{{ $task['task_description'] }}</p>
-                                            <p class="my-5 text-center">Deseja excluir esta tarefa?</p>
+                                            <p class="mt-5 text-center">Deseja excluir esta tarefa?</p>
 
-                                            <div class="mt-3 text-center">
+                                            <div class="row mt-3 text-center">
                                                 <hr>
-                                                <a href="{{ route('task.index') }}"
-                                                    class="btn btn-secondary px-5 m-1"><i class="bi bi-cancel me-2"
-                                                        data-bs-dismiss="modal"></i>Cancelar</a>
-                                                <a href="{{ route('task.delete', ['id' => Crypt::encrypt($task['task_id'])]) }}"
-                                                    class="btn btn-danger m-1"><i class="bi bi-thrash me-2"
-                                                        data-bs-dismiss="modal"></i>Confirmar</a>
+                                                <div class="col">
+                                                    <a href="{{ route('task.index') }}" class="btn btn-secondary"><i
+                                                            class="bi bi-cancel me-2"
+                                                            data-bs-dismiss="modal"></i>Cancelar</a>
+                                                </div>
+                                                <div class="col">
+                                                    <a href="{{ route('task.delete', ['id' => Crypt::encrypt($task['task_id'])]) }}"
+                                                        class="btn btn-danger"><i class="bi bi-thrash me-2"
+                                                            data-bs-dismiss="modal"></i>Confirmar</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -15,6 +15,10 @@ class Task extends Controller
     public function index($filter = 'all')
     {
 
+        if (!session('username')) {
+            return redirect()->route('login');
+        }
+
         $data = [
             'title' => 'Minhas Tarefas',
             'datatables' => false,
@@ -196,7 +200,7 @@ class Task extends Controller
                 ->get();
 
         } else {
-            $allTasks = TaskModel::all();
+            $allTasks = TaskModel::where('id_user', session('id'))->get();
         }
 
         foreach ($allTasks as $task) {

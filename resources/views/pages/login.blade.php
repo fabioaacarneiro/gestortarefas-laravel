@@ -3,36 +3,40 @@
 @section('content')
     <div class="login-wrapper card">
         <div class="login-box p-5 rounded-4">
-            <h3 class="text-center card-title">Login</h3>
+            <h3 class="text-center card-title">Bem vindo - GTask</h3>
             <hr />
             <form action="{{ route('login.submit') }}" method="post">
                 @csrf
                 {{-- usurname --}}
                 <div class="mb-3 form-floating">
-                    <input type="text" name="text_username" id="text_username" class="form-control" required
-                        placeholder="Usuário" value="{{ old('text_username') }}" />
-                    <label for="text_username" class="form-label">Usuário</label>
-                    @error('text_username')
-                        <div class="text-warning">{{ $errors->get('text_username')[0] }}</div>
+                    <input type="text" name="username" id="username" class="form-control" required placeholder="Usuário"
+                        value="{{ old('username') }}" />
+                    <label for="username" class="form-label">Usuário</label>
+                    @error('username')
+                        <div class="text-warning">{{ $errors->get('username')[0] }}</div>
                     @enderror
                 </div>
                 {{-- password --}}
                 <div class="mb-3 form-floating">
-                    <input type="password" name="text_password" id="text_password" class="form-control" required
-                        placeholder="Senha" value="{{ old('text_username') }}" />
-                    <label for="text_password" class="form-label">Senha</label>
-                    @error('text_password')
-                        <div class="text-warning">{{ $errors->get('text_password')[0] }}</div>
+                    <input type="password" name="password" id="password" class="form-control" required placeholder="Senha"
+                        value="{{ old('username') }}" />
+                    <label for="password" class="form-label">Senha</label>
+                    @error('password')
+                        <div class="text-warning">{{ $errors->get('password')[0] }}</div>
                     @enderror
                 </div>
                 {{-- submit button --}}
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-dark w-100">Logar</button>
+                <div class="d-grid my-2">
+                    <button type="submit" class="btn btn-outline-success">Logar</button>
+                </div>
+                <div class="d-grid">
+                    <a class="btn btn-outline-info " href="{{ route('signup') }}">Criar uma
+                        conta</a>
                 </div>
 
                 {{-- erro throws --}}
                 @if (session()->has('login_error'))
-                    <div class="alert alert-danger text-center p-1">{{ session()->get('login_error') }}</div>
+                    <div class="alert alert-danger text-center mt-2 p-1">{{ session()->get('login_error') }}</div>
                 @endif
 
             </form>

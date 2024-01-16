@@ -25,34 +25,31 @@ class Login extends Controller
     {
         // form validation
         $request->validate([
-            'text_username' => 'required|min:3',
-            'text_password' => 'required|min:3',
+            'username' => 'required|min:3',
+            'password' => 'required|min:3',
         ], [
-            'text_username.required' => 'O campo é obrigatório.',
-            'text_username.min' => 'O campo deve ter no mínimo :min caracteres.',
-            'text_password.required' => 'O campo é obrigatório',
-            'text_password.min' => 'O campo deve ter no mínimo :min caracteres.',
+            'username.required' => 'O campo é obrigatório.',
+            'username.min' => 'O campo deve ter no mínimo :min caracteres.',
+            'password.required' => 'O campo é obrigatório',
+            'password.min' => 'O campo deve ter no mínimo :min caracteres.',
         ]);
 
         // get form data
-        $username = $request->input('text_username');
-        $password = $request->input('text_password');
+        $username = $request->input('username');
+        $password = $request->input('password');
 
         // check this user on database
         $user = UserModel::where('username', $username)
             ->whereNull('deleted_at')
+            ->get()
             ->first();
 
-        if ($user) {
-            // check password is correct
-
+        if ($user->username) {
             if (password_verify($password, $user->password)) {
-                $session_data = [
+                session()->put([
                     'id' => $user->id,
                     'username' => $user->username,
-                ];
-
-                session()->put($session_data);
+                ]);
                 return redirect()->route('task.index');
             }
         }
@@ -67,7 +64,7 @@ class Login extends Controller
      */
     public function logout()
     {
-        session()->forget('username');
+        session()->flush();
         return redirect()->route('login');
     }
 
