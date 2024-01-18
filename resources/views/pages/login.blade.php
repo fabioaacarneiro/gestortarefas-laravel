@@ -2,18 +2,18 @@
 
 @section('content')
     <div class="login-wrapper card">
-        <div class="login-box p-5 rounded-4">
+        <div class="login-box p-5 rounded-4  shadow shadow-lg">
             <h3 class="text-center card-title">Bem vindo - GTask</h3>
             <hr />
             <form action="{{ route('login.submit') }}" method="post">
                 @csrf
                 {{-- usurname --}}
                 <div class="mb-3 form-floating">
-                    <input type="text" name="username" id="username" class="form-control" required placeholder="Usuário"
-                        value="{{ old('username') }}" />
-                    <label for="username" class="form-label">Usuário</label>
-                    @error('username')
-                        <div class="text-warning">{{ $errors->get('username')[0] }}</div>
+                    <input type="text" name="email" id="email" class="form-control" required placeholder="Usuário"
+                        value="{{ old('email') }}" />
+                    <label for="email" class="form-label">Usuário</label>
+                    @error('email')
+                        <div class="text-warning">{{ $errors->get('email')[0] }}</div>
                     @enderror
                 </div>
                 {{-- password --}}

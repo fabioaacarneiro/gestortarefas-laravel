@@ -6,7 +6,7 @@
 }
 
 .login-box {
-    background: linear-gradient(0deg, #5e0d77, #4774a8);
+    background: linear-gradient(0deg, #2e2e2e, #999999);
     width: 450px;
 }
 
@@ -16,7 +16,7 @@
 }
 
 .task-title {
-    font-size: 20px;
+    font-size: 1.1em;
     font-weight: bold;
     color: lightskyblue;
 }

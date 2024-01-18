@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id()->autoIncrement()->unsigned();
-            $table->string('username', 50)->nullable(true)->default(null);
+            $table->string('name', 50)->nullable(true)->default(null);
+            $table->string('email', 50)->nullable(true)->default(null);
             $table->string('password', 255)->nullable(true)->default(null);
             $table->dateTime('created_at')->nullable(true)->default(null);
             $table->dateTime('updated_at')->nullable(true)->default(null);

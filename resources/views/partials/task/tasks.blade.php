@@ -1,10 +1,20 @@
 <div class="container">
 
-    <div class="container-sm">
+    <div class="container-fluid justify-content-center mt-5">
 
-        <div class="row pb-3 justify-content-center bg-dark shadow">
-            <div class="col-auto col-md mt-3">
-                <select name="filter" id="filter" class="form-select">
+        <div class="row p-3 bg-dark shadow">
+
+            <div class="col-12 col-lg-5 col-md-6 col-sm-6">
+                <div class="row input-group justify-content-center ms-0 my-2 ">
+                    <input type="text" name="text_search" id="text_search" class="col-md form-control "
+                        placeholder="Pesquisar">
+                    <button type="submit" class="col-auto btn btn-outline-primary" onclick="searchTasks()"><i
+                            class="bi bi-search"></i></button>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-5 col-md-3 col-sm-3">
+                <select name="filter" id="filter" class="form-select my-2">
                     <option value="all" @php echo (!empty($filter) && $filter == 'all') ? 'selected' : '' @endphp>
                         Todos
                     </option>
@@ -22,17 +32,11 @@
                     </option>
                 </select>
             </div>
-            <div class="col-4 col-sm me-2 mt-3">
-                <div class="row input-group">
-                    <input type="text" name="text_search" id="text_search" class="col-md form-control "
-                        placeholder="Pesquisar">
-                    <button type="submit" class="col-auto btn btn-outline-primary" onclick="searchTasks()"><i
-                            class="bi bi-search"></i></button>
-                </div>
-            </div>
-            <div class="col-auto mt-3">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new_task">
-                    <i class="bi bi-plus-circle me-2"></i>
+
+            <div class="col-12 col-lg-2 col-md-3 col-sm-3">
+                <button type="button" class="btn btn-outline-info my-2 w-100" data-bs-toggle="modal"
+                    data-bs-target="#new_task">
+                    <i class="bi bi-plus-circle"></i>
                     <span class="hidden-md">Nova</span>
                 </button>
 
@@ -56,31 +60,34 @@
     <div class="row">
         <div class="col">
             @if (count($tasks) != 0)
-                <table class="table table-dark table-striped table-bordered w-100" id="table_tasks">
-                    <thead class="table-primary">
+                <table class="table table-dark table-striped-columns w-100 shadow shadow-md" id="table_tasks">
+                    <thead class="table-outline-dark">
                         <tr>
-                            <th class="w-75 ">Tarefas</th>
+                            <th class="w-75 text-center">Tarefas</th>
                             <th class="w-20 text-center">Status</th>
                             <th class="text-center">Opções</th>
                         </tr>
                     </thead>
-                    <tbody class="text-light">
+                    <tbody class="text-light table-group-divider">
                         @foreach ($tasks as $task)
                             <tr>
                                 <td>
-                                    <span class="task-title">{{ $task['task_name'] }}</span>
-                                    <br><small class="opacity-50">{{ $task['task_description'] }}</small>
+                                    <p class="task-title ms-2 mt-2 mb-0">{{ $task['task_name'] }}
+                                    </p>
+                                    <p class="opacity-75 ms-2">{{ $task['task_description'] }}</p>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <span class="{{ $task['task_status_style'] }}">{{ $task['task_status'] }}</span>
+                                    <span
+                                        class="{{ $task['task_status_style'] }} fs-6 shadow shadow-md">{{ $task['task_status'] }}</span>
                                 </td>
                                 <td class="text-center align-middle">
 
-                                    <button type="button" class="btn btn-secondary m-2" data-bs-toggle="modal"
-                                        data-bs-target="#edit_task-{{ $task['task_id'] }}"><i
+                                    <button type="button" class="btn btn-secondary m-2 shadow shadow-md"
+                                        data-bs-toggle="modal" data-bs-target="#edit_task-{{ $task['task_id'] }}"><i
                                             class="bi bi-pencil"></i></button>
 
-                                    <button type="button" class="btn btn-danger m-2" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-danger m-2 shadow shadow-md"
+                                        data-bs-toggle="modal"
                                         data-bs-target="#modalDeleteConfirm-{{ $task['task_id'] }}"><i
                                             class="bi bi-trash"></i></button>
                                 </td>
@@ -102,13 +109,15 @@
                                             <div class="row mt-3 text-center">
                                                 <hr>
                                                 <div class="col">
-                                                    <a href="{{ route('task.index') }}" class="btn btn-secondary"><i
+                                                    <a href="{{ route('task.index') }}"
+                                                        class="btn btn-secondary font shadow shadow-md"><i
                                                             class="bi bi-cancel me-2"
                                                             data-bs-dismiss="modal"></i>Cancelar</a>
                                                 </div>
                                                 <div class="col">
                                                     <a href="{{ route('task.delete', ['id' => Crypt::encrypt($task['task_id'])]) }}"
-                                                        class="btn btn-danger"><i class="bi bi-thrash me-2"
+                                                        class="btn btn-danger shadow shadow-md"><i
+                                                            class="bi bi-thrash me-2"
                                                             data-bs-dismiss="modal"></i>Confirmar</a>
                                                 </div>
                                             </div>

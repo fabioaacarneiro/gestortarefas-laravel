@@ -5,17 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\TaskModel;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class Task extends Controller
 {
+
+    /**
+     * TODO: - implementar campo "obervação" para adicionar nas tarefas.
+     */
+
     /**
      * task index
      */
     public function index($filter = 'all')
     {
-
-        if (!session('username')) {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -24,6 +29,7 @@ class Task extends Controller
             'datatables' => false,
             'tasks' => Task::getTasks($filter),
             'filter' => $filter,
+            'name' => Auth::user()->name,
         ];
 
         return view('pages.main.index', $data);
@@ -246,8 +252,8 @@ class Task extends Controller
     private static function statusBadge($status)
     {
         $status_collection = [
-            'new' => 'badge bg-primary',
-            'in_progress' => 'badge bg-success',
+            'new' => 'badge bg-success',
+            'in_progress' => 'badge bg-info',
             'cancelled' => 'badge bg-danger',
             'completed' => 'badge bg-secondary',
         ];

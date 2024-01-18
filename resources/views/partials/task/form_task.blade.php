@@ -63,11 +63,12 @@
                         <hr class="mt-5">
                         {{-- <a href="{{ route('task.index') }} " class="btn btn-secondary px-5 m-1"><i
                                 class="bi bi-x-circle me-2"></i>Cancelar</a> --}}
-                        <button type="button" class="col btn btn-secondary px-2 m-3" data-bs-dismiss="modal">
+                        <button type="button" class="col btn btn-secondary px-2 m-3 shadow shadow-md"
+                            data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-2"></i>
                             Cancelar
                         </button>
-                        <button type="submit" class="col btn btn-success px-2 m-3">
+                        <button type="submit" class="col btn btn-success px-2 m-3 shadow shadow-md">
                             <i class="bi bi-floppy me-2"></i>
                             Guardar
                         </button>
