@@ -168,7 +168,7 @@
     const filter = document.querySelector('#filter')
 
     filter.addEventListener('change', () => {
-        window.location.href = `/${filter.value}`
+        window.location.href = `/tasks/${filter.value}`
     })
 
     const searchTasks = () => {
