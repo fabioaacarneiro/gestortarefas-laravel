@@ -15,22 +15,11 @@ class UsersSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'naem' => 'user1',
+                'name' => 'user1',
                 'email' => 'user1@email.com',
                 'password' => Hash::make('user1'),
                 'created_at' => date('Y-m-d H:i:s'),
-            ],
-            [
-                'naem' => 'user2',
-                'email' => 'user2@email.com',
-                'password' => Hash::make('user2'),
-                'created_at' => date('Y-m-d H:i:s'),
-            ],
-            [
-                'naem' => 'user3',
-                'email' => 'user3@email.com',
-                'password' => Hash::make('user3'),
-                'created_at' => date('Y-m-d H:i:s'),
+                'tasklist_id' => 1,
             ],
         ]);
     }

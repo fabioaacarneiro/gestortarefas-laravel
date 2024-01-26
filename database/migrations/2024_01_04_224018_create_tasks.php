@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             // $table->bigInteger('id_user');
-            $table->string('task_name', 200);
-            $table->string('task_description', 1000);
-            $table->string('task_status', 20);
+            $table->string('name', 200);
+            $table->string('description', 1000);
+            $table->string('status', 20);
             $table->timestamps();
+            $table->dateTime('deleted_at')->nullable(true)->default(null);
         });
     }
 

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->timestamps();
+            $table->dateTime('deleted_at')->nullable(true)->default(null);
         });
     }
 

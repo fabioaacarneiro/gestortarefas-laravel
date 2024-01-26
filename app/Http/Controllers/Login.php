@@ -42,7 +42,7 @@ class Login extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('task.index');
+            return redirect()->route('dashboard');
         }
 
         // invalid login

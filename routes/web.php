@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Login;
 use App\Http\Controllers\SignUp;
 use App\Http\Controllers\Task;
@@ -21,6 +22,10 @@ Route::controller(SignUp::class)->group(function () {
     Route::post('/signup', 'signUpSubmit')->name('signup.submit');
 });
 
+Route::controller(Dashboard::class)->group(function () {
+    Route::get('/lists', 'index')->name('dashboard');
+})->middleware('auth');
+
 Route::controller(Login::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'loginSubmit')->name('login.submit');
@@ -34,6 +39,6 @@ Route::controller(Task::class)->group(function () {
     Route::get('/delete-task/{id}', 'deleteTask')->name('task.delete');
     Route::get('/search/{search?}', 'searchTask')->name('task.search');
     Route::get('/tasks/{filter?}', 'index')->name('task.index');
-    Route::get('/', 'index')->name('task.index');
+    // Route::get('/', 'index')->name('task.index');
 
 })->middleware('auth');
