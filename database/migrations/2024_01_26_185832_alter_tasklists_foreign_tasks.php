@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
-            // $table->bigInteger('id_user');
-            $table->string('task_name', 200);
-            $table->string('task_description', 1000);
-            $table->string('task_status', 20);
-            $table->timestamps();
+        Schema::table('tasklists', function (Blueprint $table) {
+            $table->unsignedBigInteger('task_id');
+            $table->foreign('task_id')->references('id')->on('tasks');
         });
     }
 
@@ -26,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::table('tasklists', function (Blueprint $table) {
+            $table->dropColumn('task_id');
+        });
     }
 };
