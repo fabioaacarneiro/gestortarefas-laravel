@@ -173,11 +173,11 @@
     const filter = document.querySelector('#filter')
 
     filter.addEventListener('change', () => {
-        window.location.href = `/tasks/${filter.value}`
+        window.location.href = `/tasklist/{{ $tasklist_id }}/tasks/${filter.value}`
     })
 
     const searchTasks = () => {
         const inputSearch = document.querySelector('#text_search')
-        window.location.href = `/search/${inputSearch.value}`
+        window.location.href = `/tasklist/{{ $tasklist_id }}/search/${inputSearch.value}`
     }
 </script>
