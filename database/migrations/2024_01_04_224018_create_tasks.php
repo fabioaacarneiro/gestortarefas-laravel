@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            // $table->bigInteger('id_user');
+            $table->bigInteger('tasklist_id')->nullable();
+            $table->bigInteger('user_id')->nullable();
             $table->string('name', 200);
             $table->string('description', 1000);
             $table->string('status', 20);
             $table->timestamps();
-            $table->dateTime('deleted_at')->nullable(true)->default(null);
+            $table->dateTime('deleted_at')->nullable()->default(null);
         });
     }
 

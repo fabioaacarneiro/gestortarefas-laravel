@@ -18,7 +18,7 @@ class Task extends Controller
     /**
      * task index
      */
-    public function index($filter = 'all')
+    public function index($id, $filter = 'all')
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -27,7 +27,7 @@ class Task extends Controller
         $data = [
             'title' => 'Minhas Tarefas',
             'datatables' => false,
-            'tasks' => Task::getTasks($filter),
+            'tasks' => Task::getTasks($id, $filter),
             'filter' => $filter,
             'name' => Auth::user()->name,
         ];
@@ -195,18 +195,22 @@ class Task extends Controller
     /**
      * get task from database
      */
-    private static function getTasks($filter = 'all')
+    private static function getTasks($id = null, $filter = 'all')
     {
         $tasks = [];
 
-        if ($filter != 'all') {
-            $allTasks = TaskModel::where('id_user', session('id'))
+        if ($filter != 'all' && $id != null) {
+            $allTasks = TaskModel::where('user_id', Auth::user()->id)
+                ->where('tasklist_id', $id)
                 ->where('task_status', $filter)
-                ->whereNull('deleted_at')
+            // ->whereNull('deleted_at')
                 ->get();
 
         } else {
-            $allTasks = TaskModel::where('id_user', session('id'))->get();
+            $allTasks = TaskModel::where('user_id', Auth::user()->id)
+                ->where('tasklist_id', $id)
+            // ->whereNull('deleted_at')
+                ->get();
         }
 
         foreach ($allTasks as $task) {
@@ -217,10 +221,11 @@ class Task extends Controller
 
             $tasks[] = [
                 'task_id' => $task->id,
-                'task_name' => $task->task_name,
-                'task_description' => $task->task_description,
-                'task_status' => Task::statusName($task->task_status),
-                'task_status_style' => Task::statusBadge($task->task_status),
+                'task_name' => $task->name,
+                'task_description' => $task->description,
+                'task_status' => Task::statusName($task->status),
+                'task_status_style' => Task::statusBadge($task->status),
+                'tasklist_id' => $task->tasklist_id,
                 // 'task_actions' => $link_edit . $link_delete,
             ];
         }

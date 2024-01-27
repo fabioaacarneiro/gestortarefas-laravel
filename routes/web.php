@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Login;
 use App\Http\Controllers\SignUp;
 use App\Http\Controllers\Task;
+use App\Http\Controllers\Tasklist;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,10 +22,6 @@ Route::controller(SignUp::class)->group(function () {
     Route::post('/signup', 'signUpSubmit')->name('signup.submit');
 });
 
-Route::controller(Dashboard::class)->group(function () {
-    Route::get('/lists', 'index')->name('dashboard');
-})->middleware('auth');
-
 Route::controller(Login::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'loginSubmit')->name('login.submit');
@@ -33,12 +29,19 @@ Route::controller(Login::class)->group(function () {
     Route::post('/logout', 'logoutSubmit')->name('logout.submit');
 });
 
+Route::controller(Tasklist::class)->group(function () {
+    Route::get('/tasklist', 'lists')->name('tasklist');
+    Route::post('/tasklist/new-list', 'storeTasklist')->name('tasklist.new');
+    Route::post('/tasklist/edit-list', 'editTasklist')->name('tasklist.edit');
+    Route::get('/tasklist/delete-list/{id}', 'deleteTasklist')->name('tasklist.delete');
+    Route::get('/', 'index')->name('tasklist.index');
+})->middleware('auth');
+
 Route::controller(Task::class)->group(function () {
     Route::post('/new-task', 'newTask')->name('task.new');
     Route::post('/edit-task', 'editTask')->name('task.edit');
     Route::get('/delete-task/{id}', 'deleteTask')->name('task.delete');
     Route::get('/search/{search?}', 'searchTask')->name('task.search');
-    Route::get('/tasks/{filter?}', 'index')->name('task.index');
-    // Route::get('/', 'index')->name('task.index');
+    Route::get('/tasklist/{task_id}/tasks/{filter?}', 'index')->name('task.index');
 
 })->middleware('auth');

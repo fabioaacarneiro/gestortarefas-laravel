@@ -13,6 +13,7 @@ class TaskModel extends Model
 
     protected $fillable = [
         'id',
+        'tasklist_id',
         'name',
         'description',
         'status',
@@ -21,4 +22,9 @@ class TaskModel extends Model
         'deleted_at',
     ];
     protected $table = 'tasks';
+
+    public function tasklists()
+    {
+        return $this->belongsTo(TasklistModel::class);
+    }
 }

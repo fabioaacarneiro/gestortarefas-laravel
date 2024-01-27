@@ -15,7 +15,7 @@ class Login extends Controller
     {
 
         if (Auth::check()) {
-            return redirect()->route('task.index');
+            return redirect()->route('tasklist');
         }
 
         $data = [
@@ -42,7 +42,7 @@ class Login extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard');
+            return redirect()->route('tasklist');
         }
 
         // invalid login

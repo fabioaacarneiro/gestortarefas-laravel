@@ -20,6 +20,7 @@ class UserModel extends Authenticatable
         'created_at',
         'updated_at',
         'deleted_at',
+        'tasklist_id',
     ];
 
     protected $table = 'users';
@@ -43,4 +44,9 @@ class UserModel extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function tasklists()
+    {
+        return $this->hasMany(TasklistModel::class);
+    }
 }

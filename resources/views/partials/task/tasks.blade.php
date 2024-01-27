@@ -109,7 +109,7 @@
                                             <div class="row mt-3 text-center">
                                                 <hr>
                                                 <div class="col">
-                                                    <a href="{{ route('task.index') }}"
+                                                    <a href="{{ route('task.index', $task['tasklist_id']) }}"
                                                         class="btn btn-secondary font shadow shadow-md"><i
                                                             class="bi bi-cancel me-2"
                                                             data-bs-dismiss="modal"></i>Cancelar</a>

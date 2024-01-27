@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('tasklists', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id')->nullable();
             $table->string('name', 100);
+            $table->string('description', 280);
             $table->timestamps();
-            $table->dateTime('deleted_at')->nullable(true)->default(null);
+            $table->dateTime('deleted_at')->nullable()->default(null);
         });
     }
 

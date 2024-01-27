@@ -13,7 +13,7 @@
             <div class="col col-auto">
                 <form action="{{ route('logout.submit') }}" method="post">
                     @csrf
-                    <button type="submit" class="btn btn-outline-danger"><i
+                    <button type="submit" class="btn btn-outline-danger my-3"><i
                             class="bi bi-box-arrow-right">Sair</i></button>
                 </form>
             </div>
