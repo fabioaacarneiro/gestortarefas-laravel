@@ -39,7 +39,7 @@ Route::controller(Tasklist::class)->group(function () {
 
 Route::controller(Task::class)->group(function () {
     Route::post('/tasklist/{tasklist_id}/new-task', 'newTask')->name('task.new');
-    Route::post('/edit-task', 'editTask')->name('task.edit');
+    Route::post('/tasklist/{tasklist_id}/edit-task', 'editTask')->name('task.edit');
     Route::get('/delete-task/{id}', 'deleteTask')->name('task.delete');
     Route::get('/search/{search?}', 'searchTask')->name('task.search');
     Route::get('/tasklist/{tasklist_id}/tasks/{filter?}', 'index')->name('task.index');

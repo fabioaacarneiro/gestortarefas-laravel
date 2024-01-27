@@ -90,7 +90,7 @@ class Task extends Controller
      * edit a task
      */
 
-    public function editTask(Request $request)
+    public function editTask($tasklistId, Request $request)
     {
         $request->validate([
             'name' => 'required|min:3|max:200',
@@ -112,7 +112,7 @@ class Task extends Controller
         $status = $request->input('status');
 
         // check if there is another task with the same name and from the same user
-        $task = TaskModel::where('id_user', session('id'))
+        $task = TaskModel::where('tasklist_id', $tasklistId)
             ->where('name', $name)
             ->where('id', '!=', $id)
             ->whereNull('deleted_at')

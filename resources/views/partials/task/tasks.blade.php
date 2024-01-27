@@ -4,8 +4,8 @@
         <div class="col-12 col-lg-5 col-md-6 col-sm-6">
             <h4 class="text-info">{{ $tasklist_name }}</h4>
         </div>
-        <div class="row p-3 bg-dark shadow">
 
+        <div class="row p-3 bg-dark shadow">
 
             <div class="col-12 col-lg-5 col-md-6 col-sm-6">
                 <div class="row input-group justify-content-center ms-0 my-2 ">
@@ -134,6 +134,7 @@
                                 'route' => 'task.edit',
                                 'modal_id' => 'edit_task-' . $task['id'],
                                 'form_title' => 'Editar Tarefa',
+                                'tasklist_id' => $tasklist_id,
                                 'id' => $task['id'],
                                 'name' => $task['name'],
                                 'description' => $task['description'],
