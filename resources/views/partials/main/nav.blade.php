@@ -5,7 +5,7 @@
                 <a href="/" class="btn btn-dark">Início</a>
             </div>
             <div class="col col-sm p-3 text-end">
-                <span><i class="bi bi-person"></i>{{ $name }}</span>
+                <span><i class="bi bi-person"></i>{{ $user_name }}</span>
             </div>
             <div class="col col-auto">
                 <span class="opacity-50"><i class="bi bi-three-dots-vertical"></i></span>

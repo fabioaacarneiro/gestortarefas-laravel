@@ -25,7 +25,7 @@ class Tasklist extends Controller
         $data = [
             'title' => 'Lista de tarefas',
             'datatables' => false,
-            'name' => Auth::user()->name,
+            'user_name' => Auth::user()->name,
             'tasklists' => Tasklist::getLists(),
         ];
 

@@ -2,7 +2,7 @@
 
     <div class="container-fluid justify-content-center mt-5">
         <div class="col-12 col-lg-5 col-md-6 col-sm-6">
-            <h4 class="text-info">{{ $tasklist_name }}</h4>
+            <h4 class="text-info">{{ $user_name }}</h4>
         </div>
 
         <div class="row p-3 bg-dark shadow">
@@ -113,7 +113,7 @@
                                             <div class="row mt-3 text-center">
                                                 <hr>
                                                 <div class="col">
-                                                    <a href="{{ route('task.index', $task['tasklist_id']) }}"
+                                                    <a href="{{ route('task.index', $tasklist_id) }}"
                                                         class="btn btn-secondary font shadow shadow-md"><i
                                                             class="bi bi-cancel me-2"
                                                             data-bs-dismiss="modal"></i>Cancelar</a>

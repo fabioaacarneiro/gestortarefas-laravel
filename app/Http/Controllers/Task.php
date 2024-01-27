@@ -34,7 +34,7 @@ class Task extends Controller
             'user_id' => Auth::user()->id,
             'tasklist_id' => $tasklistId,
             'tasklist_name' => $tasklist->name,
-            'name' => Auth::user()->name,
+            'user_name' => Auth::user()->name,
         ];
 
         return view('pages.main.index', $data);
@@ -158,13 +158,13 @@ class Task extends Controller
     /**
      * search and sort
      */
-    public function searchTask($search = null)
+    public function searchTask($tasklistId, $search = null)
     {
         $tasks = [];
 
         // get tasks
         if ($search) {
-            $allTasks = TaskModel::where('user_id', session('id'))
+            $allTasks = TaskModel::where('tasklist_id', $tasklistId)
                 ->where(function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%')
                         ->orWhere('description', 'like', '%' . $search . '%');
@@ -183,12 +183,14 @@ class Task extends Controller
             }
 
         } else {
-            $tasks = Task::getTasks();
+            $tasks = Task::getTasks($tasklistId);
         }
 
         $data = [
             'title' => 'Minhas Tarefas',
             'datatables' => false,
+            'user_name' => Auth::user()->name,
+            'tasklist_id' => $tasklistId,
             'tasks' => $tasks,
         ];
 
