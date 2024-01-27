@@ -7,54 +7,51 @@
                 <h1 class="modal-title fs-5" id="taskEditTitle">{{ $form_title }}</h1>
             </div>
             <div class="modal-body p-3">
-                <form action="{{ route($route) }}" method="POST">
+                <form action="{{ route($route, $tasklist_id) }}" method="POST">
                     @csrf
-                    <input type="hidden" name="task_id" value="{{ $task_id }}">
+                    <input type="hidden" name="id" value="{{ $id }}">
                     {{-- task name --}}
                     <div class="mb-3 form-floating">
-                        <input type="text" name="text_task_name" id="text_task_name" class="form-control mb-2"
-                            placeholder="Nome da tarefa" required value="{{ old('text_task_name', $task_name) }}">
-                        <label for="text_task_name" class="form-label">Nome da
+                        <input type="text" name="name" id="name" class="form-control mb-2"
+                            placeholder="Nome da tarefa" required value="{{ old('name', $name) }}">
+                        <label for="name" class="form-label">Nome da
                             Tarefa</label>
-                        @error('text_task_name')
+                        @error('name')
                             <div class="text-warning">
-                                {{ $errors->get('text_task_name')[0] }}
+                                {{ $errors->get('name')[0] }}
                             </div>
                         @enderror
                     </div>
 
                     {{-- task description --}}
                     <div class="mb-3 form-floating">
-                        <textarea name="text_task_description" id="text_task_description" style="height: 250px" class="form-control pt-4"
-                            placeholder="Conteúdo da tarefa" required>{{ old('text_task_description', $task_description) }}</textarea>
-                        <label for="text_task_description" class="form-label">Descrição da Tarefa</label>
-                        @error('text_task_description')
-                            <div class="text-warning">{{ $errors->get('text_task_description')[0] }}</div>
+                        <textarea name="description" id="description" style="height: 250px" class="form-control pt-4"
+                            placeholder="Conteúdo da tarefa" required>{{ old('description', $description) }}</textarea>
+                        <label for="description" class="form-label">Descrição da Tarefa</label>
+                        @error('description')
+                            <div class="text-warning">{{ $errors->get('description')[0] }}</div>
                         @enderror
                     </div>
 
                     {{-- task status --}}
                     <div>
-                        <select name="text_task_status" id="text_task_status" class="form-select" required>
-                            <option value="new"
-                                {{ old('text_task_status', $task_status) == 'Nova' ? 'selected' : '' }}>
+                        <select name="status" id="status" class="form-select" required>
+                            <option value="new" {{ old('status', $status) == 'Nova' ? 'selected' : '' }}>
                                 Nova
                             </option>
                             <option value="in_progress"
-                                {{ old('text_task_status', $task_status) == 'Em progresso' ? 'selected' : '' }}>
+                                {{ old('status', $status) == 'Em progresso' ? 'selected' : '' }}>
                                 Em progresso
                             </option>
-                            <option value="cancelled"
-                                {{ old('text_task_status', $task_status) == 'Cancelada' ? 'selected' : '' }}>
+                            <option value="cancelled" {{ old('status', $status) == 'Cancelada' ? 'selected' : '' }}>
                                 Cancelada
                             </option>
-                            <option value="completed"
-                                {{ old('text_task_status', $task_status) == 'Concluída' ? 'selected' : '' }}>
+                            <option value="completed" {{ old('status', $status) == 'Concluída' ? 'selected' : '' }}>
                                 Concluída
                             </option>
                         </select>
-                        @error('text_task_status')
-                            <div class="text-warning">{{ $errors->get('text_task_status')[0] }}</div>
+                        @error('status')
+                            <div class="text-warning">{{ $errors->get('status')[0] }}</div>
                         @enderror
                     </div>
 

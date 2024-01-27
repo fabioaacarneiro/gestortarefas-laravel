@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TasklistModel;
 use App\Models\TaskModel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
 
 class Task extends Controller
 {
@@ -18,17 +18,22 @@ class Task extends Controller
     /**
      * task index
      */
-    public function index($id, $filter = 'all')
+    public function index($tasklistId, $filter = 'all')
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
+        $tasklist = TasklistModel::where('id', $tasklistId)->first();
+
         $data = [
             'title' => 'Minhas Tarefas',
             'datatables' => false,
-            'tasks' => Task::getTasks($id, $filter),
+            'tasks' => Task::getTasks($tasklistId, $filter),
             'filter' => $filter,
+            'user_id' => Auth::user()->id,
+            'tasklist_id' => $tasklistId,
+            'tasklist_name' => $tasklist->name,
             'name' => Auth::user()->name,
         ];
 
@@ -38,28 +43,28 @@ class Task extends Controller
     /**
      * submit a new task
      */
-    public function newTask(Request $request)
+    public function newTask($tasklistId, Request $request)
     {
         $request->validate([
-            'text_task_name' => 'required|min:3|max:200',
-            'text_task_description' => 'required|min:3|max:1000',
+            'name' => 'required|min:3|max:200',
+            'description' => 'required|min:3|max:1000',
         ], [
-            'text_task_name.required' => 'O campo é obrigatório.',
-            'text_task_name.min' => 'O campo deve ter no mínimo :min caracteres.',
-            'text_task_name.max' => 'O campo deve ter no máximo :max caracteres.',
-            'text_task_description.required' => 'O campo é obrigatório',
-            'text_task_description.min' => 'O campo deve ter no mínimo :min caracteres.',
-            'text_task_description.max' => 'O campo deve ter no máximo :max caracteres.',
+            'name.required' => 'O campo é obrigatório.',
+            'name.min' => 'O campo deve ter no mínimo :min caracteres.',
+            'name.max' => 'O campo deve ter no máximo :max caracteres.',
+            'description.required' => 'O campo é obrigatório',
+            'description.min' => 'O campo deve ter no mínimo :min caracteres.',
+            'description.max' => 'O campo deve ter no máximo :max caracteres.',
         ]);
 
         // get form data
-        $task_name = $request->input('text_task_name');
-        $task_description = $request->input('text_task_description');
-        $task_status = $request->input('text_task_status');
+        $name = $request->input('name');
+        $description = $request->input('description');
+        $status = $request->input('status');
 
         // check if there is already another task with same name for the same user
-        $task = TaskModel::where('id_user', session('id'))
-            ->where('task_name', $task_name)
+        $task = TaskModel::where('tasklist_id', $tasklistId)
+            ->where('name', $name)
             ->whereNull('deleted_at')
             ->first();
 
@@ -71,14 +76,14 @@ class Task extends Controller
         }
 
         TaskModel::create([
-            'id_user' => session('id'),
-            'task_name' => $task_name,
-            'task_description' => $task_description,
-            'task_status' => $task_status,
+            'tasklist_id' => $tasklistId,
+            'name' => $name,
+            'description' => $description,
+            'status' => $status,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
-        return redirect()->route('task.index');
+        return back();
     }
 
     /**
@@ -88,43 +93,43 @@ class Task extends Controller
     public function editTask(Request $request)
     {
         $request->validate([
-            'text_task_name' => 'required|min:3|max:200',
-            'text_task_description' => 'required|min:3|max:1000',
-            'text_task_status' => 'required',
+            'name' => 'required|min:3|max:200',
+            'description' => 'required|min:3|max:1000',
+            'status' => 'required',
         ], [
-            'text_task_name.required' => 'O campo é obrigatório.',
-            'text_task_name.min' => 'O campo deve ter no mínimo :min caracteres.',
-            'text_task_name.max' => 'O campo deve ter no máximo :max caracteres.',
-            'text_task_description.required' => 'O campo é obrigatório',
-            'text_task_description.min' => 'O campo deve ter no mínimo :min caracteres.',
-            'text_task_description.max' => 'O campo deve ter no máximo :max caracteres.',
-            'text_task_status.required' => 'O campo é obrigatório',
+            'name.required' => 'O campo é obrigatório.',
+            'name.min' => 'O campo deve ter no mínimo :min caracteres.',
+            'name.max' => 'O campo deve ter no máximo :max caracteres.',
+            'description.required' => 'O campo é obrigatório',
+            'description.min' => 'O campo deve ter no mínimo :min caracteres.',
+            'description.max' => 'O campo deve ter no máximo :max caracteres.',
+            'status.required' => 'O campo é obrigatório',
         ]);
 
-        $task_id = $request->task_id;
-        $task_name = $request->input('text_task_name');
-        $task_description = $request->input('text_task_description');
-        $task_status = $request->input('text_task_status');
+        $id = $request->id;
+        $name = $request->input('name');
+        $description = $request->input('description');
+        $status = $request->input('status');
 
         // check if there is another task with the same name and from the same user
         $task = TaskModel::where('id_user', session('id'))
-            ->where('task_name', $task_name)
-            ->where('id', '!=', $task_id)
+            ->where('name', $name)
+            ->where('id', '!=', $id)
             ->whereNull('deleted_at')
             ->first();
 
         if ($task) {
             return redirect()
-                ->route('task.edit', $task_id)
+                ->route('task.edit', $id)
                 ->with('task_error', 'Já existe outra tarefa com o mesmo nome.');
         }
 
         // update the task
-        TaskModel::where('id', $task_id)
+        TaskModel::where('id', $id)
             ->update([
-                'task_name' => $task_name,
-                'task_description' => $task_description,
-                'task_status' => $task_status,
+                'name' => $name,
+                'description' => $description,
+                'status' => $status,
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
@@ -138,14 +143,13 @@ class Task extends Controller
     public function deleteTask($id)
     {
         try {
-            $decrypted_id = Crypt::decrypt($id);
+            TaskModel::where('id', $id)
+            // ->where('tasklist_id', $tasklist_id)
+                ->delete();
 
         } catch (Exception $e) {
             return redirect()->route('task.index');
         }
-
-        TaskModel::where('id', $decrypted_id)
-            ->delete();
 
         return back();
 
@@ -160,21 +164,21 @@ class Task extends Controller
 
         // get tasks
         if ($search) {
-            $allTasks = TaskModel::where('id_user', session('id'))
+            $allTasks = TaskModel::where('user_id', session('id'))
                 ->where(function ($query) use ($search) {
-                    $query->where('task_name', 'like', '%' . $search . '%')
-                        ->orWhere('task_description', 'like', '%' . $search . '%');
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%');
                 })->whereNull('deleted_at')
                 ->get();
 
             foreach ($allTasks as $task) {
 
                 $tasks[] = [
-                    'task_id' => $task['id'],
-                    'task_name' => $task['task_name'],
-                    'task_description' => $task['task_description'],
-                    'task_status' => Task::statusName($task['task_status']),
-                    'task_status_style' => Task::statusBadge($task['task_status']),
+                    'id' => $task['id'],
+                    'name' => $task['name'],
+                    'description' => $task['description'],
+                    'status' => Task::statusName($task['status']),
+                    'status_style' => Task::statusBadge($task['status']),
                 ];
             }
 
@@ -198,17 +202,16 @@ class Task extends Controller
     private static function getTasks($id = null, $filter = 'all')
     {
         $tasks = [];
+        $userId = Auth::user()->id;
 
         if ($filter != 'all' && $id != null) {
-            $allTasks = TaskModel::where('user_id', Auth::user()->id)
-                ->where('tasklist_id', $id)
-                ->where('task_status', $filter)
+            $allTasks = TaskModel::where('tasklist_id', $id)
+                ->where('status', $filter)
             // ->whereNull('deleted_at')
                 ->get();
 
         } else {
-            $allTasks = TaskModel::where('user_id', Auth::user()->id)
-                ->where('tasklist_id', $id)
+            $allTasks = TaskModel::where('tasklist_id', $id)
             // ->whereNull('deleted_at')
                 ->get();
         }
@@ -220,12 +223,13 @@ class Task extends Controller
             // $link_delete = '<a href="' . route('task.delete', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-secondary m-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-trash"></i></a>';
 
             $tasks[] = [
-                'task_id' => $task->id,
-                'task_name' => $task->name,
-                'task_description' => $task->description,
-                'task_status' => Task::statusName($task->status),
-                'task_status_style' => Task::statusBadge($task->status),
+                'id' => $task->id,
+                'name' => $task->name,
+                'description' => $task->description,
+                'status' => Task::statusName($task->status),
+                'status_style' => Task::statusBadge($task->status),
                 'tasklist_id' => $task->tasklist_id,
+                'user_id' => $userId,
                 // 'task_actions' => $link_edit . $link_delete,
             ];
         }

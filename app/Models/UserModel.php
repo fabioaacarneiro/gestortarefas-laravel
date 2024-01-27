@@ -20,7 +20,6 @@ class UserModel extends Authenticatable
         'created_at',
         'updated_at',
         'deleted_at',
-        'tasklist_id',
     ];
 
     protected $table = 'users';
