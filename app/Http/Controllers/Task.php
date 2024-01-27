@@ -140,11 +140,11 @@ class Task extends Controller
     /**
      * delete a task
      */
-    public function deleteTask($id)
+    public function deleteTask($tasklistId, $id)
     {
         try {
             TaskModel::where('id', $id)
-            // ->where('tasklist_id', $tasklist_id)
+                ->where('tasklist_id', $tasklistId)
                 ->delete();
 
         } catch (Exception $e) {

@@ -106,8 +106,8 @@
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Excluir tarefa</h1>
                                         </div>
                                         <div class="modal-body">
-                                            <h4 class="text-info">{{ $task['name'] }}</h4>
-                                            <p class="opacity-50">{{ $task['description'] }}</p>
+                                            <h4 class="text-info text-center">{{ $task['name'] }}</h4>
+                                            <p class="opacity-50 text-center">{{ $task['description'] }}</p>
                                             <p class="mt-5 text-center">Deseja excluir esta tarefa?</p>
 
                                             <div class="row mt-3 text-center">
@@ -119,7 +119,7 @@
                                                             data-bs-dismiss="modal"></i>Cancelar</a>
                                                 </div>
                                                 <div class="col">
-                                                    <a href="{{ route('task.delete', ['id' => Crypt::encrypt($task['id'])]) }}"
+                                                    <a href="{{ route('task.delete', [$tasklist_id, $task['id']]) }}"
                                                         class="btn btn-danger shadow shadow-md"><i
                                                             class="bi bi-thrash me-2"
                                                             data-bs-dismiss="modal"></i>Confirmar</a>
