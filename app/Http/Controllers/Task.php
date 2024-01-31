@@ -161,13 +161,15 @@ class Task extends Controller
     public function searchTask($tasklistId, $search = null)
     {
         $tasks = [];
+        $tasklist = TasklistModel::where('id', $tasklistId)->first();
 
         // get tasks
         if ($search) {
             $allTasks = TaskModel::where('tasklist_id', $tasklistId)
                 ->where(function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%')
-                        ->orWhere('description', 'like', '%' . $search . '%');
+                        ->orWhere('description', 'like', '%' . $search . '%')
+                        ->orderBy('created_at', 'DESC');
                 })->whereNull('deleted_at')
                 ->get();
 
@@ -190,6 +192,7 @@ class Task extends Controller
             'title' => 'Minhas Tarefas',
             'datatables' => false,
             'user_name' => Auth::user()->name,
+            'tasklist_name' => $tasklist->name,
             'tasklist_id' => $tasklistId,
             'tasks' => $tasks,
         ];
@@ -209,11 +212,13 @@ class Task extends Controller
         if ($filter != 'all' && $id != null) {
             $allTasks = TaskModel::where('tasklist_id', $id)
                 ->where('status', $filter)
+                ->orderBy('created_at', 'DESC')
             // ->whereNull('deleted_at')
                 ->get();
 
         } else {
             $allTasks = TaskModel::where('tasklist_id', $id)
+                ->orderBy('created_at', 'DESC')
             // ->whereNull('deleted_at')
                 ->get();
         }

@@ -11,7 +11,7 @@
                         <div class="row input-group m-0">
                             <input type="text" name="text_search" id="text_search" class="col form-control"
                                 placeholder="Pesquisar">
-                            <button type="submit" class="col-auto btn btn-outline-primary" onclick="searchTasks()"><i
+                            <button type="submit" class="col-auto btn btn-outline-primary" onclick="searchTasklists()"><i
                                     class="bi bi-search"></i></button>
                         </div>
                     </div>
@@ -113,4 +113,10 @@
         </div>
     @endif
     @include('partials.main.footer')
+    <script>
+        const searchTasklists = () => {
+            const inputSearch = document.querySelector('#text_search')
+            window.location.href = `/tasklist/search/${inputSearch.value}`
+        }
+    </script>
 @endsection

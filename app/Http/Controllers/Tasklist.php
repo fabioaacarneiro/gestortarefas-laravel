@@ -113,7 +113,9 @@ class Tasklist extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-        return redirect()->route('tasklist.index');
+        $tasklist = Tasklist::getLists();
+
+        return view('tasklist.index', $tasklist);
     }
 
     public function deleteTasklist($id)
@@ -131,11 +133,50 @@ class Tasklist extends Controller
         return back();
     }
 
+    public function searchTasklist($search = null)
+    {
+        $tasklist = [];
+
+        // get tasks
+        if ($search) {
+            $allTasklists = TasklistModel::where('user_id', Auth::user()->id)
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%')
+                        ->orderBy('created_at', 'DESC');
+                })->whereNull('deleted_at')
+                ->get();
+
+            foreach ($allTasklists as $list) {
+
+                $tasklist[] = [
+                    'id' => $list['id'],
+                    'name' => $list['name'],
+                    'description' => $list['description'],
+                ];
+            }
+
+        } else {
+            $tasklist = Tasklist::getLists();
+        }
+
+        $data = [
+            'title' => 'Listas de Tarefas',
+            'datatables' => false,
+            'user_name' => Auth::user()->name,
+            'tasklists' => $tasklist,
+        ];
+
+        return view('pages.tasklist', $data);
+
+    }
+
     private static function getLists()
     {
         // return UserModel::find(Auth::user()->id);
         $tasklists = [];
-        $allTasklists = TasklistModel::where('user_id', Auth::user()->id)->get();
+        $allTasklists = TasklistModel::where('user_id', Auth::user()->id)
+            ->orderBy('created_at', 'DESC')->get();
 
         foreach ($allTasklists as $list) {
             $tasklists[] = [

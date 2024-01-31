@@ -13,10 +13,10 @@ class TaskModel extends Model
 
     protected $fillable = [
         'id',
-        'tasklist_id',
         'name',
-        'description',
         'status',
+        'description',
+        'tasklist_id',
         'created_at',
         'updated_at',
         'deleted_at',

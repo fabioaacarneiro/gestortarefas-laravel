@@ -1,13 +1,12 @@
 {{-- modal edit --}}
-<div class="modal fade" id="{{ $modal_id }}" tabindex="-1" aria-labelledby="modalTask-{{ $modal_id }}"
-    aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="{{ $modal_id }}" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="taskEditTitle">{{ $form_title }}</h1>
             </div>
             <div class="modal-body p-3">
-                <form action="{{ route($route, $tasklist_id) }}" method="POST">
+                <form action="{{ route($route, $tasklist_id) }}" method="POST" id="form-new-edit-post">
                     @csrf
                     <input type="hidden" name="id" value="{{ $id }}">
                     {{-- task name --}}
@@ -20,6 +19,15 @@
                             <div class="text-warning">
                                 {{ $errors->get('name')[0] }}
                             </div>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", (event) => {
+                                    const myModal = new bootstrap.Modal('#new_task', {
+                                        keyboard: true,
+                                        dispose: true
+                                    })
+                                    myModal.show('#new_task')
+                                })
+                            </script>
                         @enderror
                     </div>
 
@@ -30,31 +38,60 @@
                         <label for="description" class="form-label">Descrição da Tarefa</label>
                         @error('description')
                             <div class="text-warning">{{ $errors->get('description')[0] }}</div>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", (event) => {
+                                    const myModal = new bootstrap.Modal('#new_task', {
+                                        keyboard: true,
+                                        dispose: true
+                                    })
+                                    myModal.show('#new_task')
+                                })
+                            </script>
                         @enderror
                     </div>
 
                     {{-- task status --}}
-                    <div>
-                        <select name="status" id="status" class="form-select" required>
-                            <option value="new" {{ old('status', $status) == 'Nova' ? 'selected' : '' }}>
-                                Nova
-                            </option>
-                            <option value="in_progress"
-                                {{ old('status', $status) == 'Em progresso' ? 'selected' : '' }}>
-                                Em progresso
-                            </option>
-                            <option value="cancelled" {{ old('status', $status) == 'Cancelada' ? 'selected' : '' }}>
-                                Cancelada
-                            </option>
-                            <option value="completed" {{ old('status', $status) == 'Concluída' ? 'selected' : '' }}>
-                                Concluída
-                            </option>
-                        </select>
-                        @error('status')
-                            <div class="text-warning">{{ $errors->get('status')[0] }}</div>
-                        @enderror
-                    </div>
-
+                    @if ($type == 'edit')
+                        <div>
+                            <select name="status" id="status" class="form-select" required>
+                                <option value="new" {{ old('status', $status) == 'Nova' ? 'selected' : '' }}>
+                                    Nova
+                                </option>
+                                <option value="in_progress"
+                                    {{ old('status', $status) == 'Em progresso' ? 'selected' : '' }}>
+                                    Em progresso
+                                </option>
+                                <option value="cancelled"
+                                    {{ old('status', $status) == 'Cancelada' ? 'selected' : '' }}>
+                                    Cancelada
+                                </option>
+                                <option value="completed"
+                                    {{ old('status', $status) == 'Concluída' ? 'selected' : '' }}>
+                                    Concluída
+                                </option>
+                            </select>
+                            @error('status')
+                                <div class="text-warning">{{ $errors->get('status')[0] }}</div>
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", (event) => {
+                                        const myModal = new bootstrap.Modal('#new_task', {
+                                            keyboard: true,
+                                            dispose: true
+                                        })
+                                        myModal.show('#new_task')
+                                    })
+                                </script>
+                            @enderror
+                        </div>
+                    @else
+                        <div>
+                            <select name="status" id="status" class="form-select" disabled required>
+                                <option value="new" selected>
+                                    Nova
+                                </option>
+                            </select>
+                        </div>
+                    @endif
                     {{-- cancel or submit --}}
                     <div class="row text-center">
                         <hr class="mt-5">
@@ -74,6 +111,15 @@
 
                 @if (session()->has('task_error'))
                     <div class="alert alert-danger text-center p-1"> {{ session()->get('task_error') }} </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", (event) => {
+                            const myModal = new bootstrap.Modal('#new_task', {
+                                keyboard: true,
+                                dispose: true
+                            })
+                            myModal.show('#new_task')
+                        })
+                    </script>
                 @endif
 
             </div>

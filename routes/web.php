@@ -35,6 +35,7 @@ Route::controller(Tasklist::class)->group(function () {
     Route::post('/tasklist/edit-list', 'editTasklist')->name('tasklist.edit');
     Route::get('/tasklist/delete-list/{id}', 'deleteTasklist')->name('tasklist.delete');
     Route::get('/', 'index')->name('tasklist.index');
+    Route::get('/tasklist/search/{search?}', 'searchTasklist')->name('tasklist.search');
 })->middleware('auth');
 
 Route::controller(Task::class)->group(function () {

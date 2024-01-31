@@ -15,8 +15,8 @@ class TasklistModel extends Model
 
     protected $fillable = [
         'id',
-        'user_id',
         'name',
+        'user_id',
         'description',
         'created_at',
         'updated_at',

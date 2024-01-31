@@ -2,7 +2,7 @@
 
     <div class="container-fluid justify-content-center mt-5">
         <div class="col-12 col-lg-5 col-md-6 col-sm-6">
-            <h4 class="text-info">{{ $user_name }}</h4>
+            <h4 class="text-info">{{ $tasklist_name }}</h4>
         </div>
 
         <div class="row p-3 bg-dark shadow">
@@ -52,7 +52,17 @@
                     'name' => '',
                     'description' => '',
                     'status' => '',
+                    'type' => 'new',
                 ])
+
+                @error('name')
+                    <script>
+                        document.addEventListener("DOMContentLoaded", (event) => {
+                            const myModal = new bootstrap.Modal('#new_task', 'focus')
+                            myModal.show('#new_task')
+                        })
+                    </script>
+                @enderror
             </div>
         </div>
     </div>
@@ -139,6 +149,7 @@
                                 'name' => $task['name'],
                                 'description' => $task['description'],
                                 'status' => $task['status'],
+                                'type' => 'edit',
                             ])
                         @endforeach
 
