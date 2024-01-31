@@ -1,6 +1,6 @@
 {{-- modal edit --}}
 <div class="modal fade" id="{{ $modal_id }}" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="taskEditTitle">{{ $form_title }}</h1>
