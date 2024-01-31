@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  laravel:
+    image: laravelfans/laravel:10.43.0
+    volumes:
+        - ./:/var/www/laravel
+    ports:
+        - 8000:80
+    env_file: .env
+
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: laravel
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
