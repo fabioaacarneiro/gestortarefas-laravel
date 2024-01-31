@@ -19,15 +19,6 @@
                             <div class="text-warning">
                                 {{ $errors->get('name')[0] }}
                             </div>
-                            <script>
-                                document.addEventListener("DOMContentLoaded", (event) => {
-                                    const myModal = new bootstrap.Modal('#new_task', {
-                                        keyboard: true,
-                                        dispose: true
-                                    })
-                                    myModal.show('#new_task')
-                                })
-                            </script>
                         @enderror
                     </div>
 
