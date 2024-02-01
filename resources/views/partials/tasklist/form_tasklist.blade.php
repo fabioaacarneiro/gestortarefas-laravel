@@ -17,9 +17,16 @@
                         <label for="name" class="form-label">Nome da
                             Lista</label>
                         @error('name')
-                            <div class="text-warning">
-                                {{ $errors->get('name')[0] }}
-                            </div>
+                            <div class="text-warning">{{ $errors->get('name')[0] }}</div>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", (event) => {
+                                    const myModal = new bootstrap.Modal({{ $modal_id }}, {
+                                        keyboard: true,
+                                        dispose: true
+                                    })
+                                    myModal.show({{ $modal_id }})
+                                })
+                            </script>
                         @enderror
                     </div>
 
@@ -30,14 +37,21 @@
                         <label for="description" class="form-label">Descrição da Lista</label>
                         @error('description')
                             <div class="text-warning">{{ $errors->get('description')[0] }}</div>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", (event) => {
+                                    const myModal = new bootstrap.Modal({{ $modal_id }}, {
+                                        keyboard: true,
+                                        dispose: true
+                                    })
+                                    myModal.show({{ $modal_id }})
+                                })
+                            </script>
                         @enderror
                     </div>
 
                     {{-- cancel or submit --}}
                     <div class="row text-center">
                         <hr class="mt-5">
-                        {{-- <a href="{{ route('task.index') }} " class="btn btn-secondary px-5 m-1"><i
-                                class="bi bi-x-circle me-2"></i>Cancelar</a> --}}
                         <button type="button" class="col btn btn-secondary px-2 m-3 shadow shadow-md"
                             data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-2"></i>

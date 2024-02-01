@@ -54,15 +54,6 @@
                     'status' => '',
                     'type' => 'new',
                 ])
-
-                @error('name')
-                    <script>
-                        document.addEventListener("DOMContentLoaded", (event) => {
-                            const myModal = new bootstrap.Modal('#new_task', 'focus')
-                            myModal.show('#new_task')
-                        })
-                    </script>
-                @enderror
             </div>
         </div>
     </div>

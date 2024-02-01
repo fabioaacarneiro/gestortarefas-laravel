@@ -19,6 +19,15 @@
                             <div class="text-warning">
                                 {{ $errors->get('name')[0] }}
                             </div>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", (event) => {
+                                    const myModal = new bootstrap.Modal({{ $modal_id }}, {
+                                        keyboard: true,
+                                        dispose: true
+                                    })
+                                    myModal.show({{ $modal_id }})
+                                })
+                            </script>
                         @enderror
                     </div>
 
@@ -31,11 +40,11 @@
                             <div class="text-warning">{{ $errors->get('description')[0] }}</div>
                             <script>
                                 document.addEventListener("DOMContentLoaded", (event) => {
-                                    const myModal = new bootstrap.Modal('#new_task', {
+                                    const myModal = new bootstrap.Modal({{ $modal_id }}, {
                                         keyboard: true,
                                         dispose: true
                                     })
-                                    myModal.show('#new_task')
+                                    myModal.show({{ $modal_id }})
                                 })
                             </script>
                         @enderror
@@ -63,15 +72,6 @@
                             </select>
                             @error('status')
                                 <div class="text-warning">{{ $errors->get('status')[0] }}</div>
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", (event) => {
-                                        const myModal = new bootstrap.Modal('#new_task', {
-                                            keyboard: true,
-                                            dispose: true
-                                        })
-                                        myModal.show('#new_task')
-                                    })
-                                </script>
                             @enderror
                         </div>
                     @else
@@ -86,7 +86,7 @@
                     {{-- cancel or submit --}}
                     <div class="row text-center">
                         <hr class="mt-5">
-                        {{-- <a href="{{ route('task.index') }} " class="btn btn-secondary px-5 m-1"><i
+                        {{-- <a href="{{ back() }} " class="btn btn-secondary px-5 m-1"><i
                                 class="bi bi-x-circle me-2"></i>Cancelar</a> --}}
                         <button type="button" class="col btn btn-secondary px-2 m-3 shadow shadow-md"
                             data-bs-dismiss="modal">
@@ -100,15 +100,16 @@
                     </div>
                 </form>
 
+
                 @if (session()->has('task_error'))
                     <div class="alert alert-danger text-center p-1"> {{ session()->get('task_error') }} </div>
                     <script>
                         document.addEventListener("DOMContentLoaded", (event) => {
-                            const myModal = new bootstrap.Modal('#new_task', {
+                            const myModal = new bootstrap.Modal({{ $modal_id }}, {
                                 keyboard: true,
                                 dispose: true
                             })
-                            myModal.show('#new_task')
+                            myModal.show({{ $modal_id }})
                         })
                     </script>
                 @endif

@@ -60,7 +60,6 @@ class Task extends Controller
         // get form data
         $name = $request->input('name');
         $description = $request->input('description');
-        $status = $request->input('status');
 
         // check if there is already another task with same name for the same user
         $task = TaskModel::where('tasklist_id', $tasklistId)
@@ -79,7 +78,7 @@ class Task extends Controller
             'tasklist_id' => $tasklistId,
             'name' => $name,
             'description' => $description,
-            'status' => $status,
+            'status' => 'new',
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
@@ -121,6 +120,7 @@ class Task extends Controller
         if ($task) {
             return redirect()
                 ->route('task.edit', $id)
+                ->withInput()
                 ->with('task_error', 'Já existe outra tarefa com o mesmo nome.');
         }
 
