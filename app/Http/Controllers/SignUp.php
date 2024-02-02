@@ -57,7 +57,7 @@ class SignUp extends Controller
         ];
 
         //  check if email has exists
-        $user = UserModel::where('email', $newUser['email'])
+        $user = UserModel::where('email', $request->get('email'))
             ->whereNull('deleted_at')
             ->first();
 
@@ -68,8 +68,16 @@ class SignUp extends Controller
         } else {
 
             UserModel::create([
-                'name' => $newUser['name'],
-                'email' => $newUser['email'],
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'level' => 1,
+                'experience' => 0,
+                'created_count' => 0,
+                'deleted_count' => 0,
+                'completed_count' => 0,
+                'canceled_count' => 0,
+                'list_created_count' => 0,
+                'list_deleted_count' => 0,
                 'password' => Hash::make($newUser['password']),
             ]);
 

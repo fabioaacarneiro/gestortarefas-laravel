@@ -2,14 +2,15 @@
     <div class="contaner-fluid">
         <div class="row align-items-center mx-4">
             <div class="col-auto col-md p-1">
-                <a href="/" class="btn btn-dark">Início</a>
+                <a href="/" class="btn btn-dark"><span><i class="bi bi-person"></i>{{ $user_name }}</span></a>
+                <span class="info-text  align-items-center ">Nível {{ $user_level }} - {{ $user_experience }}%</span>
             </div>
-            <div class="col col-sm p-3 text-end">
+            {{-- <div class="col col-sm p-3 text-end">
                 <span><i class="bi bi-person"></i>{{ $user_name }}</span>
             </div>
             <div class="col col-auto">
                 <span class="opacity-50"><i class="bi bi-three-dots-vertical"></i></span>
-            </div>
+            </div> --}}
             <div class="col col-auto">
                 <form action="{{ route('logout.submit') }}" method="post">
                     @csrf

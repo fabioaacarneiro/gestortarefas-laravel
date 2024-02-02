@@ -16,6 +16,14 @@ return new class extends Migration
             $table->string('name', 50);
             $table->string('email', 50);
             $table->string('password', 255);
+            $table->unsignedBigInteger('level');
+            $table->unsignedBigInteger('experience');
+            $table->unsignedBigInteger('created_count');
+            $table->unsignedBigInteger('deleted_count');
+            $table->unsignedBigInteger('completed_count');
+            $table->unsignedBigInteger('canceled_count');
+            $table->unsignedBigInteger('list_created_count');
+            $table->unsignedBigInteger('list_deleted_count');
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable()->default(null);
         });

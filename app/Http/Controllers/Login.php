@@ -53,7 +53,7 @@ class Login extends Controller
     public function logout()
     {
         if (Auth::check()) {
-            return redirect()->route('task.index');
+            return redirect()->route('tasklist.index');
         } else {
             return redirect()->route('login');
         }

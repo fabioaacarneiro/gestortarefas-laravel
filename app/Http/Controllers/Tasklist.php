@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TasklistModel;
 use App\Models\TaskModel;
+use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,8 +27,12 @@ class Tasklist extends Controller
             'title' => 'Lista de tarefas',
             'datatables' => false,
             'user_name' => Auth::user()->name,
+            'user_level' => Auth::user()->level,
+            'user_experience' => Auth::user()->experience,
             'tasklists' => Tasklist::getLists(),
         ];
+
+        // dd($data);
 
         return view('pages.tasklist', $data);
     }
@@ -68,6 +73,11 @@ class Tasklist extends Controller
             'name' => $name,
             'description' => $description,
             'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $user = UserModel::where('id', Auth::user()->id)->first();
+        UserModel::where('id', )->update([
+            'list_created_count' => $user->list_created_count += 1,
         ]);
 
         return redirect()->route('tasklist.index');
@@ -126,6 +136,12 @@ class Tasklist extends Controller
 
             TasklistModel::where('id', $id)
                 ->delete();
+
+            $user = UserModel::where('id', Auth::user()->id)->first();
+            UserModel::where('id', )->update([
+                'list_created_count' => $user->list_created_count += 1,
+            ]);
+
         } catch (\Throwable $th) {
             throw $th;
         }
