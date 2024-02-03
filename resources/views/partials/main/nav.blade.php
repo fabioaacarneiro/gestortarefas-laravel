@@ -1,9 +1,11 @@
 <div class="bg-dark text-white mb-3 shadow">
     <div class="contaner-fluid">
         <div class="row align-items-center mx-4">
-            <div class="col-auto col-md p-1">
-                <a href="/" class="btn btn-dark"><span><i class="bi bi-person"></i>{{ $user_name }}</span></a>
-                <span class="info-text  align-items-center ">Nível {{ $user_level }} - {{ $user_experience }}%</span>
+            <div class="col col-md p-1">
+                <span><a href="/" class="btn btn-dark"><i class="bi bi-person"></i>{{ $user_name }}</a></span>
+            </div>
+            <div class="col col-md p-1">
+                <span class="text-success">Nível {{ $user_level }} - {{ $user_experience }}%</span>
             </div>
             {{-- <div class="col col-sm p-3 text-end">
                 <span><i class="bi bi-person"></i>{{ $user_name }}</span>

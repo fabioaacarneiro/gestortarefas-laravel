@@ -8,6 +8,7 @@ use App\Models\UserModel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 
 class Task extends Controller
 {
@@ -72,7 +73,7 @@ class Task extends Controller
 
         if ($task) {
             return redirect()
-                ->route('task.new')
+                ->back()
                 ->withInput()
                 ->with('task_error', 'Já existe uma tarefa com este nome');
         }
@@ -83,14 +84,6 @@ class Task extends Controller
             'description' => $description,
             'status' => 'new',
             'created_at' => date('Y-m-d H:i:s'),
-        ]);
-
-        $user = UserModel::where('id', Auth::user()->id)
-            ->whereNull('deleted_at')
-            ->first();
-
-        UserModel::where('id', $user->id)->update([
-            'created_count' => $user->created_count += 1,
         ]);
 
         return back();
@@ -135,41 +128,29 @@ class Task extends Controller
                 ->with('task_error', 'Já existe outra tarefa com o mesmo nome.');
         }
 
+        $taskCurrentStatus = TaskModel::where('id', $id)->first();
         // update the task
-        TaskModel::where('id', $id)
-            ->update([
-                'name' => $name,
-                'description' => $description,
-                'status' => $status,
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
+        TaskModel::where('id', $id)->update([
+            'name' => $name,
+            'description' => $description,
+            'status' => $status,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
 
         $user = UserModel::where('id', Auth::user()->id)->first();
-        $taskCurrentStatus = TaskModel::where('id', $id)->first();
 
-        if ($taskCurrentStatus->status != 'completed' && $user->experience > 0) {
+        if ($status == 'completed' && $user->experience < 99 && $taskCurrentStatus->status != 'completed') {
             UserModel::where('id', $user->id)->update([
-                'experience' => $user->experience -= 1,
-                'completed_count' => $user->completed_count -= 1,
-            ]);
-        }
-
-        if ($status == 'completed' && $user->experience < 99) {
-            UserModel::where('id', $user->id)->update([
-                'completed_count' => $user->completed_count += 1,
                 'experience' => $user->experience += 1,
             ]);
         } else if ($status == 'completed' && $user->experience == 99) {
             UserModel::where('id', $user->id)->update([
-                'completed_count' => $user->completed_count += 1,
                 'experience' => $user->experience = 0,
                 'level' => $user->level += 1,
             ]);
-        }
-
-        if ($status == 'canceled') {
+        } else if ($status != 'completed' && $taskCurrentStatus->status == 'completed') {
             UserModel::where('id', $user->id)->update([
-                'canceled_count' => $user->canceled_count += 1,
+                'experience' => $user->experience > 0 ? $user->experience -= 1 : 0,
             ]);
         }
 
@@ -186,11 +167,6 @@ class Task extends Controller
             TaskModel::where('id', $id)
                 ->where('tasklist_id', $tasklistId)
                 ->delete();
-
-            $user = UserModel::where('id', Auth::user()->id)->first();
-            UserModel::where('id', $user->id)->update([
-                'deleted_count' => $user->deleted_count += 1,
-            ]);
 
         } catch (Exception $e) {
             return redirect()->route('task.index');
