@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\TasklistModel;
 use App\Models\TaskModel;
-use App\Models\UserModel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,11 +21,17 @@ class Task extends Controller
      */
     public function index($tasklistId, $filter = 'all')
     {
+
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
         $tasklist = TasklistModel::where('id', $tasklistId)->first();
+        $amountOfCompletedTasks = TaskModel::where('tasklist_id', $tasklistId)
+            ->where('status', 'completed')
+            ->count();
+
+        ['lvl' => $lvl, 'exp' => $exp] = Task::getLevelAndExp($amountOfCompletedTasks);
 
         $data = [
             'title' => 'Minhas Tarefas',
@@ -36,8 +41,8 @@ class Task extends Controller
             'user_id' => Auth::user()->id,
             'tasklist_id' => $tasklistId,
             'tasklist_name' => $tasklist->name,
-            'user_level' => Auth::user()->level,
-            'user_experience' => Auth::user()->experience,
+            'user_level' => $lvl,
+            'user_experience' => $exp,
             'user_name' => Auth::user()->name,
         ];
 
@@ -128,7 +133,6 @@ class Task extends Controller
                 ->with('task_error', 'Já existe outra tarefa com o mesmo nome.');
         }
 
-        $taskCurrentStatus = TaskModel::where('id', $id)->first();
         // update the task
         TaskModel::where('id', $id)->update([
             'name' => $name,
@@ -136,23 +140,6 @@ class Task extends Controller
             'status' => $status,
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
-
-        $user = UserModel::where('id', Auth::user()->id)->first();
-
-        if ($status == 'completed' && $user->experience < 99 && $taskCurrentStatus->status != 'completed') {
-            UserModel::where('id', $user->id)->update([
-                'experience' => $user->experience += 1,
-            ]);
-        } else if ($status == 'completed' && $user->experience == 99) {
-            UserModel::where('id', $user->id)->update([
-                'experience' => $user->experience = 0,
-                'level' => $user->level += 1,
-            ]);
-        } else if ($status != 'completed' && $taskCurrentStatus->status == 'completed') {
-            UserModel::where('id', $user->id)->update([
-                'experience' => $user->experience > 0 ? $user->experience -= 1 : 0,
-            ]);
-        }
 
         return back();
 
@@ -300,5 +287,13 @@ class Task extends Controller
         } else {
             return 'badge bg-secondary';
         }
+    }
+
+    private static function getLevelAndExp($completedTasksAmount)
+    {
+        $lvl = (int) ($completedTasksAmount / 100);
+        $exp = $completedTasksAmount % 100;
+
+        return ['lvl' => $lvl, 'exp' => $exp];
     }
 }

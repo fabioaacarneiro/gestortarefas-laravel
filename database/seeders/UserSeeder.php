@@ -18,8 +18,6 @@ class UserSeeder extends Seeder
                 'name' => 'fabio',
                 'email' => 'fabio@email.com',
                 'password' => Hash::make('fabio'),
-                'level' => 5,
-                'experience' => 25,
                 'created_at' => date('Y-m-d H:i:s'),
             ],
         ]);
