@@ -170,6 +170,11 @@ class Task extends Controller
     {
         $tasks = [];
         $tasklist = TasklistModel::where('id', $tasklistId)->first();
+        $amountOfCompletedTasks = TaskModel::where('tasklist_id', $tasklistId)
+            ->where('status', 'completed')
+            ->count();
+
+        ['lvl' => $lvl, 'exp' => $exp] = Task::getLevelAndExp($amountOfCompletedTasks);
 
         // get tasks
         if ($search) {
@@ -202,6 +207,8 @@ class Task extends Controller
             'user_name' => Auth::user()->name,
             'tasklist_name' => $tasklist->name,
             'tasklist_id' => $tasklistId,
+            'user_level' => $lvl,
+            'user_experience' => $exp,
             'tasks' => $tasks,
         ];
 

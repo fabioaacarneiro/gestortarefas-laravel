@@ -17,8 +17,6 @@ class UserModel extends Authenticatable
         'name',
         'email',
         'password',
-        'level',
-        'experience',
         'created_at',
         'updated_at',
         'deleted_at',
