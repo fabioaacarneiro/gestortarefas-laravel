@@ -7,7 +7,6 @@ use App\Models\TaskModel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 
 class Task extends Controller
 {
@@ -88,6 +87,7 @@ class Task extends Controller
             'name' => $name,
             'description' => $description,
             'status' => 'new',
+            'commentary' => null,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
@@ -216,6 +216,17 @@ class Task extends Controller
 
     }
 
+    public function setCommentary($taskId, Request $request)
+    {
+        $newCommentary = $request->get('commentary');
+
+        TaskModel::where('id', $taskId)->update([
+            'commentary' => $newCommentary,
+        ]);
+
+        return back();
+    }
+
     /**
      * get task from database
      */
@@ -251,6 +262,7 @@ class Task extends Controller
                 'status' => Task::statusName($task->status),
                 'status_style' => Task::statusBadge($task->status),
                 'tasklist_id' => $task->tasklist_id,
+                'commentary' => $task->commentary,
                 'user_id' => $userId,
                 // 'task_actions' => $link_edit . $link_delete,
             ];
@@ -296,9 +308,9 @@ class Task extends Controller
         }
     }
 
-    private static function getLevelAndExp($completedTasksAmount)
+    public static function getLevelAndExp($completedTasksAmount)
     {
-        $lvl = (int) ($completedTasksAmount / 100);
+        $lvl = (int) ($completedTasksAmount / 100) + 1;
         $exp = $completedTasksAmount % 100;
 
         return ['lvl' => $lvl, 'exp' => $exp];

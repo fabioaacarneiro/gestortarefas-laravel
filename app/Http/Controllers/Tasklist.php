@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TasklistModel;
 use App\Models\TaskModel;
 use App\Models\UserModel;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,12 +24,27 @@ class Tasklist extends Controller
 
     public function lists()
     {
+
+        $tasklist = TasklistModel::where('user_id', Auth::user()->id)->first();
+
+        $amountOfCompletedTasks = 0;
+
+        try {
+            $amountOfCompletedTasks = TaskModel::where('tasklist_id', $tasklist->id)
+                ->where('status', 'completed')
+                ->count();
+        } catch (Exception $exception) {
+            $amountOfCompletedTasks = 0;
+        }
+
+        ['lvl' => $lvl, 'exp' => $exp] = Task::getLevelAndExp($amountOfCompletedTasks);
+
         $data = [
             'title' => 'Lista de tarefas',
             'datatables' => false,
             'user_name' => Auth::user()->name,
-            'user_level' => Auth::user()->level,
-            'user_experience' => Auth::user()->experience,
+            'user_level' => $lvl,
+            'user_experience' => $exp,
             'tasklists' => Tasklist::getLists(),
         ];
 
@@ -151,7 +167,21 @@ class Tasklist extends Controller
 
     public function searchTasklist($search = null)
     {
-        $tasklist = [];
+        $tasklist = TasklistModel::where('user_id', Auth::user()->id)->first();
+
+        $amountOfCompletedTasks = 0;
+
+        try {
+            $amountOfCompletedTasks = TaskModel::where('tasklist_id', $tasklist->id)
+                ->where('status', 'completed')
+                ->count();
+        } catch (Exception $exception) {
+            $amountOfCompletedTasks = 0;
+        }J
+
+        ['lvl' => $lvl, 'exp' => $exp] = Task::getLevelAndExp($amountOfCompletedTasks);
+
+        $tasklists = [];
 
         // get tasks
         if ($search) {
@@ -165,7 +195,7 @@ class Tasklist extends Controller
 
             foreach ($allTasklists as $list) {
 
-                $tasklist[] = [
+                $tasklists[] = [
                     'id' => $list['id'],
                     'name' => $list['name'],
                     'description' => $list['description'],
@@ -173,14 +203,16 @@ class Tasklist extends Controller
             }
 
         } else {
-            $tasklist = Tasklist::getLists();
+            $tasklists = Tasklist::getLists();
         }
 
         $data = [
             'title' => 'Listas de Tarefas',
             'datatables' => false,
             'user_name' => Auth::user()->name,
-            'tasklists' => $tasklist,
+            'tasklists' => $tasklists,
+            'user_level' => $lvl,
+            'user_experience' => $exp,
         ];
 
         return view('pages.tasklist', $data);

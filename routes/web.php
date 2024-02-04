@@ -40,6 +40,7 @@ Route::controller(Tasklist::class)->group(function () {
 
 Route::controller(Task::class)->group(function () {
     Route::post('/tasklist/{tasklist_id}/new-task', 'newTask')->name('task.new');
+    Route::post('/tasklist/{tasklist_id}/set-commentary', 'setCommentary')->name('task.setcommentary');
     Route::post('/tasklist/{tasklist_id}/edit-task', 'editTask')->name('task.edit');
     Route::get('/tasklist/{tasklist_id}/delete-task/{id}', 'deleteTask')->name('task.delete');
     Route::get('/tasklist/{tasklist_id}/search/{search?}', 'searchTask')->name('task.search');

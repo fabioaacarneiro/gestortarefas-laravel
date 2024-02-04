@@ -87,6 +87,10 @@
                                 </td>
                                 <td class="text-center align-middle">
 
+                                    <button type="button" class="btn btn-primary m-2 shadow shadow-md"
+                                        data-bs-toggle="modal" data-bs-target="#modalCommentary-{{ $task['id'] }}"><i
+                                            class="bi bi-chat-right-dots-fill"></i></button>
+
                                     <button type="button" class="btn btn-secondary m-2 shadow shadow-md"
                                         data-bs-toggle="modal" data-bs-target="#edit_task-{{ $task['id'] }}"><i
                                             class="bi bi-pencil"></i></button>
@@ -97,6 +101,45 @@
                                             class="bi bi-trash"></i></button>
                                 </td>
                             </tr>
+
+                            {{-- modal commentary1 --}}
+                            <div class="modal fade" id="modalCommentary-{{ $task['id'] }}" tabindex="-1"
+                                aria-labelledby="modalCommentary-{{ $task['id'] }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Comentários da Tarefa
+                                            </h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('task.setcommentary', $task['tasklist_id']) }}"
+                                                method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ $task['id'] }}">
+                                                <h4 class="text-info text-center">{{ $task['name'] }}</h4>
+
+                                                <textarea name="commentary" id="commentary" style="height: 250px" class="form-control pt-4 my-4"
+                                                    placeholder="Escreva um comentário para a tarefa" required>{{ old('commentary', $task['commentary']) }}</textarea>
+
+                                                <div class="row mt-3 text-center">
+                                                    <hr>
+                                                    <div class="col">
+                                                        <button class="btn btn-secondary font shadow shadow-md"><i
+                                                                class="bi bi-cancel me-2"
+                                                                data-bs-dismiss="modal"></i>Cancelar</button>
+                                                    </div>
+                                                    <div class="col">
+                                                        <button type="submit"
+                                                            class="btn btn-success shadow shadow-md"><i
+                                                                class="bi bi-check me-2"
+                                                                data-bs-dismiss="modal"></i>Registrar</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             {{-- modal delete --}}
                             <div class="modal fade" id="modalDeleteConfirm-{{ $task['id'] }}" tabindex="-1"
