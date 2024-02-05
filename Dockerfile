@@ -1,4 +1,4 @@
-FROM skpr/nginx-php-fpm
+FROM richarvey/nginx-php-fpm
 
 COPY . .
 
