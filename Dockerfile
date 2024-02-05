@@ -1,4 +1,4 @@
-FROM whatwedo/nginx-php:2.8
+FROM skpr/nginx-php-fpm
 
 COPY . .
 
