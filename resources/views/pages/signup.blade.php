@@ -6,7 +6,7 @@
     </div>
     <div class="login-wrapper card">
         <div class="login-box p-5 rounded-4">
-            <h3 class="text-center card-title">Cadastro de usuário - GTask</h3>
+            <h3 class="text-center card-title">Cadastro de usuário - SheepTask</h3>
             <hr />
             <form action="{{ route('signup.submit') }}" method="post">
                 @csrf

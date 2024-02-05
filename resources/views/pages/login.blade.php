@@ -3,7 +3,7 @@
 @section('content')
     <div class="login-wrapper card">
         <div class="login-box p-5 rounded-4  shadow shadow-lg">
-            <h3 class="text-center card-title">Bem vindo - GTask</h3>
+            <h3 class="text-center card-title">Bem vindo - SheepTask</h3>
             <hr />
             <form action="{{ route('login.submit') }}" method="post">
                 @csrf
