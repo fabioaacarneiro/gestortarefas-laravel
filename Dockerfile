@@ -1,4 +1,4 @@
-FROM whatwedo/nginx-php:v-2.8
+FROM whatwedo/nginx-php:2.8
 
 COPY . .
 
