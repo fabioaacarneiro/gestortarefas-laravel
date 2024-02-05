@@ -21,7 +21,7 @@ services:
       - ./:/var/www/laravel
     ports:
       - 8000:80
-    env_file: .env
+    # env_file: .env
 
   postgres:
     image: postgres
