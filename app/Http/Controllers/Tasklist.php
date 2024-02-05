@@ -177,7 +177,7 @@ class Tasklist extends Controller
                 ->count();
         } catch (Exception $exception) {
             $amountOfCompletedTasks = 0;
-        }J
+        };
 
         ['lvl' => $lvl, 'exp' => $exp] = Task::getLevelAndExp($amountOfCompletedTasks);
 
