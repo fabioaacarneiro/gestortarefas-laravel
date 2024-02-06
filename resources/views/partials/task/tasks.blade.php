@@ -87,15 +87,15 @@
                                 </td>
                                 <td class="text-center align-middle">
 
-                                    <button type="button" class="btn btn-primary m-2 shadow shadow-md"
+                                    <button type="button" class="btn btn-primary m-2 shadow shadow-md" title="Comentários"
                                         data-bs-toggle="modal" data-bs-target="#modalCommentary-{{ $task['id'] }}"><i
                                             class="bi bi-chat-right-dots-fill"></i></button>
 
-                                    <button type="button" class="btn btn-secondary m-2 shadow shadow-md"
+                                    <button type="button" class="btn btn-secondary m-2 shadow shadow-md" title="Editar"
                                         data-bs-toggle="modal" data-bs-target="#edit_task-{{ $task['id'] }}"><i
                                             class="bi bi-pencil"></i></button>
 
-                                    <button type="button" class="btn btn-danger m-2 shadow shadow-md"
+                                    <button type="button" class="btn btn-danger m-2 shadow shadow-md" title="Excluir"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalDeleteConfirm-{{ $task['id'] }}"><i
                                             class="bi bi-trash"></i></button>

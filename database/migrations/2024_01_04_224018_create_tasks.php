@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 200);
             $table->string('status', 20);
-            $table->string('description', 1000);
+            $table->string('description', 1000)->nullable();
             $table->string('commentary', 1000)->nullable()->default(null);
             $table->bigInteger('tasklist_id');
             $table->timestamps();

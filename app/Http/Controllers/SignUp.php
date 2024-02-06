@@ -64,7 +64,7 @@ class SignUp extends Controller
         if ($user) {
             return redirect()->back()
                 ->withInput(['name', 'email', 'email_confirm'])
-                ->with('signup_error', 'Já existe um usuário com esse "email"');
+                ->with('signup_error', 'Já existe um usuário com esse email');
         } else {
 
             UserModel::create([

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id');
             $table->string('name', 100);
-            $table->string('description', 280);
+            $table->string('description', 280)->nullable();
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable()->default(null);
         });
