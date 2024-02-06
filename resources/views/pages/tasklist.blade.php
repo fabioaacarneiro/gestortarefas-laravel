@@ -48,18 +48,18 @@
                                     <div class="col-4 p-0">
                                         {{-- button to edit a tasks list --}}
                                         <button class="btn btn-info" data-bs-toggle="modal"
-                                            data-bs-target="#edit_tasklist-{{ $tasklist['id'] }}"><i
+                                            data-bs-target="#edit_tasklist-{{ $tasklist['id'] }}" title="Editar a lista de tarefas."><i
                                                 class="bi
                                             bi-pencil text-dark"></i>
                                         </button>
                                     </div>
                                     <div class="col-4 p-0">
-                                        <a href="{{ route('task.index', $tasklist['id']) }}" class="btn btn-success"><i
+                                        <a href="{{ route('task.index', $tasklist['id']) }}" class="btn btn-success" title="Visualizar lista de tarefas."><i
                                                 class="bi bi-eye text-dark"></i></a>
                                     </div>
                                     <div class="col-4 p-0">
                                         <button class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#modalDeleteConfirm-{{ $tasklist['id'] }}"><i
+                                            data-bs-target="#modalDeleteConfirm-{{ $tasklist['id'] }}" title="Deletar a lista de tarefas."><i
                                                 class="bi bi-trash text-dark"></i></button>
                                     </div>
                                     {{-- modal delete --}}

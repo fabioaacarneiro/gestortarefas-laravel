@@ -77,9 +77,9 @@
                         @foreach ($tasks as $task)
                             <tr>
                                 <td>
-                                    <p class="task-title ms-2 mt-2 mb-0">{{ $task['name'] }}
+                                    <p class="task-title ms-2 mt-2 mb-0" title="Título da tarefa.">{{ $task['name'] }}
                                     </p>
-                                    <p class="opacity-75 ms-2">{{ $task['description'] }}</p>
+                                    <p class="opacity-75 ms-2" title="Descrição da tarefa.">{{ $task['description'] }}</p>
                                 </td>
                                 <td class="text-center align-middle">
                                     <span

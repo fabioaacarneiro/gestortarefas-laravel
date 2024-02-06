@@ -34,7 +34,7 @@
                     {{-- task description --}}
                     <div class="mb-3 form-floating">
                         <textarea name="description" id="description" style="height: 250px" class="form-control pt-4"
-                            placeholder="Conteúdo da tarefa" required>{{ old('description', $description) }}</textarea>
+                            placeholder="Conteúdo da tarefa" >{{ old('description', $description) }}</textarea>
                         <label for="description" class="form-label">Descrição da Tarefa</label>
                         @error('description')
                             <div class="text-warning">{{ $errors->get('description')[0] }}</div>
