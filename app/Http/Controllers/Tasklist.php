@@ -114,10 +114,9 @@ class Tasklist extends Controller
 
 
         $request->validate([
-            'name' => 'required|min:3|max:200',
+            'name' => 'min:3|max:200',
             'description' => 'max:1000',
         ], [
-            'name.required' => 'O campo é obrigatório.',
             'name.min' => 'O campo deve ter no mínimo :min caracteres.',
             'name.max' => 'O campo deve ter no máximo :max caracteres.',
             'description.max' => 'O campo deve ter no máximo :max caracteres.',
@@ -143,15 +142,13 @@ class Tasklist extends Controller
                 ->with('tasklist_error', 'Já existe uma lista com este nome');
         }
 
-        TasklistModel::where('id', $id)
-            ->update([
-                // 'user_id' => Auth::user()->id,
-                'name' => $name,
-                'description' => $description,
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
+        $tasklist = TasklistModel::find($id);
+        $tasklist->name = $name;
+        $tasklist->description = $description;
+        $tasklist->updated_at = date('Y-m-d H:i:s');
+        $tasklist->save();
 
-        $tasklist = Tasklist::getLists();
+        // $tasklists = Tasklist::getLists();
 
         return redirect()->route('tasklist');
     }

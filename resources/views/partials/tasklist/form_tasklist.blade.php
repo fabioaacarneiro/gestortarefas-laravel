@@ -7,7 +7,7 @@
                 <h1 class="modal-title fs-5" id="taskEditTitle">{{ $form_title }}</h1>
             </div>
             <div class="modal-body p-3">
-                <form action="{{ route($route, $id) }}" method="POST">
+                <form action="{{ route($route) }}" method="POST">
                     @csrf
                     <input type="hidden" name="id" value="{{ $id }}">
                     {{-- task name --}}
