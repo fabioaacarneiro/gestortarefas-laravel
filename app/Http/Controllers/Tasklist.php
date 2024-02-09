@@ -165,11 +165,6 @@ class Tasklist extends Controller
             TasklistModel::where('id', $id)
                 ->delete();
 
-            $user = UserModel::where('id', Auth::user()->id)->first();
-            UserModel::where('id', )->update([
-                'list_created_count' => $user->list_created_count += 1,
-            ]);
-
         } catch (\Throwable $th) {
             throw $th;
         }
