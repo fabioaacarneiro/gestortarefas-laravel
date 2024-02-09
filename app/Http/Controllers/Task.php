@@ -55,13 +55,11 @@ class Task extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|max:200',
-            'description' => 'required|min:3|max:1000',
+            'description' => 'max:1000',
         ], [
             'name.required' => 'O campo é obrigatório.',
             'name.min' => 'O campo deve ter no mínimo :min caracteres.',
             'name.max' => 'O campo deve ter no máximo :max caracteres.',
-            'description.required' => 'O campo é obrigatório',
-            'description.min' => 'O campo deve ter no mínimo :min caracteres.',
             'description.max' => 'O campo deve ter no máximo :max caracteres.',
         ]);
 
@@ -102,16 +100,12 @@ class Task extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|max:200',
-            'description' => 'required|min:3|max:1000',
-            'status' => 'required',
+            'description' => 'max:1000',
         ], [
             'name.required' => 'O campo é obrigatório.',
             'name.min' => 'O campo deve ter no mínimo :min caracteres.',
             'name.max' => 'O campo deve ter no máximo :max caracteres.',
-            'description.required' => 'O campo é obrigatório',
-            'description.min' => 'O campo deve ter no mínimo :min caracteres.',
             'description.max' => 'O campo deve ter no máximo :max caracteres.',
-            'status.required' => 'O campo é obrigatório',
         ]);
 
         $id = $request->id;
@@ -193,7 +187,10 @@ class Task extends Controller
                     'name' => $task['name'],
                     'description' => $task['description'],
                     'status' => Task::statusName($task['status']),
-                    'status_style' => Task::statusBadge($task['status']),
+                    'status_style' => Task::statusBadge($task->status),
+                    'tasklist_id' => $task->tasklist_id,
+                    'task_commentary' => $task->commentary,
+                    'user_id' => Auth::user()->id,
                 ];
             }
 
@@ -239,13 +236,13 @@ class Task extends Controller
             $allTasks = TaskModel::where('tasklist_id', $id)
                 ->where('status', $filter)
                 ->orderBy('created_at', 'DESC')
-            // ->whereNull('deleted_at')
+                ->whereNull('deleted_at')
                 ->get();
 
         } else {
             $allTasks = TaskModel::where('tasklist_id', $id)
                 ->orderBy('created_at', 'DESC')
-            // ->whereNull('deleted_at')
+                ->whereNull('deleted_at')
                 ->get();
         }
 
@@ -262,7 +259,7 @@ class Task extends Controller
                 'status' => Task::statusName($task->status),
                 'status_style' => Task::statusBadge($task->status),
                 'tasklist_id' => $task->tasklist_id,
-                'commentary' => $task->commentary,
+                'task_commentary' => $task->commentary,
                 'user_id' => $userId,
                 // 'task_actions' => $link_edit . $link_delete,
             ];

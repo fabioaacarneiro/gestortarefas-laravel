@@ -12,7 +12,7 @@
                     {{-- task name --}}
                     <div class="mb-3 form-floating">
                         <input type="text" name="name" id="name" class="form-control mb-2"
-                            placeholder="Nome da tarefa" required value="{{ old('name', $name) }}">
+                            placeholder="Nome da tarefa" value="{{ old('name', $name) }}">
                         <label for="name" class="form-label">Nome da
                             Tarefa</label>
                         @error('name')
@@ -53,7 +53,7 @@
                     {{-- task status --}}
                     @if ($type == 'edit')
                         <div>
-                            <select name="status" id="status" class="form-select" required>
+                            <select name="status" id="status" class="form-select" >
                                 <option value="new" {{ old('status', $status) == 'Nova' ? 'selected' : '' }}>
                                     Nova
                                 </option>
@@ -76,7 +76,7 @@
                         </div>
                     @else
                         <div>
-                            <select name="status" id="status" class="form-select" disabled required>
+                            <select name="status" id="status" class="form-select" disabled >
                                 <option value="new" selected>
                                     Nova
                                 </option>

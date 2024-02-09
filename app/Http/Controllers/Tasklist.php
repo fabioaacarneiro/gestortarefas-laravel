@@ -57,13 +57,11 @@ class Tasklist extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|max:200',
-            'description' => 'required|min:3|max:1000',
+            'description' => 'max:1000',
         ], [
             'name.required' => 'O campo é obrigatório.',
             'name.min' => 'O campo deve ter no mínimo :min caracteres.',
             'name.max' => 'O campo deve ter no máximo :max caracteres.',
-            'description.required' => 'O campo é obrigatório',
-            'description.min' => 'O campo deve ter no mínimo :min caracteres.',
             'description.max' => 'O campo deve ter no máximo :max caracteres.',
         ]);
 
@@ -103,13 +101,11 @@ class Tasklist extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|max:200',
-            'description' => 'required|min:3|max:1000',
+            'description' => 'max:1000',
         ], [
             'name.required' => 'O campo é obrigatório.',
             'name.min' => 'O campo deve ter no mínimo :min caracteres.',
             'name.max' => 'O campo deve ter no máximo :max caracteres.',
-            'description.required' => 'O campo é obrigatório',
-            'description.min' => 'O campo deve ter no mínimo :min caracteres.',
             'description.max' => 'O campo deve ter no máximo :max caracteres.',
         ]);
 
