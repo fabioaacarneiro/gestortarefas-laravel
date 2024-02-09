@@ -50,8 +50,16 @@
                                         <button class="btn btn-info" data-bs-toggle="modal"
                                             data-bs-target="#edit_tasklist-{{ $tasklist['id'] }}" title="Editar a lista de tarefas."><i
                                                 class="bi
-                                            bi-pencil text-dark"></i>
+                                                bi-pencil text-dark"></i>
                                         </button>
+                                        @include('partials.tasklist.form_tasklist', [
+                                            'route' => 'tasklist.edit',
+                                            'modal_id' => 'edit_tasklist-' . $tasklist['id'],
+                                            'form_title' => 'Editando a Lista de Tarefas',
+                                            'id' => $tasklist['id'],
+                                            'name' => $tasklist['name'],
+                                            'description' => $tasklist['description'],
+                                        ])
                                     </div>
                                     <div class="col-4 p-0">
                                         <a href="{{ route('task.index', $tasklist['id']) }}" class="btn btn-success" title="Visualizar lista de tarefas."><i
@@ -100,14 +108,7 @@
                             </div>
                         </div>
                     </div>
-                    @include('partials.tasklist.form_tasklist', [
-                        'route' => 'tasklist.edit',
-                        'modal_id' => 'edit_tasklist-' . $tasklist['id'],
-                        'form_title' => 'Editando a Lista de Tarefas',
-                        'id' => $tasklist['id'],
-                        'name' => $tasklist['name'],
-                        'description' => $tasklist['description'],
-                    ])
+
                 @endforeach
             </div>
         </div>

@@ -8,6 +8,7 @@ use App\Models\UserModel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Tasklist extends Controller
 {
@@ -51,8 +52,6 @@ class Tasklist extends Controller
             'user_experience' => $exp,
             'tasklists' => Tasklist::getLists(),
         ];
-
-        // dd($data);
 
         return view('pages.tasklist', $data);
     }
@@ -112,6 +111,8 @@ class Tasklist extends Controller
 
     public function editTasklist(Request $request)
     {
+
+
         $request->validate([
             'name' => 'required|min:3|max:200',
             'description' => 'max:1000',
@@ -126,6 +127,8 @@ class Tasklist extends Controller
         $id = $request->get('id');
         $name = $request->get('name');
         $description = $request->get('description');
+
+        // dd($id, $name,  $description);
 
         // check if there is already another task with same name for the same user
         $tasklist = TasklistModel::where('user_id', Auth::user()->id)
@@ -142,7 +145,7 @@ class Tasklist extends Controller
 
         TasklistModel::where('id', $id)
             ->update([
-                'user_id' => Auth::user()->id,
+                // 'user_id' => Auth::user()->id,
                 'name' => $name,
                 'description' => $description,
                 'updated_at' => date('Y-m-d H:i:s'),
@@ -150,7 +153,7 @@ class Tasklist extends Controller
 
         $tasklist = Tasklist::getLists();
 
-        return view('tasklist.index', $tasklist);
+        return redirect()->route('tasklist');
     }
 
     public function deleteTasklist($id)
@@ -197,7 +200,7 @@ class Tasklist extends Controller
             $allTasklists = TasklistModel::where('user_id', Auth::user()->id)
                 ->where(function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%')
-                        ->orWhere('description', 'like', '%' . $search . '%')
+                        ->orWhere(DB::raw('lower(description)'), 'like', '%' . strtolower($search) . '%')
                         ->orderBy('created_at', 'DESC');
                 })->whereNull('deleted_at')
                 ->get();
