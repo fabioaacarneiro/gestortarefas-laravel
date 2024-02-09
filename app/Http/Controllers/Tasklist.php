@@ -25,6 +25,10 @@ class Tasklist extends Controller
     public function lists()
     {
 
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $tasklist = TasklistModel::where('user_id', Auth::user()->id)->first();
 
         $amountOfCompletedTasks = 0;
@@ -51,6 +55,15 @@ class Tasklist extends Controller
         // dd($data);
 
         return view('pages.tasklist', $data);
+    }
+
+    public function storeTasklistGet()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        } else {
+            return back();
+        }
     }
 
     public function storeTasklist(Request $request)

@@ -45,5 +45,4 @@ Route::controller(Task::class)->group(function () {
     Route::get('/tasklist/{tasklist_id}/delete-task/{id}', 'deleteTask')->name('task.delete');
     Route::get('/tasklist/{tasklist_id}/search/{search?}', 'searchTask')->name('task.search');
     Route::get('/tasklist/{tasklist_id}/tasks/{filter?}', 'index')->name('task.index');
-
 })->middleware('auth');

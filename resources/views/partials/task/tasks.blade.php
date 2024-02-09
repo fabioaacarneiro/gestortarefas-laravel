@@ -106,20 +106,20 @@
                             <div class="modal fade" id="modalCommentary-{{ $task['id'] }}" tabindex="-1"
                                 aria-labelledby="modalCommentary-{{ $task['id'] }}" aria-hidden="true">
                                 <div class="modal-dialog">
-                                    <div class="modal-content">
+                                    <div class="modal-content modal-centered">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Comentários da Tarefa
                                             </h1>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ route('task.setcommentary', $tasklist_id) }}"
+                                            <form action="{{ route('task.setcommentary', $task['id']) }}"
                                                 method="post">
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $task['id'] }}">
                                                 <h4 class="text-info text-center">{{ $task['name'] }}</h4>
 
                                                 <textarea name="commentary" id="commentary" style="height: 250px" class="form-control pt-4 my-4"
-                                                    placeholder="Escreva um comentário para a tarefa" >{{ old('commentary', $task['task_commentary']) }}</textarea>
+                                                    placeholder="Escreva um comentário para a tarefa" >{{ old('commentary', $task['commentary']) }}</textarea>
 
                                                 <div class="row mt-3 text-center">
                                                     <hr>

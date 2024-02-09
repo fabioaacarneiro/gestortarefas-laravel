@@ -136,7 +136,6 @@ class Task extends Controller
         ]);
 
         return back();
-
     }
 
     /**
@@ -154,7 +153,6 @@ class Task extends Controller
         }
 
         return back();
-
     }
 
     /**
@@ -189,8 +187,7 @@ class Task extends Controller
                     'status' => Task::statusName($task['status']),
                     'status_style' => Task::statusBadge($task->status),
                     'tasklist_id' => $task->tasklist_id,
-                    'task_commentary' => $task->commentary,
-                    'user_id' => Auth::user()->id,
+                    'commentary' => $task->commentary,
                 ];
             }
 
@@ -215,11 +212,16 @@ class Task extends Controller
 
     public function setCommentary($taskId, Request $request)
     {
-        $newCommentary = $request->get('commentary');
+        $newCommentary = $request->input('commentary');
 
-        TaskModel::where('id', $taskId)->update([
-            'commentary' => $newCommentary,
-        ]);
+        try {
+            TaskModel::where('id', $taskId)->update([
+                'commentary' => $newCommentary,
+            ]);
+        } catch (\Throwable $th) {
+            $th->getMessage();
+            dd($taskId);
+        }
 
         return back();
     }
@@ -259,7 +261,7 @@ class Task extends Controller
                 'status' => Task::statusName($task->status),
                 'status_style' => Task::statusBadge($task->status),
                 'tasklist_id' => $task->tasklist_id,
-                'task_commentary' => $task->commentary,
+                'commentary' => $task->commentary,
                 'user_id' => $userId,
                 // 'task_actions' => $link_edit . $link_delete,
             ];
