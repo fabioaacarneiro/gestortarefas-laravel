@@ -54,10 +54,11 @@ class Task extends Controller
     public function newTask($tasklistId, Request $request)
     {
         $request->validate([
-            'name' => 'required|min:3|max:200',
+            'name' => 'required|unique:tasks|min:3|max:200',
             'description' => 'max:1000',
         ], [
             'name.required' => 'O campo é obrigatório.',
+            'name.unique' => 'Já existe uma tarefa com este nome.',
             'name.min' => 'O campo deve ter no mínimo :min caracteres.',
             'name.max' => 'O campo deve ter no máximo :max caracteres.',
             'description.max' => 'O campo deve ter no máximo :max caracteres.',
@@ -66,19 +67,6 @@ class Task extends Controller
         // get form data
         $name = $request->input('name');
         $description = $request->input('description');
-
-        // check if there is already another task with same name for the same user
-        $task = TaskModel::where('tasklist_id', $tasklistId)
-            ->where('name', $name)
-            ->whereNull('deleted_at')
-            ->first();
-
-        if ($task) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('task_error', 'Já existe uma tarefa com este nome');
-        }
 
         TaskModel::create([
             'tasklist_id' => $tasklistId,
@@ -113,27 +101,13 @@ class Task extends Controller
         $description = $request->input('description');
         $status = $request->input('status');
 
-        // check if there is another task with the same name and from the same user
-        $taskToCheckDuplicate = TaskModel::where('tasklist_id', $tasklistId)
-            ->where('name', $name)
-            ->where('id', '!=', $id)
-            ->whereNull('deleted_at')
-            ->first();
-
-        if ($taskToCheckDuplicate) {
-            return redirect()
-                ->route('task.edit', $id)
-                ->withInput()
-                ->with('task_error', 'Já existe outra tarefa com o mesmo nome.');
-        }
-
         // update the task
-        TaskModel::where('id', $id)->update([
-            'name' => $name,
-            'description' => $description,
-            'status' => $status,
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
+        $task = TaskModel::find($id);
+        $task->name = $name;
+        $task->description = $description;
+        $task->status = $status;
+        $task->updated_at = date('Y-m-d H:i:s');
+        $task->save();
 
         return back();
     }
@@ -147,7 +121,6 @@ class Task extends Controller
             TaskModel::where('id', $id)
                 ->where('tasklist_id', $tasklistId)
                 ->delete();
-
         } catch (Exception $e) {
             return redirect()->route('task.index');
         }
@@ -190,7 +163,6 @@ class Task extends Controller
                     'commentary' => $task->commentary,
                 ];
             }
-
         } else {
             $tasks = Task::getTasks($tasklistId);
         }
@@ -207,7 +179,6 @@ class Task extends Controller
         ];
 
         return view('pages.main.index', $data);
-
     }
 
     public function setCommentary($taskId, Request $request)
@@ -240,7 +211,6 @@ class Task extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->whereNull('deleted_at')
                 ->get();
-
         } else {
             $allTasks = TaskModel::where('tasklist_id', $id)
                 ->orderBy('created_at', 'DESC')

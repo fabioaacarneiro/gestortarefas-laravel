@@ -68,10 +68,11 @@ class Tasklist extends Controller
     public function storeTasklist(Request $request)
     {
         $request->validate([
-            'name' => 'required|min:3|max:200',
-            'description' => 'max:1000',
+            'name' => 'required|unique:tasklists|min:3|max:200',
+            'description' => 'nullable|max:1000',
         ], [
             'name.required' => 'O campo é obrigatório.',
+            'name.unique' => 'A lista de tarefas já existe, use outro nome.',
             'name.min' => 'O campo deve ter no mínimo :min caracteres.',
             'name.max' => 'O campo deve ter no máximo :max caracteres.',
             'description.max' => 'O campo deve ter no máximo :max caracteres.',
@@ -81,19 +82,6 @@ class Tasklist extends Controller
         $name = $request->input('name');
         $description = $request->input('description');
 
-        // check if there is already another task with same name for the same user
-        $tasklist = TasklistModel::where('user_id', Auth::user()->id)
-            ->where('name', $name)
-            ->whereNull('deleted_at')
-            ->first();
-
-        if ($tasklist) {
-            return redirect()
-                ->route('tasklist.index')
-                ->withInput()
-                ->with('tasklist_error', 'Já existe uma lista com este nome');
-        }
-
         TasklistModel::create([
             'user_id' => Auth::user()->id,
             'name' => $name,
@@ -101,21 +89,14 @@ class Tasklist extends Controller
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
-        // $user = UserModel::where('id', Auth::user()->id)->first();
-        // UserModel::where('id', )->update([
-        //     'list_created_count' => $user->list_created_count += 1,
-        // ]);
-
         return redirect()->route('tasklist.index');
     }
 
     public function editTasklist(Request $request)
     {
-
-
         $request->validate([
             'name' => 'min:3|max:200',
-            'description' => 'max:1000',
+            'description' => 'max:1000|nullable',
         ], [
             'name.min' => 'O campo deve ter no mínimo :min caracteres.',
             'name.max' => 'O campo deve ter no máximo :max caracteres.',
@@ -126,21 +107,6 @@ class Tasklist extends Controller
         $id = $request->get('id');
         $name = $request->get('name');
         $description = $request->get('description');
-
-        // dd($id, $name,  $description);
-
-        // check if there is already another task with same name for the same user
-        $tasklist = TasklistModel::where('user_id', Auth::user()->id)
-            ->where('name', $name)
-            ->whereNull('deleted_at')
-            ->first();
-
-        if ($tasklist) {
-            return redirect()
-                ->route('tasklist.index')
-                ->withInput()
-                ->with('tasklist_error', 'Já existe uma lista com este nome');
-        }
 
         $tasklist = TasklistModel::find($id);
         $tasklist->name = $name;
@@ -161,7 +127,6 @@ class Tasklist extends Controller
 
             TasklistModel::where('id', $id)
                 ->delete();
-
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -205,7 +170,6 @@ class Tasklist extends Controller
                     'description' => $list['description'],
                 ];
             }
-
         } else {
             $tasklists = Tasklist::getLists();
         }
@@ -220,7 +184,6 @@ class Tasklist extends Controller
         ];
 
         return view('pages.tasklist', $data);
-
     }
 
     private static function getLists()
