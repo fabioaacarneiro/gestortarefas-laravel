@@ -1,0 +1,55 @@
+version: "3.8"
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  pgsql:
+  pgadmin:
+  laravel:
+
+
+services:
+  laravel:
+    image: laravelfans/laravel:10.43.0
+    networks:
+      - internal
+    depends_on:
+      - postgres
+    volumes:
+      - ./:/var/www/laravel
+    ports:
+      - 8000:80
+    env_file: .env
+
+  postgres:
+    image: postgres
+    restart: always
+    networks:
+      - internal
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: laravel
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "fabioaacarneiro@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgadminsenha"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
+    networks:
+      - internal
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+      - .:/var/www/app/

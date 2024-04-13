@@ -1,55 +1,66 @@
-version: "3.8"
+version: '3.8'
+services:
+  main:
+    container_name: Serve
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'php artisan serve --host=0.0.0.0'
+    volumes:
+      - .:/app
+    ports:
+      - 8080:8000
+
+  queue:
+    container_name: Queue
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'php artisan queue:work'
+    depends_on:
+      - db
+
+  db:
+    platform: linux/x86_64
+    image: mysql:8.0
+    container_name: Database
+    environment:
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_ROOT: "root"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - 3307:3306
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: PhpMyAdmin
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: MailPit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - laravel-exa
 
 networks:
-  internal:
+  laravel-exa:
     driver: bridge
 
 volumes:
-  pgsql:
-  pgadmin:
-  laravel:
-
-
-services:
-  laravel:
-    image: laravelfans/laravel:10.43.0
-    networks:
-      - internal
-    depends_on:
-      - postgres
-    volumes:
-      - ./:/var/www/laravel
-    ports:
-      - 8000:80
-    env_file: .env
-
-  postgres:
-    image: postgres
-    restart: always
-    networks:
-      - internal
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_DB: laravel
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      PGDATA: /var/lib/postgresql/data/pgdata
-
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "fabioaacarneiro@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "pgadminsenha"
-    ports:
-      - "16543:80"
-    depends_on:
-      - postgres
-    networks:
-      - internal
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-      - .:/var/www/app/
+  db:
+    driver: local
