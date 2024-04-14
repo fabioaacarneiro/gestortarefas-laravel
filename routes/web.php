@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Login;
+use App\Http\Controllers\Main;
 use App\Http\Controllers\SignUp;
 use App\Http\Controllers\Task;
 use App\Http\Controllers\Tasklist;
@@ -34,7 +35,7 @@ Route::controller(Tasklist::class)->group(function () {
     Route::post('/tasklist/new-list', 'storeTasklist')->name('tasklist.new');
     Route::post('/tasklist/edit-list', 'editTasklist')->name('tasklist.edit');
     Route::get('/tasklist/delete-list/{id}', 'deleteTasklist')->name('tasklist.delete');
-    Route::get('/', 'index')->name('tasklist.index');
+    Route::get('/tasklist/home', 'index')->name('tasklist.index');
     Route::get('/tasklist/search/{search?}', 'searchTasklist')->name('tasklist.search');
 })->middleware('auth');
 
@@ -46,3 +47,8 @@ Route::controller(Task::class)->group(function () {
     Route::get('/tasklist/{tasklist_id}/search/{search?}', 'searchTask')->name('task.search');
     Route::get('/tasklist/{tasklist_id}/tasks/{filter?}', 'index')->name('task.index');
 })->middleware('auth');
+
+Route::controller(Main::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::get('/resources', 'resources')->name('resources');
+});

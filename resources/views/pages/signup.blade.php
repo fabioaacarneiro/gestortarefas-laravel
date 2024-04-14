@@ -1,13 +1,14 @@
 @extends('templates.login_layout') @section('content')
 
 @section('content')
-    <div class="m-3">
-        <a href="{{ route('login') }}" class="btn btn-outline-info">Voltar para o login</a>
-    </div>
+    @include('partials.visitant.nav')
     <div class="login-wrapper card">
-        <div class="login-box p-5 rounded-4">
-            <h3 class="text-center card-title">Cadastro de usuário - RamTask</h3>
-            <hr />
+        <div class="login-box p-3 rounded-4">
+            <div class="container-logo-ramtask">
+                <img id="" class="logo-ramtask" src="{{ asset('assets/img/small/ram-logo-dark-theme.png') }}"
+                    alt="ramtask logo">
+            </div>
+            <h4 class="text-center card-title pb-3">Cadastro de usuário</h4>
             <form action="{{ route('signup.submit') }}" method="post">
                 @csrf
 

@@ -1,3 +1,12 @@
+@import "variables.css";
+@import "fonts.css";
+
+body {
+    background-color: #202020;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
 .login-wrapper {
     display: flex;
     justify-content: center;
@@ -6,8 +15,9 @@
 }
 
 .login-box {
-    background: linear-gradient(0deg, #2e2e2e, #999999);
+    background: #4f4f4f;
     width: 450px;
+    min-width: 300px;
 }
 
 .main-content {
@@ -19,4 +29,64 @@
     font-size: 1.1em;
     font-weight: bold;
     color: lightskyblue;
+}
+
+.container-logo-ramtask {
+    display: flex;
+    justify-content: center;
+}
+
+.logo-ramtask {
+    width: var(--small-logo-size);
+    margin: var(--logo-login-position);
+    filter: var(--drop-shadow);
+}
+
+.img-example {
+    width: 350px;
+    filter: var(--drop-shadow);
+}
+
+.navbar-logo img {
+    width: var(--navbar-logo-size);
+}
+
+main {
+    background: #222222;
+}
+
+.img-examples {
+    display: flex;
+    justify-content: center;
+}
+
+.container-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.container-resources {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.resource-title {
+    color: dodgerblue;
+}
+
+.resource-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.resource-list>li {
+    margin-bottom: 20px;
+}
+
+.resource-list>li>strong {
+    color: dodgerblue;
 }

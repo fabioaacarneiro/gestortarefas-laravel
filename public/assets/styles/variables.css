@@ -1,0 +1,6 @@
+:root {
+    --small-logo-size: 150px;
+    --navbar-logo-size: 45px;
+    --logo-login-position: -125px auto 10px;
+    --drop-shadow: drop-shadow(2px 5px 5px rgba(0, 0, 0, .7));
+}
