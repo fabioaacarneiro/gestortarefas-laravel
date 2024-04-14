@@ -6,7 +6,7 @@
     <header class="text-center py-5">
         <div class="container">
             <div class="display-4">
-                <img src="{{ asset('assets/img/small/full-logo-dark-theme.png') }}" alt="Full loco Ramtask">
+                <img src="{{ asset('assets/img/small/full-logo-dark-theme.png') }}" alt="Full logo Ramtask">
             </div>
             <p class="lead">Seu Assistente Digital para Gerenciamento de Tarefas</p>
             <a href="{{ route('login') }}" class="btn btn-primary btn-lg mt-4">Experimente Agora</a>

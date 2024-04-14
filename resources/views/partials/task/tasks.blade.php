@@ -79,26 +79,41 @@
                                 <td>
                                     <p class="task-title ms-2 mt-2 mb-0" title="Título da tarefa.">{{ $task['name'] }}
                                     </p>
-                                    <p class="opacity-75 ms-2" title="Descrição da tarefa.">{{ $task['description'] }}</p>
+                                    <p class="opacity-75 ms-2" title="Descrição da tarefa.">{{ $task['description'] }}
+                                    </p>
                                 </td>
                                 <td class="text-center align-middle">
                                     <span
                                         class="{{ $task['status_style'] }} fs-6 shadow shadow-md">{{ $task['status'] }}</span>
                                 </td>
                                 <td class="text-center align-middle">
+                                    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                                        <div class="mx-auto">
+                                            <button class="navbar-toggler shadow shadow-md btn-sm" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#navbarNav-{{ $task['id'] }}"
+                                                aria-controls="navbarNav" aria-expanded="false"
+                                                aria-label="Toggle navigation">
+                                                <span class="navbar-toggler-icon"></span>
+                                            </button>
+                                        </div>
+                                        <div class="collapse navbar-collapse" id="navbarNav-{{ $task['id'] }}">
+                                            <a class="btn btn-primary m-2 shadow shadow-md" title="Comentários"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalCommentary-{{ $task['id'] }}"><i
+                                                    class="bi bi-chat-right-dots-fill"></i></a>
 
-                                    <button type="button" class="btn btn-primary m-2 shadow shadow-md" title="Comentários"
-                                        data-bs-toggle="modal" data-bs-target="#modalCommentary-{{ $task['id'] }}"><i
-                                            class="bi bi-chat-right-dots-fill"></i></button>
+                                            <a class="btn btn-secondary m-2 shadow shadow-md" title="Editar"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#edit_task-{{ $task['id'] }}"><i
+                                                    class="bi bi-pencil"></i></a>
 
-                                    <button type="button" class="btn btn-secondary m-2 shadow shadow-md" title="Editar"
-                                        data-bs-toggle="modal" data-bs-target="#edit_task-{{ $task['id'] }}"><i
-                                            class="bi bi-pencil"></i></button>
-
-                                    <button type="button" class="btn btn-danger m-2 shadow shadow-md" title="Excluir"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalDeleteConfirm-{{ $task['id'] }}"><i
-                                            class="bi bi-trash"></i></button>
+                                            <a class="btn btn-danger m-2 shadow shadow-md" title="Excluir"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalDeleteConfirm-{{ $task['id'] }}"><i
+                                                    class="bi bi-trash"></i></a>
+                                        </div>
+                                    </nav>
                                 </td>
                             </tr>
 
@@ -119,7 +134,7 @@
                                                 <h4 class="text-info text-center">{{ $task['name'] }}</h4>
 
                                                 <textarea name="commentary" id="commentary" style="height: 250px" class="form-control pt-4 my-4"
-                                                    placeholder="Escreva um comentário para a tarefa" >{{ old('commentary', $task['commentary']) }}</textarea>
+                                                    placeholder="Escreva um comentário para a tarefa">{{ old('commentary', $task['commentary']) }}</textarea>
 
                                                 <div class="row mt-3 text-center">
                                                     <hr>
