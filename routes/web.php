@@ -24,6 +24,7 @@ Route::controller(SignUp::class)->group(function () {
 });
 
 Route::controller(Login::class)->group(function () {
+    Route::get('/googleLogin', 'googleLogin')->name('login.google');
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'loginSubmit')->name('login.submit');
     Route::get('/logout', 'logout')->name('logout');

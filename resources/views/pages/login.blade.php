@@ -31,13 +31,19 @@
                             <div class="text-warning">{{ $errors->get('password')[0] }}</div>
                         @enderror
                     </div>
-                    {{-- submit button --}}
-                    <div class="d-grid my-2">
-                        <button type="submit" class="btn btn-outline-success">Logar</button>
-                    </div>
+                    {{-- submit button to login --}}
                     <div class="d-grid">
-                        <a class="btn btn-outline-info " href="{{ route('signup') }}">Criar uma
-                            conta</a>
+                        <button type="submit" class="btn btn-success">Logar <i class="bi bi-door-open-fill"></i></button>
+                    </div>
+
+                    {{-- link button to signup --}}
+                    <div class="d-grid my-2">
+                        <a class="btn btn-info " href="{{ route('signup') }}">Criar uma conta <i class="bi bi-person-check-fill"></i></a>
+                    </div>
+
+                    {{-- link button to loggin with google --}}
+                    <div class="d-grid">
+                        <a href="{{ $authUrl }}" class="btn btn-light text-dark">Continue com Google <i class="bi bi-google"></i></a>
                     </div>
 
                     {{-- erro throws --}}

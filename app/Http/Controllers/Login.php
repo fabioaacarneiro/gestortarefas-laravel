@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils\Authenticate;
+use App\Utils\GoogleClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,9 +20,24 @@ class Login extends Controller
             return redirect()->route('tasklist');
         }
 
+        if (session()->has("user")) {
+            var_dump(session()->get("user")->email);
+            // return redirect()->route('tasklist');
+        }
+
+        $googleCliente = new GoogleClient;
+        $googleCliente->init();
+
+        if ($googleCliente->authorized()) {
+            $auth = new Authenticate();
+            return $auth->authGoogle($googleCliente->getData());
+        }
+
         $data = [
             'title' => 'Login',
+            'authUrl' => $googleCliente->generateAuthLink(),
         ];
+
         return view('pages.login', $data);
     }
 
@@ -47,7 +64,6 @@ class Login extends Controller
 
         // invalid login
         return back()->withErrors('login_error', 'Login inválido')->onlyInput('username');
-
     }
 
     public function logout()

@@ -64,7 +64,7 @@
 
                 {{-- submit button --}}
                 <div class="d-grid my-2">
-                    <button type="submit" class="btn btn-outline-success">Criar minha conta!</button>
+                    <button type="submit" class="btn btn-success">Criar minha conta! <i class="bi bi-person-check-fill"></i></button>
                 </div>
 
                 {{-- erro throws --}}
