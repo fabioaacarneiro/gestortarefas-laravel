@@ -2,7 +2,15 @@
     <div class="contaner-fluid">
         <div class="row align-items-center mx-4">
             <div class="col col-md p-1">
-                <span><a href="/" class="btn btn-dark"><i class="bi bi-person"></i>{{ $user_name }}</a></span>
+                <span><a href="{{ route('task.userhome') }}" class="btn btn-dark"><i
+                            class="bi bi-person"></i>{{ $user_name }}</a></span>
+                <span><a href="{{ url()->previous() }}"
+                        class="btn btn-dark link-underline link-underline-opacity-0 link-opacity-50-hover">Voltar</a></span>
+                <span><a href="{{ route('task.show') }}"
+                        class="btn btn-dark link-underline link-underline-opacity-0 link-opacity-50-hover">Tarefas</a></span>
+                <span><a href="{{ route('tasklist.show') }}"
+                        class="btn btn-dark link-underline link-underline-opacity-0 link-opacity-50-hover">Listas</a></span>
+
             </div>
             <div class="col col-md p-1">
                 <span class="text-success">Nível {{ $user_level }} - {{ $user_experience }}%</span>

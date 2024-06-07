@@ -6,14 +6,14 @@
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="taskEditTitle">{{ $form_title }}</h1>
             </div>
-            <div class="modal-body p-3">
+            <div class="p-3 modal-body">
                 <form action="{{ route($route) }}" method="POST">
                     @csrf
-                    <input type="hidden" name="id" value="{{ $id }}">
+                    <input type="hidden" name="id" value="{{ $list_id }}">
                     {{-- task name --}}
                     <div class="mb-3 form-floating">
-                        <input type="text" name="name" id="name" class="form-control mb-2"
-                            placeholder="Nome da lista" required value="{{ old('name', $name) }}">
+                        <input type="text" name="name" id="name" class="mb-2 form-control"
+                            placeholder="Nome da lista" required value="{{ old('name', $list_name) }}">
                         <label for="name" class="form-label">Nome da
                             Lista</label>
                         @error('name')
@@ -32,8 +32,8 @@
 
                     {{-- task description --}}
                     <div class="mb-3 form-floating">
-                        <textarea name="description" id="description" style="height: 250px" class="form-control pt-4"
-                            placeholder="Conteúdo da tarefa" >{{ old('description', $description) }}</textarea>
+                        <textarea name="description" id="description" style="height: 250px" class="pt-4 form-control"
+                            placeholder="Conteúdo da tarefa">{{ old('description', $description) }}</textarea>
                         <label for="description" class="form-label">Descrição da Lista</label>
                         @error('description')
                             <div class="text-warning">{{ $errors->get('description')[0] }}</div>
@@ -50,14 +50,13 @@
                     </div>
 
                     {{-- cancel or submit --}}
-                    <div class="row text-center">
-                        <hr class="mt-5">
-                        <button type="button" class="col btn btn-secondary px-2 m-3 shadow shadow-md"
+                    <div class="text-center row">
+                        <button type="button" class="px-2 m-3 shadow shadow-md col btn btn-secondary"
                             data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-2"></i>
                             Cancelar
                         </button>
-                        <button type="submit" class="col btn btn-success px-2 m-3 shadow shadow-md">
+                        <button type="submit" class="px-2 m-3 shadow shadow-md col btn btn-success">
                             <i class="bi bi-floppy me-2"></i>
                             Guardar
                         </button>
@@ -65,7 +64,7 @@
                 </form>
 
                 @if (session()->has('task_error'))
-                    <div class="alert alert-danger text-center p-1"> {{ session()->get('task_error') }} </div>
+                    <div class="p-1 text-center alert alert-danger"> {{ session()->get('task_error') }} </div>
                 @endif
 
             </div>

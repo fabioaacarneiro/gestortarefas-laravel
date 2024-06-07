@@ -32,24 +32,42 @@ Route::controller(Login::class)->group(function () {
 });
 
 Route::controller(Tasklist::class)->group(function () {
-    Route::get('/tasklist', 'lists')->name('tasklist');
-    Route::post('/tasklist/new-list', 'storeTasklist')->name('tasklist.new');
-    Route::post('/tasklist/edit-list', 'editTasklist')->name('tasklist.edit');
-    Route::get('/tasklist/delete-list/{id}', 'deleteTasklist')->name('tasklist.delete');
+    // get task lists to populate select on edit modal
+    Route::get('/tasklist/get/{task_id?}', 'getTasklists')->name('tasklist.get');
+
+    Route::get('/tasklist', 'showTasklist')->name('tasklist.show'); // listas de tarefas
+    Route::post('/tasklist/new', 'storeTasklist')->name('tasklist.new');
+    Route::post('/tasklist/edit', 'editTasklist')->name('tasklist.edit');
+    Route::get('/tasklist/{list_id}/delete', 'deleteTasklist')->name('tasklist.delete');
     Route::get('/tasklist/home', 'index')->name('tasklist.index');
     Route::get('/tasklist/search/{search?}', 'searchTasklist')->name('tasklist.search');
 })->middleware('auth');
 
 Route::controller(Task::class)->group(function () {
-    Route::post('/tasklist/{tasklist_id}/new-task', 'newTask')->name('task.new');
-    Route::post('/tasklist/{tasklist_id}/set-commentary', 'setCommentary')->name('task.setcommentary');
-    Route::post('/tasklist/{tasklist_id}/edit-task', 'editTask')->name('task.edit');
-    Route::get('/tasklist/{tasklist_id}/delete-task/{id}', 'deleteTask')->name('task.delete');
-    Route::get('/tasklist/{tasklist_id}/search/{search?}', 'searchTask')->name('task.search');
-    Route::get('/tasklist/{tasklist_id}/tasks/{filter?}', 'index')->name('task.index');
+    // homepage of user logged in
+    Route::get('/', 'index')->name('index');
+    Route::get('/userhome', 'userhome')->name('task.userhome');
+
+    // routes of tasks without list
+    Route::get('/task', 'tasks')->name('task.show');
+    Route::post('/task/new', 'newTask')->name('task.new'); // check
+    Route::post('/task/{task_id}/commentary', 'setCommentaryTask')->name('task.setCommentary'); // check
+    Route::post('/task/{task_id}/edit', 'editTask')->name('task.edit');
+    Route::get('/task/{task_id}/delete', 'deleteTask')->name('task.delete');
+    Route::get('/task/{search?}/search', 'searchTask')->name('task.search');
+    Route::get('/task/{filter?}/filter', 'filterTask')->name('task.filter');
+
+    // routes of tasks with list
+    Route::post('/tasklist/{list_id}/task/new', 'newTaskWithList')->name('taskWithList.new'); // check
+    Route::post('/tasklist/{list_id}/task/edit', 'editTaskWithList')->name('taskWithList.edit');
+    Route::get('/tasklist/{list_id}/task/{task_id}/delete', 'deleteTaskWithList')->name('taskWithList.delete');
+    Route::get('/tasklist/{list_id}/search/{search?}', 'searchTaskWithList')->name('taskWithList.search');
+    Route::get('/tasklist/{list_id}/filter/{filter?}', 'filterTaskWithList')->name('taskWithList.show');
 })->middleware('auth');
 
 Route::controller(Main::class)->group(function () {
     Route::get('/', 'index')->name('home');
     Route::get('/resources', 'resources')->name('resources');
+    Route::get('/contact', 'contact')->name('contact');
+    Route::get('/about_developer', 'developer')->name('developer');
 });

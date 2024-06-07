@@ -15,7 +15,10 @@
                     <a class="nav-link" href="{{ route('signup') }}">Crie sua conta</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contato</a>
+                    <a class="nav-link" href="{{ route('contact') }}">Contato</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('developer') }}">Desenvolvedor</a>
                 </li>
             </ul>
         </div>

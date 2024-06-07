@@ -10,10 +10,6 @@
     <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap/bootstrap.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    @if (!empty($datatables))
-        <link rel="stylesheet" href="{{ asset('assets/datatables/datatables.min.css') }}">
-        <script src="{{ asset('assets/datatables/jquery/jquery.min.js') }}"></script>
-    @endif
 </head>
 
 <body>
@@ -22,11 +18,9 @@
         @yield('content')
 
         <script src="{{ asset('assets/bootstrap/bootstrap.bundle.min.js') }}"></script>
-        @if (!empty($datatables))
-            <script src="{{ asset('assets/datatables/datatables.min.js') }}"></script>
-        @endif
     </main>
     <script src="{{ asset('assets/scripts/script.js') }}"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 </body>
 
 </html>

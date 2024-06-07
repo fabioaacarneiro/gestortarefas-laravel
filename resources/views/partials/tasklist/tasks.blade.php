@@ -1,11 +1,24 @@
 <div class="container mb-auto">
-
     <div class="container-fluid justify-content-center">
+
+        {{-- <div class="col-12 col-lg-5 col-md-6 col-sm-6"> --}}
+
+        @if (isset($list_name))
+
+            <h4 class="text-info"> {{ $list_name }} -
+                @if (isset($list_description))
+                    <em class="text-light">{{ $list_description }}</em>
+                @else
+                    <em class="text-light">Sem descrição</em>
+                @endif
+            </h4>
+        @endif
+        {{-- </div> --}}
 
         <div class="row py-1 mb-3 bg-dark shadow rounded-4">
 
             <div class="col-12 col-lg-5 col-md-6 col-sm-6">
-                <div class="row input-group justify-content-center ms-0 my-2 ">
+                <div class="row input-group justify-content-between ms-0 my-2 ">
                     <input type="text" name="text_search" id="text_search" class="col-md form-control "
                         placeholder="Pesquisar">
                     <button type="submit" class="col-auto btn btn-outline-primary" onclick="searchTasks()"><i
@@ -40,13 +53,14 @@
                     <span class="hidden-md">Nova</span>
                 </button>
 
-                @include('partials.task.form_task', [
-                    'route' => 'task.new',
+                @include('partials.tasklist.form_task', [
+                    'route' => 'taskWithList.new',
                     'modal_id' => 'new_task',
                     'form_title' => 'Nova Tarefa',
+                    'id' => '',
+                    'list_id' => $list_id,
                     'task_id' => '',
-                    'list_id' => null,
-                    'name' => '',
+                    'name' => $list_name,
                     'description' => '',
                     'status' => 'new',
                     'type' => 'new',
@@ -71,12 +85,12 @@
             </thead>
             <tbody class="text-light table-group-divider">
                 @foreach ($tasks as $task)
-                    <tr>
+                    <tr class="my-1 py-1">
                         <td>
-                            <p class="task-title ms-2 mb-0" title="Título da tarefa.">{{ $task['name'] }}</p>
-                            <p class="opacity-75 ms-2" title="Descrição da tarefa.">{{ $task['description'] }}</p>
+                            <p class="task-title ms-2 my-0" title="Título da tarefa.">{{ $task['name'] }}</p>
+                            <p class="opacity-75 ms-2 my-0" title="Descrição da tarefa.">{{ $task['description'] }}</p>
                         </td>
-                        <td class="text-center align-middle">
+                        <td class="text-center align-middle my-0 py-0">
                             <span class="{{ $task['status_style'] }} fs-6 shadow shadow-md">{{ $task['status'] }}</span>
                         </td>
                         <td class="text-center align-middle py-0 my-0">
@@ -89,8 +103,7 @@
                                     </button>
                                 </div>
                                 <div class="collapse navbar-collapse" id="navbarNav-{{ $task['id'] }}">
-
-                                    {{-- add commentary button --}}
+                                    {{-- commentary button --}}
                                     <a class="btn btn-primary m-1 shadow shadow-md" title="Comentários"
                                         data-bs-toggle="modal" data-bs-target="#modalCommentary-{{ $task['id'] }}"><i
                                             class="bi bi-chat-right-dots-fill"></i></a>
@@ -114,29 +127,34 @@
                     <div class="modal fade" id="modalCommentary-{{ $task['id'] }}" tabindex="-1"
                         aria-labelledby="modalCommentary-{{ $task['id'] }}" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content modal-centered">
+                            <div class="modal-content">
+
                                 <div class="modal-header">
-                                    <h4 class="text-info text-center" title="Título da tarefa">{{ $task['name'] }}</h4>
+                                    <h2 class="modal-title fs-5 text-info" id="exampleModalLabel">{{ $task['name'] }}
+                                    </h2>
                                 </div>
+
                                 <div class="modal-body">
                                     <form action="{{ route('task.setCommentary', $task['id']) }}" method="post">
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $task['id'] }}">
 
                                         <textarea name="commentary" id="commentary" style="height: 250px" class="form-control"
-                                            title="Escreva seus comentários aqui" placeholder="Escreva um comentário para a tarefa">{{ old('commentary', $task['commentary']) }}</textarea>
+                                            placeholder="Escreva um comentário para a tarefa">{{ old('commentary', $task['commentary']) }}</textarea>
 
-                                        <hr class="my-3">
+                                        <hr class="mt-3 w-100">
 
-                                        <div class="d-flex justify-content-end">
+                                        <div class="d-flex justify-content-end mt-3">
                                             <button class="btn btn-secondary shadow shadow-md mx-2"
-                                                title="Clique para cancelar as alterações nos comentários"
-                                                data-bs-dismiss="modal">
-                                                <i class="bi bi-x-circle me-2"></i>Cancelar</button>
+                                                data-bs-dismiss="modal"
+                                                title="Clique para cancelar as alterações nos comentários">
+                                                <i class="bi bi-x-circle me-2"></i>Cancelar
+                                            </button>
                                             <button type="submit" class="btn btn-success shadow shadow-md"
                                                 title="Clique para adicionar o comentário nesta tarefa"
-                                                data-bs-dismiss="modal" class="bi bi-check me-2">
-                                                <i class="bi bi-chat-dots me-2"></i>Adicionar</button>
+                                                data-bs-dismiss="modal">
+                                                <i class="bi bi-chat-dots me-2"></i>Adicionar
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -157,25 +175,28 @@
                                     <p class="text-center">Deseja excluir esta tarefa?</p>
                                     <p class="text-center text-warning">A tarefa será perdida para sempre!</p>
                                 </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary shadow shadow-md mx-2"
-                                        title="Clique para cancelar as alterações nos comentários"
-                                        data-bs-dismiss="modal">
-                                        <i class="bi bi-x-circle me-2"></i>Cancelar</button>
 
-                                    <a href="{{ route('task.delete', $task['id']) }}"
+                                <div class="modal-footer">
+                                    <a href="{{ route('taskWithList.show', $list_id) }}"
+                                        title="Clique para cancelar as alterações nos comentários"
+                                        class="btn btn-secondary shadow shadow-md" data-bs-dismiss="modal">
+                                        <i class="bi bi-x-circle me-2"></i>Cancelar</a>
+
+                                    <a href="{{ route('taskWithList.delete', [$list_id, $task['id']]) }}"
                                         class="btn btn-danger shadow shadow-md"
                                         title="Clique para confirmar a exclusão desta tarefa">
-                                        <i class="bi bi-trash me-2"></i>Excluir</a>
+                                        <i class="bi bi-trash me-2"></i>Confirmar</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    @include('partials.task.form_task', [
-                        'route' => 'task.edit',
+                    {{-- inlcude modal edit --}}
+                    @include('partials.tasklist.form_task', [
+                        'route' => 'taskWithList.edit',
                         'modal_id' => 'edit_task-' . $task['id'],
                         'form_title' => 'Editar Tarefa',
+                        'list_id' => $list_id,
                         'task_id' => $task['id'],
                         'name' => $task['name'],
                         'description' => $task['description'],
@@ -195,11 +216,11 @@
     const filter = document.querySelector('#filter')
 
     filter.addEventListener('change', () => {
-        window.location.href = `/task/${filter.value}/filter`
+        window.location.href = `/tasklist/{{ $list_id }}/filter/${filter.value}`
     })
 
     const searchTasks = () => {
         const inputSearch = document.querySelector('#text_search')
-        window.location.href = `/task/${inputSearch.value}/search`
+        window.location.href = `/tasklist/{{ $list_id }}/search/${inputSearch.value}`
     }
 </script>

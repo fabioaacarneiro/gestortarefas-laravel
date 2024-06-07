@@ -3,18 +3,17 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5 text-info" id="taskEditTitle">{{ $form_title }}</h1>
+                <h4 class="modal-title fs-5 text-info" id="taskEditTitle">{{ $form_title }}</h4>
             </div>
-            <div class="p-3 modal-body">
-                <form action="{{ route($route, $task_id) }}" method="POST" id="form-new-edit-post">
+            <div class="modal-body">
+                <form action="{{ route($route, $list_id) }}" method="POST" id="form-new-edit-post">
                     @csrf
                     <input type="hidden" name="id" value="{{ $task_id }}">
                     {{-- task name --}}
                     <div class="mb-3 form-floating">
                         <input type="text" name="name" id="name" class="mb-2 form-control"
                             placeholder="Nome da tarefa" value="{{ old('name', $name) }}">
-                        <label for="name" class="form-label">Nome da
-                            Tarefa</label>
+                        <label for="name" class="form-label">Nome da Tarefa</label>
                         @error('name')
                             <div class="text-warning">
                                 {{ $errors->get('name')[0] }}
@@ -49,30 +48,27 @@
                             </script>
                         @enderror
                     </div>
-                    {{-- task list choice --}}
 
                     {{-- alimentando a lista de tarefas --}}
                     <div hx-get="{{ route('tasklist.get', $task_id) }}" hx-trigger="load"
-                        hx-target="#get-lists-response-{{ $task_id }}" hx-swap="innerHTML">
-
+                        hx-target="#get-lists-response-{{ $task_id }}">
                         <label for="get-lists-response-{{ $task_id }}">Escolha uma lista:</label>
                         @if ($status === 'new')
-                            <select class="form-select" disabled name="list">
-                                <option value="null" selected>
-                                    Sem lista.
+                            <select class="form-select" name="list" disabled>
+                                <option value="{{ $list_id }}" selected>
+                                    {{ $name }}
                                 </option>
                             </select>
                         @else
                             <select class="form-select" id="get-lists-response-{{ $task_id }}" name="list">
+                                {{-- será populado aqui --}}
                             </select>
                         @endif
-                        {{-- serão popupladas --}}
                         </select>
                     </div>
 
-
                     {{-- task status --}}
-                    <label class="mt-3" for="status">Escolha um status:</label>
+                    <label class="mt-3" for="get-lists-response-{{ $task_id }}">Escolha um status:</label>
                     @if ($type == 'edit')
                         <div>
                             <select name="status" id="status" class="form-select">
@@ -105,21 +101,17 @@
                             </select>
                         </div>
                     @endif
-
-                    <hr class="mt-3">
-
-                    {{-- cancel or submit --}}
+                    <hr class="my-3">
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="mx-2 shadow shadow-md btn btn-secondary"
-                            title="Cancele as mudanças" data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle me-2"></i>
-                            Cancelar
+                        <button type="button" class="mx-2 shadow shadow-md btn btn-secondary" data-bs-dismiss="modal"
+                            title="Cancele as mudanças">
+                            <i class="bi bi-x-circle me-2"></i>Cancelar
                         </button>
                         <button type="submit" class="shadow shadow-md btn btn-success" title="Guarde as mudanças">
-                            <i class="bi bi-floppy me-2"></i>
-                            Guardar
+                            <i class="bi bi-floppy me-2"></i>Guardar
                         </button>
                     </div>
+
                 </form>
 
 

@@ -17,7 +17,7 @@ class Login extends Controller
     {
 
         if (Auth::check()) {
-            return redirect()->route('tasklist');
+            return redirect()->route('task.userhome');
         }
 
         if (session()->has("user")) {
@@ -59,7 +59,7 @@ class Login extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('tasklist');
+            return redirect()->route('task.userhome');
         }
 
         // invalid login
@@ -69,7 +69,7 @@ class Login extends Controller
     public function logout()
     {
         if (Auth::check()) {
-            return redirect()->route('tasklist.index');
+            return redirect()->back();
         } else {
             return redirect()->route('login');
         }

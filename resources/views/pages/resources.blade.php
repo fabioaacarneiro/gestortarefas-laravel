@@ -5,12 +5,24 @@
         @include('partials.visitant.nav')
 
         <div class="container-resources py-5">
-            <h3 class="display-4 mb-5 resource-title">Recursos do Projeto</h3>
+            <h3 class="display-4 mb-5 resource-title">Um pouco do que temos... Por enquanto...</h3>
             <ul class="resource-list">
                 <li>
                     <strong>Gamificação:</strong> Ganhe experiência ao concluir tarefas e avance de
                     nível
                     progressivamente.
+                </li>
+                <li>
+                    <strong>Login via Google:</strong> Loge em segundos com poucos cliques usando sua conta de e-mail
+                    Google, é seguro e rápido!.
+                </li>
+                <li>
+                    <strong>Criação de Tarefas:</strong> Crie uma tarefa e de um nome e ou descrição para organizar suas
+                    tarefas, trabalho e o que precisar.
+                </li>
+                <li>
+                    <strong>Desvincular ou vincular uma terefa a uma lista:</strong> Envia suas tarefas para fora de listas
+                    ou para outras listas como desejar.
                 </li>
                 <li>
                     <strong>Criação de Listas de Tarefas:</strong> Crie listas com nome e descrição para organizar suas
@@ -30,6 +42,10 @@
                 <li>
                     <strong>Pesquisa por Texto:</strong> Use o buscador para encontrar tarefas por título, descrição ou
                     situação.
+                </li>
+                <li>
+                    <strong>Filtro por Situação:</strong> Escolha se quer visualizar suas tarefas concluídas, em progresso
+                    ou outro status que preferir.
                 </li>
             </ul>
         </div>

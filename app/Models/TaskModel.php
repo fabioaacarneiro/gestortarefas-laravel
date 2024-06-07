@@ -17,6 +17,7 @@ class TaskModel extends Model
         'status',
         'description',
         'tasklist_id',
+        'user_id',
         'commentary',
         'created_at',
         'updated_at',
