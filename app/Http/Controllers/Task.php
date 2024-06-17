@@ -5,12 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TasklistModel;
 use App\Models\TaskModel;
 use Exception;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-
-use function PHPUnit\Framework\isNull;
 
 class Task extends Controller
 {
@@ -33,10 +29,13 @@ class Task extends Controller
 
         ['lvl' => $lvl, 'exp' => $exp] = Task::getLevelAndExp($amountOfCompletedTasks);
 
-        $tasks = TaskModel::where('tasklist_id', null)
+        $tasks = TaskModel::where('user_id', Auth::user()->id)
+            ->where('tasklist_id', null)
             ->orderBy('created_at', 'DESC')
-            ->take(15)
+            ->take(5)
             ->get();
+
+        // dd($tasks);
 
         $lists = TasklistModel::where('user_id', Auth::user()->id)
             ->orderBy('created_at', 'DESC')
@@ -80,7 +79,7 @@ class Task extends Controller
         // dd($tasklistId, $search);
 
         $tasklist = TasklistModel::where('id', $tasklistId)->first();
-        $tasks = Task::getTasksBySearch(tasklistId: $tasklistId, search: $search);
+        $tasks = Task::getTasksBySearch(userId: Auth::user()->id, tasklistId: $tasklistId, search: $search);
 
         ['lvl' => $lvl, 'exp' => $exp] = Task::getLevelAndExp(Task::getCompletedTasks());
 
@@ -140,9 +139,11 @@ class Task extends Controller
 
         ['lvl' => $lvl, 'exp' => $exp] = Task::getLevelAndExp($amountOfCompletedTasks);
 
+        $tasks = Task::getTasksBySearch(userId: Auth::user()->id, tasklistId: null, search: $filter);
+
         $data = [
             'title' => 'Minhas Tarefas',
-            'tasks' => Task::getTasksBySearch(search: $filter),
+            'tasks' => $tasks,
             'filter' => $filter,
             'user_id' => Auth::user()->id,
             'list_name' => 'Tarefas sem lista',
@@ -438,21 +439,24 @@ class Task extends Controller
     /**
      * get task from database
      */
-    private static function getTasksBySearch($tasklistId = null, $search = 'all')
+    private static function getTasksBySearch($userId = null, $tasklistId = null, $search = 'all')
     {
 
         $tasks = [];
         $allTasks = [];
         // get tasks
+
         if ($search != 'all') {
-            $allTasks = TaskModel::where('tasklist_id', $tasklistId)
+            $allTasks = TaskModel::where('user_id', $userId)
+                ->where('tasklist_id', $tasklistId)
                 ->where(function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%')
                         ->orWhere('description', 'like', '%' . $search . '%')
                         ->orderBy('created_at', 'DESC');
                 })->whereNull('deleted_at')->get();
         } else {
-            $allTasks = TaskModel::where('tasklist_id', $tasklistId)
+            $allTasks = TaskModel::where('user_id', $userId)
+                ->where('tasklist_id', $tasklistId)
                 ->orderBy('created_at', 'DESC')
                 ->whereNull('deleted_at')->get();
         }
@@ -466,6 +470,7 @@ class Task extends Controller
                 'status' => Task::statusName($task['status']),
                 'status_style' => Task::statusBadge($task['status']),
                 'tasklist_id' => $task['tasklist_id'],
+                'user_id' => $task['user_id'],
                 'commentary' => $task['commentary'],
             ];
         }
