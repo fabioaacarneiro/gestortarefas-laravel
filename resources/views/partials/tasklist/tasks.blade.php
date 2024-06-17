@@ -96,11 +96,11 @@
                         <td class="text-center align-middle py-0 my-0">
                             <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-1 my-1">
                                 <div class="mx-auto">
-                                    <button class="navbar-toggler shadow shadow-md btn-sm" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#navbarNav-{{ $task['id'] }}"
-                                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                                        <span class="navbar-toggler-icon"></span>
-                                    </button>
+                                    <span class="shadow shadow-md btn-xs" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#navbarNav-{{ $task['id'] }}" aria-controls="navbarNav"
+                                        aria-expanded="false" aria-label="Toggle navigation">
+                                        <i class="bi bi-list fs-2"></i>
+                                    </span>
                                 </div>
                                 <div class="collapse navbar-collapse" id="navbarNav-{{ $task['id'] }}">
                                     {{-- commentary button --}}
