@@ -1,15 +1,14 @@
-<div class="bg-dark text-white mb-3 shadow container-fluid">
+<div class="bg-dark text-white mb-3 shadow container-fluid ">
     {{-- <div class="container w-100"> --}}
-    <div class="navbar navbar-expand-lg navbar-dark row align-items-center">
+    <div class="navbar navbar-expand-lg navbar-dark row align-items-center pt-2 pb-0">
         <div class="col">
-            <a href="{{ route('task.userhome') }}" class="btn btn-dark"><i class="bi bi-person fs-3 me-1"></i>
+            <a href="{{ route('task.userhome') }}" class="btn btn-dark"><i class="bi bi-person fs-5 me-1"></i>
                 {{ $user_name }}</a>
         </div>
 
         <div class="col-auto">
-            <span class="navbar-toggler shadow shadow-md btn-sm" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNavMain" aria-controls="navbarNav" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <span class=" shadow shadow-md btn-xs" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavMain"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi bi-list fs-2"></i>
             </span>
         </div>
@@ -25,21 +24,20 @@
         </div>
 
         <div class="col-auto">
-            <form action="{{ route('logout.submit') }}" method="post">
+            <form class="py-0" action="{{ route('logout.submit') }}" method="post">
                 @csrf
-                <button type="submit" class="btn btn-outline-danger my-3"><i
-                        class="bi bi-box-arrow-right">Sair</i></button>
+                <button type="submit" class="btn btn-outline-danger"><i class="bi bi-box-arrow-right">Sair</i></button>
             </form>
         </div>
 
 
     </div>
-    <div class="row my-0">
+    <div class="row mb-2">
         <div class="col d-flex justify-content-center">
             <span class="text-success text-center">Nível {{ $user_level }} - {{ $user_experience }}%</span>
         </div>
     </div>
-    <div class="d-lg-none row mb-2">
+    <div class="d-lg-none row mb-2 fs-5">
         <div class="col-sm-12">
             <div class="collapse navbar-collapse" id="navbarNavMain">
                 <hr class="align-itens-center w-75 mx-auto">
