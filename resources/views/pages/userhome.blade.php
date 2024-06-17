@@ -2,7 +2,7 @@
 @section('content')
     @include('partials.main.nav')
     <div class="row mx-2 mb-auto">
-        <div class="col col-6">
+        <div class="col col-md-6 col-sm-12 mb-4">
             <ul class="list-group">
                 <li class="text-white list-group-item text-center">
                     <div class="d-flex justify-content-evenly">
@@ -39,7 +39,7 @@
                 @endif
             </ul>
         </div>
-        <div class="col col-6">
+        <div class="col col-md-6 col-sm-12 mb-4">
             <ul class="list-group">
                 <li class="text-white list-group-item text-center">
                     <div class="d-flex justify-content-evenly">
