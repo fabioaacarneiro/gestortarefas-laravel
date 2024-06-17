@@ -7,7 +7,7 @@
         </div>
 
         <div class="col-auto">
-            <span class="shadow shadow-md btn-xs" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavMain"
+            <span class="d-lg-none m-0 p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavMain"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi bi-list fs-2"></i>
             </span>
