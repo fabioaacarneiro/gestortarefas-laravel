@@ -76,8 +76,6 @@ class Task extends Controller
             return redirect()->route('login');
         }
 
-        // dd($tasklistId, $search);
-
         $tasklist = TasklistModel::where('id', $tasklistId)->first();
         $tasks = Task::getTasksBySearch(userId: Auth::user()->id, tasklistId: $tasklistId, search: $search);
 
@@ -86,7 +84,7 @@ class Task extends Controller
         $data = [
             'title' => 'Minhas Tarefas',
             'tasks' => $tasks,
-            // 'filter' => $filter,
+            'filter' => $search,
             'user_id' => Auth::user()->id,
             'list_id' => $tasklistId,
             'list_name' => $tasklist->name,
@@ -407,12 +405,14 @@ class Task extends Controller
 
         if ($filter != 'all') {
             $allTasks = TaskModel::where('tasklist_id', $tasklist_id)
+                ->where('user_id', Auth::user()->id)
                 ->where('status', $filter)
                 ->orderBy('created_at', 'DESC')
                 ->whereNull('deleted_at')
                 ->get();
         } else {
             $allTasks = TaskModel::where('tasklist_id', $tasklist_id)
+                ->where('user_id', Auth::user()->id)
                 ->orderBy('created_at', 'DESC')
                 ->whereNull('deleted_at')
                 ->get();
