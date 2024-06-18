@@ -50,9 +50,9 @@
                 </li>
                 @if (sizeof($lists) > 0)
                     @foreach ($lists as $list)
-                        <li class="text-info list-group-item list-group-item-action" data-bs-toggle="modal"
+                        <a class="text-info list-group-item list-group-item-action" data-bs-toggle="modal"
                             data-bs-target="#list-resume-{{ $list->id }}">
-                            <a class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between">
                                 <div class="text-info text-start text-truncate col-6">{{ $list->name }}</div>
                                 @if (isset($list->description))
                                     <div class="text-white text-truncate col-4 text-end">{{ $list->description }}
@@ -60,8 +60,8 @@
                                 @else
                                     <div class="text-light text-end"><em>Sem descrição.</em></div>
                                 @endif
-                            </a>
-                        </li>
+                            </div>
+                        </a>
                         @include('partials.tasklist.modal_list_resume', [
                             'modal_id' => 'list-resume-' . $list->id,
                             'form_title' => 'Resumo da lista de tarefas',
