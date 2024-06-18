@@ -5,7 +5,7 @@
         @include('partials.visitant.nav')
 
         <div class="login-wrapper card">
-            <div class="login-box p-3 rounded-4  shadow shadow-lg">
+            <div class="login-box p-3 rounded-3 shadow shadow-lg w-75">
                 <div class="container-logo-ramtask">
                     <img id="" class="logo-ramtask" src="{{ asset('assets/img/small/ram-logo-dark-theme.png') }}"
                         alt="ramtask logo">
@@ -38,12 +38,14 @@
 
                     {{-- link button to signup --}}
                     <div class="d-grid my-2">
-                        <a class="btn btn-info " href="{{ route('signup') }}">Criar uma conta <i class="bi bi-person-check-fill"></i></a>
+                        <a class="btn btn-info " href="{{ route('signup') }}">Criar uma conta <i
+                                class="bi bi-person-check-fill"></i></a>
                     </div>
 
                     {{-- link button to loggin with google --}}
                     <div class="d-grid">
-                        <a href="{{ $authUrl }}" class="btn btn-light text-dark">Continue com Google <i class="bi bi-google"></i></a>
+                        <a href="{{ $authUrl }}" class="btn btn-light text-dark">Continue com Google <i
+                                class="bi bi-google"></i></a>
                     </div>
 
                     {{-- erro throws --}}
