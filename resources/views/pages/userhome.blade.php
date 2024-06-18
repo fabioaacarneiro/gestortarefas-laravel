@@ -13,7 +13,7 @@
                 </li>
                 @if (sizeof($tasks) > 0)
                     @foreach ($tasks as $task)
-                        <li class="text-info list-group-item list-group-item-action" data-bs-toggle="modal"
+                        <a class="text-info list-group-item list-group-item-action" data-bs-toggle="modal"
                             data-bs-target="#task-resume-{{ $task->id }}">
                             <div class="d-flex justify-content-between">
                                 <div class="text-info text-start text-truncate col-6">{{ $task->name }}</div>
@@ -24,7 +24,7 @@
                                     <div class="text-light text-end"><em>Sem descrição.</em></div>
                                 @endif
                             </div>
-                        </li>
+                        </a>
                         @include('partials.task.modal_task_resume', [
                             'modal_id' => 'task-resume-' . $task->id,
                             'form_title' => 'Resumo da tarefa',
@@ -52,7 +52,7 @@
                     @foreach ($lists as $list)
                         <li class="text-info list-group-item list-group-item-action" data-bs-toggle="modal"
                             data-bs-target="#list-resume-{{ $list->id }}">
-                            <div class="d-flex justify-content-between">
+                            <a class="d-flex justify-content-between">
                                 <div class="text-info text-start text-truncate col-6">{{ $list->name }}</div>
                                 @if (isset($list->description))
                                     <div class="text-white text-truncate col-4 text-end">{{ $list->description }}
@@ -60,7 +60,7 @@
                                 @else
                                     <div class="text-light text-end"><em>Sem descrição.</em></div>
                                 @endif
-                            </div>
+                            </a>
                         </li>
                         @include('partials.tasklist.modal_list_resume', [
                             'modal_id' => 'list-resume-' . $list->id,
