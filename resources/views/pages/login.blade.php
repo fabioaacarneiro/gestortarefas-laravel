@@ -5,7 +5,7 @@
         @include('partials.visitant.nav')
 
         <div class="login-wrapper card">
-            <div class="login-box p-3 rounded-3 shadow shadow-lg w-75">
+            <div class="login-box p-3 rounded-3 shadow shadow-lg">
                 <div class="container-logo-ramtask">
                     <img id="" class="logo-ramtask" src="{{ asset('assets/img/small/ram-logo-dark-theme.png') }}"
                         alt="ramtask logo">
