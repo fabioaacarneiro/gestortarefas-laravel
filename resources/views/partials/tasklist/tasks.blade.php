@@ -78,47 +78,44 @@
         <table class="table table-dark table-striped-columns w-100 shadow shadow-md" id="table_tasks">
             <thead class="table-outline-dark">
                 <tr>
-                    <th class="w-75 text-center">Tarefas</th>
-                    <th class="w-20 text-center">Status</th>
-                    <th class="text-center">Opções</th>
+                    <th class="w-100 px-3 text-center">Tarefas</th>
+                    <th class="w-auto px-3 text-center">Status</th>
+                    <th class="w-auto px-3 text-center">Opções</th>
                 </tr>
             </thead>
             <tbody class="text-light table-group-divider">
                 @foreach ($tasks as $task)
                     <tr>
-                        <td>
-                            <p class="task-title" title="Título da tarefa.">{{ $task['name'] }}</p>
-                            <p class="opacity-75" title="Descrição da tarefa.">{{ $task['description'] }}</p>
+                        <td class="p-1">
+                            <p class="m-2 mb-0 task-title" title="Título da tarefa.">{{ $task['name'] }}</p>
+                            <p class="m-2 mt-0 opacity-75" title="Descrição da tarefa.">{{ $task['description'] }}</p>
                         </td>
-                        <td class="text-center align-middle">
-                            <span class="{{ $task['status_style'] }} fs-6 shadow shadow-md">{{ $task['status'] }}</span>
+                        <td class="text-center align-middle p-0">
+                            <span
+                                class="mx-2 {{ $task['status_style'] }} fs-6 shadow shadow-md">{{ $task['status'] }}</span>
                         </td>
-                        <td class="d-flex justify-content-around text-center">
-                            <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
-                                <div class="mx-auto">
-                                    <span class="d-lg-none" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#navbarNav-{{ $task['id'] }}" aria-controls="navbarNav"
-                                        aria-expanded="false" aria-label="Toggle navigation">
-                                        <i class="bi bi-list fs-2"></i>
-                                    </span>
-                                </div>
-                                <div class="collapse d-lg-block m-0" id="navbarNav-{{ $task['id'] }}">
-                                    {{-- commentary button --}}
-                                    <a class="btn btn-primary shadow shadow-md" title="Comentários"
-                                        data-bs-toggle="modal" data-bs-target="#modalCommentary-{{ $task['id'] }}"><i
-                                            class="bi bi-chat-right-dots-fill"></i></a>
+                        <td class="align-middle text-center px-auto">
+                            <span class="mx-auto" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarNav-{{ $task['id'] }}" aria-controls="navbarNav"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <i class="bi bi-list fs-2"></i>
+                            </span>
+                            <div class="collapse p-0 m-0" id="navbarNav-{{ $task['id'] }}">
+                                {{-- commentary button --}}
+                                <hr class="w-50 mx-auto mt-0 mb-3">
+                                <a class="btn btn-primary shadow shadow-md" title="Comentários" data-bs-toggle="modal"
+                                    data-bs-target="#modalCommentary-{{ $task['id'] }}"><i
+                                        class="bi bi-chat-right-dots-fill"></i></a>
 
-                                    {{-- edit button --}}
-                                    <a class="btn btn-secondary shadow shadow-md m-1" title="Editar"
-                                        data-bs-toggle="modal" data-bs-target="#edit_task-{{ $task['id'] }}"><i
-                                            class="bi bi-pencil"></i></a>
+                                {{-- edit button --}}
+                                <a class="btn btn-secondary shadow shadow-md my-3" title="Editar" data-bs-toggle="modal"
+                                    data-bs-target="#edit_task-{{ $task['id'] }}"><i class="bi bi-pencil"></i></a>
 
-                                    {{-- delete button --}}
-                                    <a class="btn btn-danger shadow shadow-md" title="Excluir" data-bs-toggle="modal"
-                                        data-bs-target="#modalDeleteConfirm-{{ $task['id'] }}"><i
-                                            class="bi bi-trash"></i></a>
-                                </div>
-                            </nav>
+                                {{-- delete button --}}
+                                <a class="btn btn-danger shadow shadow-md mb-2" title="Excluir" data-bs-toggle="modal"
+                                    data-bs-target="#modalDeleteConfirm-{{ $task['id'] }}"><i
+                                        class="bi bi-trash"></i></a>
+                            </div>
                         </td>
                     </tr>
 
