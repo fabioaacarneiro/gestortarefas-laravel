@@ -7,19 +7,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.login-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.login-box {
-    background: #4f4f4f;
-    min-width: 300px;
-    max-width: 550px;
-    /* max-width: 600px; */
-}
 
 .main-content {
     height: 100vh;
