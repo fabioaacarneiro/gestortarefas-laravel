@@ -24,13 +24,31 @@
 <script>
     // A lógica agora será carregada apenas quando o modal for mostrado
     document.getElementById('modalTaskChronometer_{{ $task['id'] }}_{{ $list_id }}').addEventListener('show.bs.modal', function () {
-        // ID único do modal da tarefa
-        const modalTaskId = "{{ $modal_id }}";
+        const taskId = "{{ $task['id'] }}";
+        const url = `{{ route('getTaskTime') }}?task_id=${taskId}`;
 
+        axios.get(url, {
+            headers: {
+                'Accept': 'application/json',
+            }
+        })
+        .then(response => {
+            const taskData = response.data;
+
+            // Recupera o tempo armazenado no banco
+            const dbElapsedTime = taskData.data.elapsed_time; // Tempo do banco
+            const dbRunningState = taskData.data.is_running;  // Estado de execução do banco
+
+            // Sincroniza o localStorage com o banco
+            synchronizeTime(dbElapsedTime, dbRunningState);
+        })
+        .catch(error => {
+            console.error('Erro ao fazer requisição:', error.response ? error.response.data : error.message);
+        });
+
+        const modalTaskId = "{{ $modal_id }}";
         let elapsedDisplay = document.getElementById(`timerDisplay_${modalTaskId}`);
         let runningTaskKey = `runningTaskId_${modalTaskId}`;
-
-        // Botões
         const playButton = document.getElementById(`playButton_${modalTaskId}`);
         const pauseButton = document.getElementById(`pauseButton_${modalTaskId}`);
         const stopButton = document.getElementById(`stopButton_${modalTaskId}`);
@@ -40,20 +58,44 @@
         let elapsedTime = 0;
         let startTime = 0;
 
-        // Recupera o estado do cronômetro ao carregar o modal
-        function loadState() {
+        // Função para sincronizar o tempo entre localStorage e o banco de dados
+        function synchronizeTime(dbElapsedTime, dbRunningState) {
             const savedTime = localStorage.getItem(`elapsedTime_${modalTaskId}`);
             const savedRunningState = localStorage.getItem(`isRunning_${modalTaskId}`);
-            const currentRunningTask = localStorage.getItem(runningTaskKey);
 
             if (savedTime) {
                 elapsedTime = parseInt(savedTime);
-                updateDisplay();
             }
 
-            if (savedRunningState === 'true') {
-                startTimer();  // Retorna ao estado de execução
+            // Se o tempo do localStorage for maior que o do banco, envia para o banco
+            if (elapsedTime > dbElapsedTime) {
+                updateDatabase(elapsedTime);
+            } else {
+                // Se o tempo do banco for maior, atualiza o localStorage
+                localStorage.setItem(`elapsedTime_${modalTaskId}`, dbElapsedTime);
+                elapsedTime = dbElapsedTime;
             }
+
+            // Ajusta o estado do cronômetro
+            if (savedRunningState === 'true' || dbRunningState === 1) {
+                startTimer();
+            }
+
+            updateDisplay();
+        }
+
+        // Função para atualizar o banco de dados com o tempo
+        function updateDatabase(elapsedTime) {
+            const updateUrl = `{{ route('updateTaskTime') }}?task_id=${taskId}&elapsed_time=${elapsedTime}`;
+
+            axios.post(updateUrl, { 
+                    task_id: taskId,
+                    elapsed_time: elapsedTime,
+                    is_running: isRunning
+                })
+                .catch(error => {
+                    console.error('Erro ao atualizar o tempo no banco:', error.response ? error.response.data : error.message);
+                });
         }
 
         // Função para atualizar o display do cronômetro
@@ -74,21 +116,18 @@
             if (!isRunning) {
                 const currentRunningTask = localStorage.getItem(runningTaskKey);
                 if (currentRunningTask && currentRunningTask !== modalTaskId) {
-                    pauseTimer();  // Pausa outro cronômetro se ele estiver rodando
+                    pauseTimer();
                 }
 
-                // Marca este cronômetro como rodando
                 localStorage.setItem(runningTaskKey, modalTaskId);
-
                 isRunning = true;
-                startTime = Date.now() - elapsedTime * 1000; // Ajusta o tempo inicial
+                startTime = Date.now() - elapsedTime * 1000;
                 timer = setInterval(function() {
-                    elapsedTime = Math.floor((Date.now() - startTime) / 1000);  // Atualiza o tempo
+                    elapsedTime = Math.floor((Date.now() - startTime) / 1000);
                     updateDisplay();
                     saveState();
                 }, 1000);
 
-                // Atualiza os botões
                 playButton.disabled = true;
                 pauseButton.disabled = false;
                 stopButton.disabled = false;
@@ -104,24 +143,22 @@
                 pauseButton.disabled = true;
                 stopButton.disabled = false;
                 saveState();
-                localStorage.setItem(runningTaskKey, '');  // Remove a tarefa do "running"
+                localStorage.setItem(runningTaskKey, '');
             }
         }
 
         // Função para parar o cronômetro
         function stopTimer() {
             if (isRunning) {
-                clearInterval(timer);  // Para o cronômetro
+                clearInterval(timer);
             }
-
-            alert("Tempo total: " + elapsedDisplay.textContent);
             elapsedTime = 0;
             updateDisplay();
             playButton.disabled = false;
             pauseButton.disabled = true;
             stopButton.disabled = true;
             saveState();
-            localStorage.setItem(runningTaskKey, '');  // Remove a tarefa do "running"
+            localStorage.setItem(runningTaskKey, '');
         }
 
         // Adiciona os eventos aos botões
@@ -132,12 +169,10 @@
         // Inicializa o display do cronômetro
         updateDisplay();
 
-        // Carrega o estado do cronômetro ao abrir o modal
-        loadState();
-
         // Quando o modal for fechado, limpamos a lógica
         document.getElementById('modalTaskChronometer_{{ $task['id'] }}_{{ $list_id }}').addEventListener('hidden.bs.modal', function () {
-            clearInterval(timer);  // Remove qualquer intervalo em execução
+            clearInterval(timer);
         });
     });
+
 </script>
