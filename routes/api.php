@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Tasklist;
+use App\Http\Controllers\TaskApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::controller(TaskApi::class)->group(function () {
+    Route::post('/task/update-time', 'updateTaskTime')->name('updateTaskTime');
+    Route::get('/task/get-time', 'getTaskTime')->name('getTaskTime');
 });
