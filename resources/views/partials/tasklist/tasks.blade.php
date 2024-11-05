@@ -92,15 +92,19 @@
                         <i class="bi bi-list fs-2"></i>
                     </span>
                     <div class="collapse p-0 m-0" id="navbarNav-{{ $task['id'] }}">
-                        {{-- commentary button --}}
-                        <hr class="w-50 mx-auto mt-0 mb-3">
-                        <a class="btn btn-primary shadow shadow-md" title="Comentários" data-bs-toggle="modal" data-bs-target="#modalCommentary-{{ $task['id'] }}"><i class="bi bi-chat-right-dots-fill"></i></a>
+                        <div class="btn-group-vertical">
+                            {{-- stopwatch button --}}
+                            <a class="btn btn-success shadow shadow-md mt-3" title="iniciar cronmêtro" data-bs-toggle="modal" data-bs-target="#modalTaskChronometer_{{ $task['id'] }}_{{ $list_id }}"><i class="bi bi-stopwatch"></i></a>
 
-                        {{-- edit button --}}
-                        <a class="btn btn-secondary shadow shadow-md my-3" title="Editar" data-bs-toggle="modal" data-bs-target="#edit_task-{{ $task['id'] }}"><i class="bi bi-pencil"></i></a>
+                            {{-- commentary button --}}
+                            <a class="btn btn-primary shadow shadow-md" title="Comentários" data-bs-toggle="modal" data-bs-target="#modalCommentary-{{ $task['id'] }}"><i class="bi bi-chat-dots"></i></a>
 
-                        {{-- delete button --}}
-                        <a class="btn btn-danger shadow shadow-md mb-2" title="Excluir" data-bs-toggle="modal" data-bs-target="#modalDeleteConfirm-{{ $task['id'] }}"><i class="bi bi-trash"></i></a>
+                            {{-- edit button --}}
+                            <a class="btn btn-secondary shadow shadow-md" title="Editar" data-bs-toggle="modal" data-bs-target="#edit_task-{{ $task['id'] }}"><i class="bi bi-pencil"></i></a>
+
+                            {{-- delete button --}}
+                            <a class="btn btn-danger shadow shadow-md mb-3" title="Excluir" data-bs-toggle="modal" data-bs-target="#modalDeleteConfirm-{{ $task['id'] }}"><i class="bi bi-trash"></i></a>
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -162,17 +166,26 @@
                 </div>
             </div>
 
+            {{-- include modal stopwatch --}}
+            @include('partials.tasklist.modal_stopwatch_task',[
+                'modal_id' => 'modalTaskChronometer_' . $task['id'] . '_' . $list_id,
+                'modal_title' => 'Cronomêtro de tarefa',
+                'list_id' => $list_id,
+                'task_id' => $task['id'],
+                'name' => $task['name'],
+            ])
+
             {{-- inlcude modal edit --}}
             @include('partials.tasklist.form_task', [
-            'route' => 'taskWithList.edit',
-            'modal_id' => 'edit_task-' . $task['id'],
-            'form_title' => 'Editar Tarefa',
-            'list_id' => $list_id,
-            'task_id' => $task['id'],
-            'name' => $task['name'],
-            'description' => $task['description'],
-            'status' => $task['status'],
-            'type' => 'edit',
+                'route' => 'taskWithList.edit',
+                'modal_id' => 'edit_task-' . $task['id'],
+                'form_title' => 'Editar Tarefa',
+                'list_id' => $list_id,
+                'task_id' => $task['id'],
+                'name' => $task['name'],
+                'description' => $task['description'],
+                'status' => $task['status'],
+                'type' => 'edit',
             ])
             @endforeach
 
