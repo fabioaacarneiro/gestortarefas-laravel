@@ -22,6 +22,9 @@
 
         <script src="{{ asset('assets/bootstrap/bootstrap.bundle.min.js') }}"></script>
     </main>
+    
+    <!-- Incluir Axios via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{ asset('assets/scripts/script.js') }}"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 </body>
