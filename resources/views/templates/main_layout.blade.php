@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap/bootstrap.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Font Awesome via CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
 </head>
 
 <body>
