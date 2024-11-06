@@ -2,7 +2,6 @@
 @import "fonts.css";
 
 body {
-    background-color: #202020;
     color: #fff;
     font-family: Arial, sans-serif;
 }
@@ -39,9 +38,9 @@ body {
     width: var(--navbar-logo-size);
 }
 
-main {
+/* main {
     background: #222222;
-}
+} */
 
 .img-examples {
     display: flex;

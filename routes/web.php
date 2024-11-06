@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Login;
 use App\Http\Controllers\Main;
+use App\Http\Controllers\ProjectReport;
 use App\Http\Controllers\SignUp;
 use App\Http\Controllers\Task;
 use App\Http\Controllers\Tasklist;
@@ -71,3 +72,5 @@ Route::controller(Main::class)->group(function () {
     Route::get('/contact', 'contact')->name('contact');
     Route::get('/about_developer', 'developer')->name('developer');
 });
+
+Route::get('/download/pdf', [ProjectReport::class, 'downloadPDF'])->name('downloadPDF');
