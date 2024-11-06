@@ -7,9 +7,9 @@
 
         <h4 class="text-info"> {{ $list_name }} -
             @if (isset($list_description))
-            <em class="text-light">{{ $list_description }}</em>
+                <em class="text-light">{{ $list_description }}</em>
             @else
-            <em class="text-light">Sem descrição</em>
+                <em class="text-light">Sem descrição</em>
             @endif
         </h4>
         @endif
@@ -17,14 +17,14 @@
 
         <div class="row py-1 mb-3 bg-dark shadow rounded-4">
 
-            <div class="col-12 col-lg-5 col-md-6 col-sm-6">
+            <div class="col-12 col-lg-4 col-md-4 col-sm-6">
                 <div class="row input-group justify-content-between ms-0 my-2 ">
                     <input type="text" name="text_search" id="text_search" class="col-md form-control " placeholder="Pesquisar">
                     <button type="submit" class="col-auto btn btn-outline-primary" onclick="searchTasks()"><i class="bi bi-search"></i></button>
                 </div>
             </div>
 
-            <div class="col-12 col-lg-5 col-md-3 col-sm-3">
+            <div class="col-12 col-lg-4 col-md-auto col-sm-3">
                 <select name="filter" id="filter" class="form-select my-2">
                     <option value="all" @php echo (!empty($filter) && $filter=='all' ) ? 'selected' : '' @endphp>
                         Todos
@@ -41,8 +41,9 @@
                 </select>
             </div>
 
-            <div class="col-12 col-lg-2 col-md-3 col-sm-3">
-                <button type="button" class="btn btn-outline-info my-2 w-100" data-bs-toggle="modal" data-bs-target="#new_task">
+            {{-- new task button --}}
+            <div class="col-12 col-lg-2 col-md-2 col-sm-3">
+                <button type="button" class="btn btn-info my-2 w-100" data-bs-toggle="modal" data-bs-target="#new_task">
                     <i class="bi bi-plus-circle"></i>
                     <span class="hidden-md">Nova</span>
                 </button>
@@ -59,8 +60,24 @@
                 'status' => 'new',
                 'type' => 'new',
                 ])
+            </div>
+
+            {{-- project report button --}}
+            <div class="col-12 col-lg-2 col-md-3 col-sm-3">
+                <button type="button" class="btn btn-primary my-2 w-100" data-bs-toggle="modal" data-bs-target="#project_report_list">
+                    <i class="fa-regular fa-file-pdf"></i>
+                    <span class="hidden-md">Relatório</span>
+                </button>
+
+                @include('partials.tasklist.form_project_report', [
+                'route' => '',
+                'modal_id' => 'project_report_list',
+                'form_title' => 'Gerar Relatório',
+                'list_id' => $list_id,
+                ])
 
             </div>
+
         </div>
     </div>
 
