@@ -38,9 +38,33 @@
 <script>
     // A lógica agora será carregada apenas quando o modal for mostrado
     document.getElementById("{{ $modal_id }}").addEventListener('show.bs.modal', function () {
-        const taskId = "{{ $task['id'] }}";
+
+        const modalTaskId = "{{ $modal_id }}";
+        const listName = "{{ $list_name }}"
+        const listId = "{{ $list_id }}"
+        const taskName = "{{ $task_name }}"
+        const taskId = "{{ $task_id }}"
+        const taskIdentity = `${listName}_${taskName}_${listId}_${taskId}`
+
         const url = `{{ route('getTaskTime') }}?task_id=${taskId}`;
 
+        let elapsedDisplay = document.getElementById(`timerDisplay_${modalTaskId}`);
+        let runningTaskKey = `runningTaskId_${modalTaskId}`;
+
+        const playButton = document.getElementById(`playButton_${modalTaskId}`);
+        const pauseButton = document.getElementById(`pauseButton_${modalTaskId}`);
+        const editTimerButton = document.getElementById("editTimer_{{ $modal_id }}")
+        const updateTimeContainer = document.getElementById("updateTimeContainer_{{ $modal_id }}")
+        const inputTimerDisplay = document.getElementById("inputTimerDisplay_{{ $modal_id }}")
+        const updateTimeButton = document.getElementById("updateTimeButton_{{ $modal_id }}")
+        const cancelUpdateTimeButton = document.getElementById("cancelUpdateTimeButton_{{ $modal_id }}")
+        
+        let timer;
+        let isRunning = false;
+        let elapsedTime = 0;
+        let startTime = 0;
+
+        // atualizar com o banco de dados
         axios.get(url, {
             headers: {
                 'Accept': 'application/json',
@@ -59,29 +83,6 @@
         .catch(error => {
             console.error('Erro ao fazer requisição:', error.response ? error.response.data : error.message);
         });
-
-        const modalTaskId = "{{ $modal_id }}";
-        const listName = "{{ $list_name }}"
-        const listID = "{{ $list_id }}"
-        const taskName = "{{ $task_name }}"
-        const taskID = "{{ $task_id }}"
-        const taskIdentity = `${listName}_${taskName}_${listID}_${taskID}`
-
-        let elapsedDisplay = document.getElementById(`timerDisplay_${modalTaskId}`);
-        let runningTaskKey = `runningTaskId_${modalTaskId}`;
-        const playButton = document.getElementById(`playButton_${modalTaskId}`);
-        const pauseButton = document.getElementById(`pauseButton_${modalTaskId}`);
-        const editTimerButton = document.getElementById("editTimer_{{ $modal_id }}")
-        const updateTimeContainer = document.getElementById("updateTimeContainer_{{ $modal_id }}")
-        const inputTimerDisplay = document.getElementById("inputTimerDisplay_{{ $modal_id }}")
-        const updateTimeButton = document.getElementById("updateTimeButton_{{ $modal_id }}")
-        const cancelUpdateTimeButton = document.getElementById("cancelUpdateTimeButton_{{ $modal_id }}")
-        
-
-        let timer;
-        let isRunning = false;
-        let elapsedTime = 0;
-        let startTime = 0;
 
         // Função para sincronizar o tempo entre localStorage e o banco de dados
         function synchronizeTime(dbElapsedTime, dbRunningState) {
@@ -135,7 +136,7 @@
 
         // Função para salvar o estado do cronômetro no localStorage
         function saveState() {
-            const runningTask = `${listName}_${taskName}_${listID}_${taskID}`
+            const runningTask = `${listName}_${taskName}_${listId}_${taskId}`
             localStorage.setItem(`elapsedTime_${modalTaskId}`, elapsedTime);
             localStorage.setItem('running_task', runningTask);
         }
