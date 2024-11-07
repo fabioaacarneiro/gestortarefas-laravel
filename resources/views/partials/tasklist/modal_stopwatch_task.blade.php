@@ -51,13 +51,16 @@
         let elapsedDisplay = document.getElementById(`timerDisplay_${modalTaskId}`);
         let runningTaskKey = `runningTaskId_${modalTaskId}`;
 
-        const playButton = document.getElementById(`playButton_${modalTaskId}`);
+        const playButton = document.getElementById("playButton_{{ $modal_id }}");
         const pauseButton = document.getElementById(`pauseButton_${modalTaskId}`);
         const editTimerButton = document.getElementById("editTimer_{{ $modal_id }}")
         const updateTimeContainer = document.getElementById("updateTimeContainer_{{ $modal_id }}")
         const inputTimerDisplay = document.getElementById("inputTimerDisplay_{{ $modal_id }}")
         const updateTimeButton = document.getElementById("updateTimeButton_{{ $modal_id }}")
         const cancelUpdateTimeButton = document.getElementById("cancelUpdateTimeButton_{{ $modal_id }}")
+
+        const actualTaskRunningContainer = document.getElementById("actual_task_running_container")
+        const actualTaskRunningMessage = document.getElementById("actual_task_running_message")
         
         let timer;
         let isRunning = false;
@@ -95,7 +98,7 @@
 
             // Se o tempo do localStorage for maior que o do banco, envia para o banco
             if (elapsedTime > dbElapsedTime) {
-                updateDatabase(elapsedTime);
+                updateDatabase(elapsedTime, dbRunningState);
             } else {
                 // Se o tempo do banco for maior, atualiza o localStorage
                 localStorage.setItem(`elapsedTime_${modalTaskId}`, dbElapsedTime);
@@ -111,13 +114,14 @@
         }
 
         // Função para atualizar o banco de dados com o tempo
-        function updateDatabase(elapsedTime) {
+        function updateDatabase(elapsedTime, isRunning) {
             const updateUrl = `{{ route('updateTaskTime') }}?task_id=${taskId}&elapsed_time=${elapsedTime}`;
 
             console.log(`isRunning value: ${isRunning}`)
 
             axios.post(updateUrl, { 
                     task_id: taskId,
+                    list_id: listId,
                     elapsed_time: elapsedTime,
                     is_running: isRunning
                 })
@@ -166,10 +170,21 @@
 
         // Função para iniciar o cronômetro
         function startTimer() {
+            console.log('startTimer')
             if (!isRunning) {
+
+                if(actual_task_running_container) {
+                    actualTaskRunningContainer.style.display = 'flex'
+                    actualTaskRunningMessage.innerHTML = `<span class="bg-success py-1 pe-2 rounded" id="btnMessageRunningTask"><i class="bi bi-stopwatch ms-2 me-1"></i><em><strong>${taskName}</strong> da lista <strong>${listName}</strong></em></span>`
+                }
+
+                const localCurrentTime = localStorage.getItem(`elapsedTime_${modalTaskId}`)
+                updateDatabase(localCurrentTime, true)
+                
                 // Verifica se já existe outro cronômetro em execução
                 if (existAnotherRunningTask()) {
-
+                    
+                    updateDatabase(localCurrentTime, false)
                     console.log(getRunningTaskName())
                     const [listNameRunning, taskNameRunning] = getRunningTaskName()
 
@@ -184,17 +199,17 @@
                     // Intervalo para reduzir o timeLess
                     let countDownMessageTimer = setInterval(function() {
                         // Atualiza a mensagem com o tempo restante
-                        messageContainer.innerHTML = `<div id="messageError_{{ $modal_id }}">`
-                            + `<p class="text-center text-danger">`
-                            + `Existe uma tarefa em execução neste momento`
-                            + `</p>`
-                            + `<p class="text-center">`
-                            + `A tarefa <strong><em>${taskNameRunning}</em></strong> da lista <strong><em>${listNameRunning}</em></strong> está em execução agora.`
-                            + `</p>`
-                            + `<p class="text-center text-danger">`
-                            + `saindo... ${timeLess}`
-                            + `</p>`
-                            + `</div>`
+                        messageContainer.innerHTML = `<div id="messageError_{{ $modal_id }}">
+                            <p class="text-center text-danger">
+                            Existe uma tarefa em execução neste momento
+                            </p>
+                            <p class="text-center">
+                            A tarefa <strong><em>${taskNameRunning}</em></strong> da lista <strong><em>${listNameRunning}</em></strong> está em execução agora.
+                            </p>
+                            <p class="text-center text-danger">
+                            saindo... ${timeLess}
+                            </p>
+                            </div>`
                                         
                         timeLess--;  // Decrementa o tempo
 
@@ -209,7 +224,7 @@
                 }
 
                 // Marca este cronômetro como o em execução
-                localStorage.setItem("running_task", modalTaskId);
+                localStorage.setItem("running_task", taskIdentity);
                 isRunning = true;
                 startTime = Date.now() - elapsedTime * 1000;
                 timer = setInterval(function() {
@@ -227,6 +242,13 @@
         // Função para pausar o cronômetro
         function pauseTimer() {
             if (isRunning) {
+                
+                actualTaskRunningContainer.setAttribute('style', 'display:none !important')
+                actualTaskRunningMessage.innerHTML = ``
+                
+                const localCurrentTime = localStorage.getItem(`elapsedTime_${modalTaskId}`)
+                updateDatabase(localCurrentTime, false)
+                
                 clearInterval(timer);
                 isRunning = false;
                 playButton.disabled = false;
