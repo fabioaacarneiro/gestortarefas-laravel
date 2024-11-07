@@ -188,8 +188,9 @@
                 'modal_id' => 'modalTaskChronometer_' . $task['id'] . '_' . $list_id,
                 'modal_title' => 'Cronomêtro de tarefa',
                 'list_id' => $list_id,
+                'list_name' => $list_name,
                 'task_id' => $task['id'],
-                'name' => $task['name'],
+                'task_name' => $task['name'],
             ])
 
             {{-- inlcude modal edit --}}

@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="text-info"><strong>{{ $list_name }}</strong> - <em>{{ $name }}</em></h4>
+                <h4 class="text-info"><strong>{{ $list_name }}</strong> - <em>{{ $task_name }}</em></h4>
                 <button id="editTimer_{{ $modal_id }}" class="btn btn-secondary btn-lg"><i class="fas fa-pencil"></i></button>
             </div>
             <div class="p-3 modal-body">
@@ -61,6 +61,12 @@
         });
 
         const modalTaskId = "{{ $modal_id }}";
+        const listName = "{{ $list_name }}"
+        const listID = "{{ $list_id }}"
+        const taskName = "{{ $task_name }}"
+        const taskID = "{{ $task_id }}"
+        const taskIdentity = `${listName}_${taskName}_${listID}_${taskID}`
+
         let elapsedDisplay = document.getElementById(`timerDisplay_${modalTaskId}`);
         let runningTaskKey = `runningTaskId_${modalTaskId}`;
         const playButton = document.getElementById(`playButton_${modalTaskId}`);
@@ -70,6 +76,7 @@
         const inputTimerDisplay = document.getElementById("inputTimerDisplay_{{ $modal_id }}")
         const updateTimeButton = document.getElementById("updateTimeButton_{{ $modal_id }}")
         const cancelUpdateTimeButton = document.getElementById("cancelUpdateTimeButton_{{ $modal_id }}")
+        
 
         let timer;
         let isRunning = false;
@@ -128,8 +135,9 @@
 
         // Função para salvar o estado do cronômetro no localStorage
         function saveState() {
+            const runningTask = `${listName}_${taskName}_${listID}_${taskID}`
             localStorage.setItem(`elapsedTime_${modalTaskId}`, elapsedTime);
-            localStorage.setItem(`isRunning_${modalTaskId}`, isRunning);
+            localStorage.setItem('running_task', runningTask);
         }
 
         // Função para verificar se algum outro cronômetro está em execução
@@ -137,10 +145,22 @@
             const currentRunningTask = localStorage.getItem("running_task");
             console.log(`currentRunningTask: ${currentRunningTask}`)
             console.log(`currentTask: ${modalTaskId}`)
-            if (currentRunningTask && currentRunningTask !== modalTaskId) {
+            if (currentRunningTask && currentRunningTask !== taskIdentity) {
                 return true
             }
             return false
+        }
+
+        // Função para recuperar o nome da tarefa em execução
+        function getRunningTaskName() {
+            const [
+                listNameRunning, 
+                taskNameRunning, 
+                listIdRunning, 
+                taskIdRunnin
+            ] = localStorage.getItem("running_task").split("_");
+
+            return [listNameRunning, taskNameRunning]
         }
 
         // Função para iniciar o cronômetro
@@ -149,20 +169,33 @@
                 // Verifica se já existe outro cronômetro em execução
                 if (existAnotherRunningTask()) {
 
-                    console.log(existAnotherRunningTask())
+                    console.log(getRunningTaskName())
+                    const [listNameRunning, taskNameRunning] = getRunningTaskName()
 
                     // Se outro cronômetro está rodando, exibe um alerta
-                    let timeLess = 3;
+                    let timeLess = 10;
 
                     // Exibe a mensagem com o tempo restante
                     const messageContainer = document.getElementById("messageContainer_{{ $modal_id }}");
-                    messageContainer.innerHTML = `<p id="messageError_{{ $modal_id }}" class="text-center text-danger">Já existe uma tarefa em progresso!... ${timeLess}</p>`;
+
+                    messageContainer.innerHTML = '<p class="text-center"><strong><em>Processando...</em></strong></p>'
 
                     // Intervalo para reduzir o timeLess
                     let countDownMessageTimer = setInterval(function() {
-                        timeLess--;  // Decrementa o tempo
                         // Atualiza a mensagem com o tempo restante
-                        messageContainer.innerHTML = `<p class="text-center text-danger">Já existe uma tarefa em progresso!... ${timeLess}</p>`;
+                        messageContainer.innerHTML = `<div id="messageError_{{ $modal_id }}">`
+                            + `<p class="text-center text-danger">`
+                            + `Existe uma tarefa em execução neste momento`
+                            + `</p>`
+                            + `<p class="text-center">`
+                            + `A tarefa <strong><em>${taskNameRunning}</em></strong> da lista <strong><em>${listNameRunning}</em></strong> está em execução agora.`
+                            + `</p>`
+                            + `<p class="text-center text-danger">`
+                            + `saindo... ${timeLess}`
+                            + `</p>`
+                            + `</div>`
+                                        
+                        timeLess--;  // Decrementa o tempo
 
                         // Se o contador chegar a 0, para o intervalo e limpa a mensagem
                         if (timeLess <= 0) {
@@ -207,6 +240,7 @@
         editTimerButton.addEventListener("click", () => {
             elapsedDisplay.style.display = "none"
             updateTimeContainer.style.display = "flex"
+            inputTimerDisplay.value = elapsedDisplay.textContent
         })
         
         cancelUpdateTimeButton.addEventListener("click", () => {
@@ -215,6 +249,30 @@
         })
         
         updateTimeButton.addEventListener("click", () => {
+            if (inputTimerDisplay.value === "") {
+                let timeLess = 3
+
+                const messageContainer = document.getElementById("messageContainer_{{ $modal_id }}");
+                    messageContainer.innerHTML = `<p id="messageError_{{ $modal_id }}" class="text-center text-danger">Valor informado é inválido!... ${timeLess}</p>`;
+
+                // Intervalo para reduzir o timeLess
+                let countDownMessageTimer = setInterval(function() {
+                        timeLess--;  // Decrementa o tempo
+                        // Atualiza a mensagem com o tempo restante
+                        messageContainer.innerHTML = `<p class="text-center text-danger">Valor informado é inválido!... ${timeLess}</p>`;
+
+                        // Se o contador chegar a 0, para o intervalo e limpa a mensagem
+                        if (timeLess <= 0) {
+                            clearInterval(countDownMessageTimer); // Para o contador
+                            messageContainer.innerHTML = ""; // Limpa a mensagem
+                            
+                            elapsedDisplay.style.display = "none"
+                            updateTimeContainer.style.display = "flex"
+                        }
+                    }, 1000);
+                    
+            }
+
             let [h, m, s] = inputTimerDisplay.value.split(":")
 
             h = parseInt(h)
