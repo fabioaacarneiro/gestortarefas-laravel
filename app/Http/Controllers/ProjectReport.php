@@ -50,6 +50,7 @@ class ProjectReport extends Controller
         
         foreach ($tasks as $task) {
             $task->elapsed_time = $this->formatTaskTime($task->elapsed_time);
+            $task->status = $this->getStatusInPortuguesse($task->status);
         }
 
 
@@ -69,5 +70,21 @@ class ProjectReport extends Controller
 
         // Retorna o PDF para download
         return $pdf->download('relatorio_' . $request->input('client_name') . '.pdf');
+    }
+
+    private function getStatusInPortuguesse(string $status)
+    {
+        $status_collection = [
+            'new' => 'Não iniciada',
+            'in_progress' => 'Em progresso',
+            'cancelled' => 'Cancelada',
+            'completed' => 'Concluída',
+        ];
+
+        if (key_exists($status, $status_collection)) {
+            return $status_collection[$status];
+        } else {
+            return 'Desconhecido';
+        }
     }
 }
