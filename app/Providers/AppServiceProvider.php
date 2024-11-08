@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
             $url->forceScheme('https');
         }
 
-        if (Schema::hasTable('tasks')) {
+        if (Schema::hasColumns('tasks', ['is_running','elapsed_time'])) {
             $taskNameGlobal = TaskModel::select(['name', 'tasklist_id'])
                 ->where('is_running', '1')->first();
     
